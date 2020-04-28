@@ -141,7 +141,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <Button
@@ -149,7 +149,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:enabled="false"
+            android:enabled="true"
+            android:fadeScrollbars="false"
             android:onClick="btnMapaCidadesClick"
             android:text="MAPA DAS CIDADES" />
 
@@ -158,8 +159,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:enabled="false"
+            android:enabled="true"
+            android:onClick="btnMapaBairrosClick"
             android:text="POR BAIRRO" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="center_horizontal"
+        android:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        tools:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid" />
 
 </LinearLayout>

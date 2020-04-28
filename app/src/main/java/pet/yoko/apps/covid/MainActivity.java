@@ -2,8 +2,10 @@ package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -46,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnMapaCidadesClick(View view) {
+        Intent intent = new Intent(this, MapaCidadesActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void btnMapaBairrosClick(View view) {
+        Intent intent = new Intent(this, MapaBairrosActivity.class);
+        startActivity(intent);
 
     }
 
