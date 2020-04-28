@@ -1,0 +1,2 @@
+rootProject.name='CovidUFCA'
+include ':app'
