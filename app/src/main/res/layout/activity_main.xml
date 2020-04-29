@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="148dp"
+        android:layout_height="132dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/textView17"
         android:layout_width="match_parent"
-        android:layout_height="82dp"
+        android:layout_height="66dp"
         android:gravity="center_horizontal"
         android:text="MONITORAMENTO DO COVID19 NA REGIÃO DO CARIRI"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -58,7 +58,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="39dp"
         android:orientation="horizontal">
 
         <TextView
@@ -96,7 +96,7 @@
 
         <TextView
             android:id="@+id/confirmados"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -105,7 +105,7 @@
 
         <TextView
             android:id="@+id/suspeitos"
-            android:layout_width="wrap_content"
+            android:layout_width="77dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -114,7 +114,7 @@
 
         <TextView
             android:id="@+id/obitos"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -123,21 +123,51 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView28"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:gravity="center_horizontal"
-        android:text="taxa por 100.000 habitantes"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:layout_height="54dp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/taxa"
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="209dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="taxa por 100.000 habitantes"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Cidades com confirmação"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="41dp"
-        android:gravity="center_horizontal"
-        android:text="0"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_height="31dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/taxa"
+            android:layout_width="209dp"
+            android:layout_height="41dp"
+            android:gravity="center_horizontal"
+            android:text="0"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/total_confirmacoes"
+            android:layout_width="132dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="0"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -146,7 +176,7 @@
 
         <Button
             android:id="@+id/btnCidades"
-            android:layout_width="wrap_content"
+            android:layout_width="112dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:enabled="true"
@@ -164,14 +194,36 @@
             android:text="POR BAIRRO" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSexo"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="btnporSexoClick"
+            android:text="Por Sexo" />
+
+        <Button
+            android:id="@+id/btnIdade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="btnporIdadeClick"
+            android:text="POR IDADE" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:autoLink="web"
         android:gravity="center_horizontal"
-        android:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid"
+        android:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid" />
+        tools:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio" />
 
 </LinearLayout>

@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     TextView obitos;
     TextView taxa;
     TextView atualizacao;
+    TextView confirmacoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         suspeitos = (TextView)findViewById(R.id.suspeitos);
         obitos = (TextView)findViewById(R.id.obitos);
         taxa = (TextView)findViewById(R.id.taxa);
+        confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
 
         try {
             run();
@@ -55,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnMapaBairrosClick(View view) {
         Intent intent = new Intent(this, MapaBairrosActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void btnporIdadeClick(View view) {
+        Intent intent = new Intent(this, PorIdadeActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void btnporSexoClick(View view) {
+        Intent intent = new Intent(this, PorSexoActivity.class);
         startActivity(intent);
 
     }
@@ -91,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             taxa.setText(strTaxa);
                             String data = obj.getString("atualizacao");
                             atualizacao.setText(data);
+                            confirmacoes.setText(obj.getString("confirmacoes"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
