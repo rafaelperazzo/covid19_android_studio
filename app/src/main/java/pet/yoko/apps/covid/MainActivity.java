@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
-
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,7 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final String EXTRA_MESSAGE = "https://apps.yoko.pet/covid?q=5";
     public String url = "https://apps.yoko.pet/api/covidapi.php?resumo=";
     TextView confirmados;
     TextView suspeitos;
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TextView taxa;
     TextView atualizacao;
     TextView confirmacoes;
+    ProgressBar progresso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         obitos = (TextView)findViewById(R.id.obitos);
         taxa = (TextView)findViewById(R.id.taxa);
         confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
-
+        progresso = (ProgressBar)findViewById(R.id.progresso);
+        //Todo: Inserir a Activity dos casos acumulados
         try {
             run();
         } catch (IOException e) {
@@ -72,8 +74,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void run() throws IOException {
+    public void confirmadosClick(View view) {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        String SITE = "https://apps.yoko.pet/covid?q=5";
+        intent.putExtra(EXTRA_MESSAGE,SITE);
+        startActivity(intent);
 
+    }
+
+    void run() throws IOException {
+        progresso.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -83,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                progresso.setVisibility(View.GONE);
                 call.cancel();
             }
 
@@ -105,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                             String data = obj.getString("atualizacao");
                             atualizacao.setText(data);
                             confirmacoes.setText(obj.getString("confirmacoes"));
+                            progresso.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

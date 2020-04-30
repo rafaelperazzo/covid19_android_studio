@@ -100,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
+            android:onClick="confirmadosClick"
             android:text="0"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -225,5 +226,11 @@
         android:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         tools:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio" />
+
+    <ProgressBar
+        android:id="@+id/progresso"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="28dp" />
 
 </LinearLayout>

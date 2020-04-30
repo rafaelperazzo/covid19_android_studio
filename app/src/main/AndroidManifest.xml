@@ -12,8 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PorSexoActivity" android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".PorIdadeActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".WebViewActivity"></activity>
+        <activity
+            android:name=".PorSexoActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".PorIdadeActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MapaBairrosActivity"
             android:parentActivityName=".MainActivity" />
