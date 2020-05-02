@@ -183,7 +183,7 @@
             android:enabled="true"
             android:fadeScrollbars="false"
             android:onClick="btnMapaCidadesClick"
-            android:text="MAPA DAS CIDADES" />
+            android:text="POR CIDADE" />
 
         <Button
             android:id="@+id/btnBairro"

@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         taxa = (TextView)findViewById(R.id.taxa);
         confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
         progresso = (ProgressBar)findViewById(R.id.progresso);
-        //Todo: Inserir a Activity dos casos acumulados
         try {
             run();
         } catch (IOException e) {

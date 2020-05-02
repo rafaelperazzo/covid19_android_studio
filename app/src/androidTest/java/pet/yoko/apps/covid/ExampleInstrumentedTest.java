@@ -37,7 +37,28 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void testaBotaoMapaCidades() {
+
         onView(withId(R.id.btnCidades)).perform(click());
+    }
+
+    @Test
+    public void testaBotaoMapaBairros() {
+        onView(withId(R.id.btnBairro)).perform(click());
+    }
+
+    @Test
+    public void testaBotaoIdade() {
+        onView(withId(R.id.btnIdade)).perform(click());
+    }
+
+    @Test
+    public void testaBotaoSexo() {
+        onView(withId(R.id.btnSexo)).perform(click());
+    }
+
+    @Test
+    public void testaConfirmados() {
+        onView(withId(R.id.confirmados)).perform(click());
     }
 /*
     @Test
