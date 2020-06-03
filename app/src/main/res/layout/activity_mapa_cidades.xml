@@ -22,8 +22,18 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/btnTabela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="tabelaClick"
+        android:text="Ver tabela de cidades" />
+
     <WebView
         android:id="@+id/mapa_cidades"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="616dp">
+
+    </WebView>
+
 </LinearLayout>
