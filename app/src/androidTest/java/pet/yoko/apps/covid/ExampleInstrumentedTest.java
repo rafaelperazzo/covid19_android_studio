@@ -60,12 +60,5 @@ public class ExampleInstrumentedTest {
     public void testaConfirmados() {
         onView(withId(R.id.confirmados)).perform(click());
     }
-/*
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("pet.yoko.apps.covid", appContext.getPackageName());
-    }*/
 }

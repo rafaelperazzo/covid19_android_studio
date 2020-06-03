@@ -7,6 +7,21 @@
     android:orientation="vertical"
     tools:context=".MapaBairrosActivity">
 
+    <ProgressBar
+        android:id="@+id/progressoBairros"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="35dp" />
+
+    <TextView
+        android:id="@+id/txtBairrosAguarde"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Carregando dados... Por favor aguarde"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textStyle="bold" />
+
     <WebView
         android:id="@+id/mapa_bairros"
         android:layout_width="match_parent"

@@ -15,14 +15,14 @@
         <ImageView
             android:id="@+id/imageView8"
             android:layout_width="222dp"
-            android:layout_height="123dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/corona" />
 
         <ImageView
             android:id="@+id/imageView9"
             android:layout_width="191dp"
-            android:layout_height="136dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/ufca" />
     </LinearLayout>
@@ -223,9 +223,9 @@
         android:layout_height="77dp"
         android:autoLink="web"
         android:gravity="center_horizontal"
-        android:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio"
+        android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Desenvolvido por Prof. Rafael Perazzo\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio" />
+        tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio" />
 
     <ProgressBar
         android:id="@+id/progresso"
