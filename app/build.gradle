@@ -49,5 +49,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.5.0'
-
+    implementation group: 'com.github.inamik.text.tables', name: 'inamik-text-tables', version: '0.8'
 }
