@@ -21,8 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "https://apps.yoko.pet/covid?q=5";
-    public String url = "https://apps.yoko.pet/api/covidapi.php?resumo=";
+    public static final String TIPO = "confirmados";
+    public static final String TITULO = "Confirmações por ";
+    public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
     TextView confirmados;
     TextView suspeitos;
     TextView obitos;
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnMapaCidadesClick(View view) {
-        Intent intent = new Intent(this, MapaCidadesActivity.class);
+        //Intent intent = new Intent(this, MapaCidadesActivity.class);
+        Intent intent = new Intent(this, MapaActivity.class);
         startActivity(intent);
 
     }
@@ -62,13 +64,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnporIdadeClick(View view) {
-        Intent intent = new Intent(this, PorIdadeActivity.class);
+        Intent intent =  new Intent(this,ChartActivity.class);
+        intent.putExtra(TIPO,"idade");
+        intent.putExtra(TITULO,"Confirmações por idade");
         startActivity(intent);
-
     }
 
     public void btnporSexoClick(View view) {
-        Intent intent = new Intent(this, PorSexoActivity.class);
+        Intent intent =  new Intent(this,ChartActivity.class);
+        intent.putExtra(TIPO,"sexo");
+        intent.putExtra(TITULO,"Confirmações por sexo");
         startActivity(intent);
 
     }
@@ -76,8 +81,14 @@ public class MainActivity extends AppCompatActivity {
     public void confirmadosClick(View view) {
         Intent intent = new Intent(this, WebViewActivity.class);
         String SITE = "https://apps.yoko.pet/covid?q=5";
-        intent.putExtra(EXTRA_MESSAGE,SITE);
+        intent.putExtra(TIPO,SITE);
         startActivity(intent);
+
+        /*
+        Intent intent =  new Intent(getContext(),ChartActivity.class);
+        intent.putExtra(TIPO,"confirmados");
+        startActivity(intent);
+         */
 
     }
 

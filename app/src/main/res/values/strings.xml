@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CovidUFCA</string>
     <string name="link_painel">https://apps.yoko.pet/covid</string>
+    <string name="title_activity_mapa">Map</string>
 </resources>

@@ -32,7 +32,7 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        String site = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String site = intent.getStringExtra(MainActivity.TIPO);
         webView.loadUrl(site);
     }
 }
