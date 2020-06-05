@@ -23,6 +23,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     public static final String TIPO = "confirmados";
     public static final String TITULO = "Confirmações por ";
+    public static final String TIPO_GRAFICO = "bar";
     public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
     public String url_cidades = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
     TextView confirmados;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent =  new Intent(this,ChartActivity.class);
         intent.putExtra(TIPO,"idade");
         intent.putExtra(TITULO,"Confirmações por idade");
+        intent.putExtra(TIPO_GRAFICO,"bar");
         startActivity(intent);
     }
 
@@ -77,15 +79,20 @@ public class MainActivity extends AppCompatActivity {
         Intent intent =  new Intent(this,ChartActivity.class);
         intent.putExtra(TIPO,"sexo");
         intent.putExtra(TITULO,"Confirmações por sexo");
+        intent.putExtra(TIPO_GRAFICO,"bar");
         startActivity(intent);
-
     }
 
     public void confirmadosClick(View view) {
-        Intent intent = new Intent(this, WebViewActivity.class);
+        /*Intent intent = new Intent(this, WebViewActivity.class);
         String SITE = "https://apps.yoko.pet/covid?q=5";
         intent.putExtra(TIPO,SITE);
-        startActivity(intent);
+        startActivity(intent);*/
+        /*
+        Intent intent =  new Intent(this,ChartActivity.class);
+        intent.putExtra(TIPO,"sexo");
+        intent.putExtra(TIPO_GRAFICO,"line");
+        startActivity(intent);*/
     }
 
     void run(String url) throws IOException {

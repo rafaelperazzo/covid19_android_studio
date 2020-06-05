@@ -13,7 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,10 +53,11 @@ public class ChartActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String TIPO = intent.getStringExtra(MainActivity.TIPO);
         String TITULO = intent.getStringExtra(MainActivity.TITULO);
+        String TIPO_GRAFICO = intent.getStringExtra(MainActivity.TIPO_GRAFICO);
         setTitle(TITULO);
         URL = URL + "tipo=" + TIPO;
         try {
-            this.run();
+            this.run("");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,7 +86,7 @@ public class ChartActivity extends AppCompatActivity {
         }
     }
 
-    void run() throws IOException {
+    void run(String tipo) throws IOException {
 
         progresso.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
@@ -107,33 +110,65 @@ public class ChartActivity extends AppCompatActivity {
                 ChartActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            JSONArray arr = new JSONArray(myResponse);
-                            ArrayList<BarEntry> valores = new ArrayList<>();
-                            ArrayList<String> labels = new ArrayList<>();
-
-                            for (int i=0;i<arr.length();i++) {
-                                JSONObject obj = arr.getJSONObject(i);
-                                String label = obj.getString("label");
-                                labels.add(label);
-                                int quantidade = obj.getInt("quantidade");
-                                valores.add(new BarEntry(i,quantidade));
-                            }
-
-                            progresso.setVisibility(View.GONE);
-                            MyBarChart chart = new MyBarChart(grafico,valores,labels,true);
-                            chart.makeChart();
-
-                        } catch (JSONException e) {
-                            progresso.setVisibility(View.GONE);
-                            Toast toast = Toast.makeText(getApplicationContext(),"Erro no json: " + e.getMessage(),Toast.LENGTH_LONG);
-                            toast.show();
-                            e.printStackTrace();
-                        }
+                        printBarChart(myResponse);
                     }
                 });
 
             }
         });
+    }
+
+    public void printBarChart(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+
+            ArrayList<BarEntry> valores = new ArrayList<>();
+            ArrayList<String> labels = new ArrayList<>();
+
+            for (int i=0;i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                String label = obj.getString("label");
+                labels.add(label);
+                int quantidade = obj.getInt("quantidade");
+                valores.add(new BarEntry(i,quantidade));
+            }
+
+            progresso.setVisibility(View.GONE);
+            MyBarChart chart = new MyBarChart(grafico,valores,labels,true);
+            chart.makeChart();
+
+        } catch (JSONException e) {
+            progresso.setVisibility(View.GONE);
+            Toast toast = Toast.makeText(getApplicationContext(),"Erro no json: " + e.getMessage(),Toast.LENGTH_LONG);
+            toast.show();
+            e.printStackTrace();
+        }
+    }
+
+    public void printLineChart(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+
+            ArrayList<Entry> valores = new ArrayList<>();
+            ArrayList<String> labels = new ArrayList<>();
+
+            for (int i=0;i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                String label = obj.getString("label");
+                labels.add(label);
+                int quantidade = obj.getInt("quantidade");
+                valores.add(new Entry(i,quantidade));
+            }
+
+            progresso.setVisibility(View.GONE);
+            //MyLineChart chart = new MyLineChart(grafico,valores,labels,true);
+            //chart.makeChart();
+
+        } catch (JSONException e) {
+            progresso.setVisibility(View.GONE);
+            Toast toast = Toast.makeText(getApplicationContext(),"Erro no json: " + e.getMessage(),Toast.LENGTH_LONG);
+            toast.show();
+            e.printStackTrace();
+        }
     }
 }
