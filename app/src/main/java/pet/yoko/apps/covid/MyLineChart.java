@@ -38,12 +38,12 @@ public class MyLineChart {
     }
 
     public void makeChart() {
-        LineDataSet lineDataSet = new LineDataSet(dados,"Datas");
+        LineDataSet lineDataSet = new LineDataSet(dados,"Confirmações");
         lineDataSet.setValueTextColor(Color.BLACK);
         lineDataSet.setValueTextSize(20f);
+        lineDataSet.setDrawValues(false);
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
-
         grafico.setData(lineData);
         /*
         Legend l = grafico.getLegend();

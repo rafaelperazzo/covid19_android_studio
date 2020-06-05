@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
@@ -38,9 +39,10 @@ public class ChartActivity extends AppCompatActivity {
     ProgressBar progresso;
     String URL;
     BarChart grafico;
+    LineChart lineChart;
     String TITULO_GRAFICO;
     ImageView imagemGrafico;
-
+    String TIPO_GRAFICO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +51,12 @@ public class ChartActivity extends AppCompatActivity {
         progresso.setVisibility(View.VISIBLE);
         imagemGrafico = (ImageView)findViewById(R.id.imgCompartilharGrafico);
         URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&";
-        grafico = findViewById(R.id.chart);
+        grafico = (BarChart)findViewById(R.id.chart);
+        lineChart = (LineChart)findViewById(R.id.lineChart);
         Intent intent = getIntent();
         String TIPO = intent.getStringExtra(MainActivity.TIPO);
         String TITULO = intent.getStringExtra(MainActivity.TITULO);
-        String TIPO_GRAFICO = intent.getStringExtra(MainActivity.TIPO_GRAFICO);
+        TIPO_GRAFICO = intent.getStringExtra(MainActivity.TIPO_GRAFICO);
         setTitle(TITULO);
         URL = URL + "tipo=" + TIPO;
         try {
@@ -110,7 +113,12 @@ public class ChartActivity extends AppCompatActivity {
                 ChartActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        printBarChart(myResponse);
+                        if (TIPO_GRAFICO.equals("bar")) {
+                            printBarChart(myResponse);
+                        }
+                        else {
+                            printLineChart(myResponse);
+                        }
                     }
                 });
 
@@ -132,7 +140,8 @@ public class ChartActivity extends AppCompatActivity {
                 int quantidade = obj.getInt("quantidade");
                 valores.add(new BarEntry(i,quantidade));
             }
-
+            grafico.setVisibility(View.VISIBLE);
+            lineChart.setVisibility(View.GONE);
             progresso.setVisibility(View.GONE);
             MyBarChart chart = new MyBarChart(grafico,valores,labels,true);
             chart.makeChart();
@@ -159,10 +168,11 @@ public class ChartActivity extends AppCompatActivity {
                 int quantidade = obj.getInt("quantidade");
                 valores.add(new Entry(i,quantidade));
             }
-
+            grafico.setVisibility(View.GONE);
+            lineChart.setVisibility(View.VISIBLE);
             progresso.setVisibility(View.GONE);
-            //MyLineChart chart = new MyLineChart(grafico,valores,labels,true);
-            //chart.makeChart();
+            MyLineChart chart = new MyLineChart(lineChart,valores,labels,true);
+            chart.makeChart();
 
         } catch (JSONException e) {
             progresso.setVisibility(View.GONE);

@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
         String SITE = "https://apps.yoko.pet/covid?q=5";
         intent.putExtra(TIPO,SITE);
         startActivity(intent);*/
-        /*
         Intent intent =  new Intent(this,ChartActivity.class);
-        intent.putExtra(TIPO,"sexo");
+        intent.putExtra(TIPO,"evolucao");
+        intent.putExtra(TITULO,"Evolução ao longo do tempo");
         intent.putExtra(TIPO_GRAFICO,"line");
-        startActivity(intent);*/
+        startActivity(intent);
     }
 
     void run(String url) throws IOException {
