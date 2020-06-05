@@ -1,6 +1,7 @@
 package pet.yoko.apps.covid;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,13 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             confirmados.setText(String.valueOf(item.confirmados));
             suspeitos.setText(String.valueOf(item.suspeitos));
             obitos.setText(String.valueOf(item.obitos));
+            if (item.obitos>0) {
+                obitos.setTextColor(Color.RED);
+            }
+            else {
+                obitos.setTextColor(Color.BLACK);
+            }
+
         }
         else {
             confirmados.setText("");

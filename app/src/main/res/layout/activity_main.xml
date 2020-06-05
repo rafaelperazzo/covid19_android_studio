@@ -15,14 +15,14 @@
         <ImageView
             android:id="@+id/imageView8"
             android:layout_width="222dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             app:srcCompat="@drawable/corona" />
 
         <ImageView
             android:id="@+id/imageView9"
             android:layout_width="191dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             app:srcCompat="@drawable/ufca" />
     </LinearLayout>
@@ -177,13 +177,13 @@
 
         <Button
             android:id="@+id/btnCidades"
-            android:layout_width="112dp"
+            android:layout_width="142dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:enabled="true"
             android:fadeScrollbars="false"
             android:onClick="btnMapaCidadesClick"
-            android:text="POR CIDADE" />
+            android:text="MAPA" />
 
         <Button
             android:id="@+id/btnBairro"
@@ -192,12 +192,12 @@
             android:layout_weight="1"
             android:enabled="true"
             android:onClick="btnMapaBairrosClick"
-            android:text="POR BAIRRO" />
+            android:text="TABELA CIDADES" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <Button

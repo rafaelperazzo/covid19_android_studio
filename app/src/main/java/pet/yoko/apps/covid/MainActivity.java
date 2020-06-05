@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TIPO = "confirmados";
     public static final String TITULO = "Confirmações por ";
     public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
+    public String url_cidades = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
     TextView confirmados;
     TextView suspeitos;
     TextView obitos;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         try {
-            run();
+            run(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnMapaBairrosClick(View view) {
-        Intent intent = new Intent(this, MapaBairrosActivity.class);
+        /*Intent intent = new Intent(this, MapaBairrosActivity.class);
+        startActivity(intent);*/
+        Intent intent = new Intent(this, TabelaActivity.class);
         startActivity(intent);
 
     }
@@ -83,16 +86,9 @@ public class MainActivity extends AppCompatActivity {
         String SITE = "https://apps.yoko.pet/covid?q=5";
         intent.putExtra(TIPO,SITE);
         startActivity(intent);
-
-        /*
-        Intent intent =  new Intent(getContext(),ChartActivity.class);
-        intent.putExtra(TIPO,"confirmados");
-        startActivity(intent);
-         */
-
     }
 
-    void run() throws IOException {
+    void run(String url) throws IOException {
         progresso.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
@@ -115,26 +111,30 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            JSONObject obj = new JSONObject(myResponse);
-                            confirmados.setText(obj.getString("confirmados"));
-                            suspeitos.setText(obj.getString("suspeitos"));
-                            obitos.setText(obj.getString("obitos"));
-                            double dblTaxa = obj.getDouble("taxa");
-                            String strTaxa = String.format("%.2f",dblTaxa);
-                            taxa.setText(strTaxa);
-                            String data = obj.getString("atualizacao");
-                            atualizacao.setText(data);
-                            confirmacoes.setText(obj.getString("confirmacoes"));
-                            progresso.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        ajustarDadosIniciais(myResponse);
                     }
                 });
 
             }
         });
+    }
+
+    public void ajustarDadosIniciais(String response) {
+        try {
+            JSONObject obj = new JSONObject(response);
+            confirmados.setText(obj.getString("confirmados"));
+            suspeitos.setText(obj.getString("suspeitos"));
+            obitos.setText(obj.getString("obitos"));
+            double dblTaxa = obj.getDouble("taxa");
+            String strTaxa = String.format("%.2f",dblTaxa);
+            taxa.setText(strTaxa);
+            String data = obj.getString("atualizacao");
+            atualizacao.setText(data);
+            confirmacoes.setText(obj.getString("confirmacoes"));
+            progresso.setVisibility(View.GONE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

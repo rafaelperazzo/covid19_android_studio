@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class ChartActivity extends AppCompatActivity {
     String URL;
     BarChart grafico;
     String TITULO_GRAFICO;
+    ImageView imagemGrafico;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
         progresso = (ProgressBar)findViewById(R.id.progressoChart);
         progresso.setVisibility(View.VISIBLE);
+        imagemGrafico = (ImageView)findViewById(R.id.imgCompartilharGrafico);
         URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&";
         grafico = findViewById(R.id.chart);
         Intent intent = getIntent();
