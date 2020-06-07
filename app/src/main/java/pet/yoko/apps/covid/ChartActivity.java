@@ -67,7 +67,14 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     public void shareClick(View view) {
-        Bitmap image = grafico.getChartBitmap();
+        Bitmap image;
+        if (view instanceof BarChart) {
+            image = grafico.getChartBitmap();
+        }
+        else {
+            image = lineChart.getChartBitmap();
+        }
+
         Uri uri = null;
         try {
             File cachePath = new File(getApplicationContext().getCacheDir(), "images");
