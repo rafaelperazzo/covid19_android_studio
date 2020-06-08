@@ -11,8 +11,17 @@ public class MyLineChart {
 
     private LineChart grafico;
     private ArrayList<Entry> dados;
+    private ArrayList<Entry> dados2;
     private ArrayList<String> xLabels;
     private boolean labelsX;
+
+    public ArrayList<Entry> getDados2() {
+        return dados2;
+    }
+
+    public void setDados2(ArrayList<Entry> dados2) {
+        this.dados2 = dados2;
+    }
 
     public void setDados(ArrayList<Entry> dados) {
         this.dados = dados;
@@ -29,6 +38,15 @@ public class MyLineChart {
     public MyLineChart(LineChart grafico,ArrayList<Entry> dados, ArrayList<String> xLabels, boolean labelsX) {
         this.grafico = grafico;
         this.dados = dados;
+        this.dados2 = null;
+        this.xLabels = xLabels;
+        this.labelsX = labelsX;
+    }
+
+    public MyLineChart(LineChart grafico,ArrayList<Entry> dados, ArrayList<Entry> dados2, ArrayList<String> xLabels, boolean labelsX) {
+        this.grafico = grafico;
+        this.dados = dados;
+        this.dados2 = dados2;
         this.xLabels = xLabels;
         this.labelsX = labelsX;
     }
@@ -39,56 +57,27 @@ public class MyLineChart {
 
     public void makeChart() {
         LineDataSet lineDataSet = new LineDataSet(dados,"Confirmações");
-        lineDataSet.setValueTextColor(Color.BLACK);
+        lineDataSet.setValueTextColor(Color.GREEN);
+        lineDataSet.setColor(Color.GREEN);
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setDrawValues(false);
+        lineDataSet.setLineWidth(2);
+        lineDataSet.setDrawCircles(false);
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
-        grafico.setData(lineData);
-        /*
-        Legend l = grafico.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setMaxSizePercent(0.3f);
-        l.setEnabled(true);
-        XAxis xAxis = grafico.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setCenterAxisLabels(true);
-        //xAxis.setDrawLabels(true);
-        xAxis.setLabelCount(xLabels.size());
-        xAxis.setGranularity(1.0f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setLabelRotationAngle(-90);
-        xAxis.setDrawGridLines(false);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setAxisMinimum(0);
-        xAxis.setEnabled(false);
-        if (labelsX) {
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            l.setEnabled(false);
-            xAxis.setEnabled(true);
-            xAxis.setTextSize(20);
+        if (dados2!=null) {
+            LineDataSet lineDataSet2 = new LineDataSet(dados2,"Óbitos");
+            lineDataSet2.setValueTextColor(Color.RED);
+            lineDataSet2.setValueTextSize(20f);
+            lineDataSet2.setColor(Color.RED);
+            lineDataSet2.setDrawValues(false);
+            lineDataSet2.setLineWidth(2);
+            lineDataSet2.setDrawCircles(false);
+            lineData.addDataSet(lineDataSet2);
         }
-        YAxis yAxis = grafico.getAxisLeft();
-        yAxis.setDrawGridLines(false);
-        yAxis.setAxisMinimum(0);
-        yAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                DecimalFormat format = new DecimalFormat("#.####");
-                return(format.format(value));
-            }
-        });
-        yAxis.setGranularity(1.0f);
-        yAxis.setGranularityEnabled(true);
-        yAxis.setEnabled(false);
-        //yAxis.setDrawLabels(true);
-        grafico.getAxisRight().setDrawGridLines(false);
-        grafico.getAxisRight().setEnabled(false);
-        //grafico.getAxisRight().setDrawLabels(true);
-        */
+        grafico.setData(lineData);
         grafico.animateY(2000);
-        //grafico.getDescription().setText(TITULO_GRAFICO);
+        grafico.getXAxis().setEnabled(false);
         grafico.getDescription().setEnabled(false);
         grafico.invalidate();
         grafico.setSaveEnabled(true);

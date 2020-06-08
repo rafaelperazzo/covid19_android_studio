@@ -182,7 +182,7 @@
             android:layout_weight="1"
             android:enabled="true"
             android:fadeScrollbars="false"
-            android:onClick="btnMapaCidadesClick"
+            android:onClick="showMapasMenu"
             android:text="MAPA" />
 
         <Button
@@ -220,12 +220,33 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="77dp"
+        android:layout_height="wrap_content"
         android:autoLink="web"
         android:gravity="center_horizontal"
-        android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio"
+        android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid\nhttps://github.com/rafaelperazzo/covid19_android_studio" />
+        tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid" />
+
+    <TextView
+        android:id="@+id/txtVersao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Versão"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:id="@+id/txtAtualizar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:onClick="atualizarClick"
+        android:text="*** ATUALIZAR ***"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#3F51B5"
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/progresso"

@@ -1,14 +1,20 @@
 package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,7 +29,7 @@ import okhttp3.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     public static final String TIPO = "confirmados";
     public static final String TITULO = "Confirmações por ";
     public static final String TIPO_GRAFICO = "bar";
@@ -37,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     TextView atualizacao;
     TextView confirmacoes;
     ProgressBar progresso;
+    TextView versao;
+    public int VERSAO;
+    TextView atualizar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +58,67 @@ public class MainActivity extends AppCompatActivity {
         taxa = (TextView)findViewById(R.id.taxa);
         confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
         progresso = (ProgressBar)findViewById(R.id.progresso);
+        versao = (TextView)findViewById(R.id.txtVersao);
+        atualizar = (TextView)findViewById(R.id.txtAtualizar);
+        atualizar.setVisibility(View.GONE);
+        String versionName;
+        int versionCode;
+        versao.setText("Versão: " + String.valueOf(getVersionCode()));
+        VERSAO = getVersionCode();
         try {
             run(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void atualizarClick(View v) {
+        Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=pet.yoko.apps.covid");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public int getVersionCode() {
+        int versionCode = 0;
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = packageInfo.versionName;
+            versionCode = packageInfo.versionCode;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return (versionCode);
+    }
+
+    public void showMapasMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.mapas);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.mapas_cidades:
+                intent = new Intent(this, MapaActivity.class);
+                intent.putExtra(TIPO_MAPA,"cidades");
+                startActivity(intent);
+                return true;
+            case R.id.mapas_bairros:
+                intent = new Intent(this, MapaActivity.class);
+                intent.putExtra(TIPO_MAPA,"bairros");
+                startActivity(intent);
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,15 +149,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-    public void btnMapaCidadesClick(View view) {
-        Intent intent = new Intent(this, MapaActivity.class);
-        intent.putExtra(TIPO_MAPA,"cidades");
-        startActivity(intent);
-    }
-
-
 
     public void btnMapaBairrosClick(View view) {
         Intent intent = new Intent(this, TabelaActivity.class);
@@ -168,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
             String data = obj.getString("atualizacao");
             atualizacao.setText(data);
             confirmacoes.setText(obj.getString("confirmacoes"));
+            int versaoNova = obj.getInt("versao");
+            if (VERSAO<versaoNova) {
+                versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
+                versao.setTextColor(Color.RED);
+                atualizar.setVisibility(View.VISIBLE);
+            }
             progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -167,18 +167,21 @@ public class ChartActivity extends AppCompatActivity {
 
             ArrayList<Entry> valores = new ArrayList<>();
             ArrayList<String> labels = new ArrayList<>();
+            ArrayList<Entry> valores2 = new ArrayList<>();
 
             for (int i=0;i<arr.length();i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 String label = obj.getString("label");
                 labels.add(label);
                 int quantidade = obj.getInt("quantidade");
+                int quantidade2 = obj.getInt("quantidade2");
                 valores.add(new Entry(i,quantidade));
+                valores2.add(new Entry(i,quantidade2));
             }
             grafico.setVisibility(View.GONE);
             lineChart.setVisibility(View.VISIBLE);
             progresso.setVisibility(View.GONE);
-            MyLineChart chart = new MyLineChart(lineChart,valores,labels,true);
+            MyLineChart chart = new MyLineChart(lineChart,valores,valores2,labels,true);
             chart.makeChart();
 
         } catch (JSONException e) {
