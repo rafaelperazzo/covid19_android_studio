@@ -2,14 +2,15 @@ package pet.yoko.apps.covid;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-
-import com.github.mikephil.charting.data.BarEntry;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -30,11 +31,14 @@ import okhttp3.Response;
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    String URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
+    String URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=";
     ArrayList<String> cidades = new ArrayList<>();
     ArrayList<Integer> confirmados = new ArrayList<>();
     ArrayList<Double> latitude = new ArrayList<>();
     ArrayList<Double> longitude = new ArrayList<>();
+    ArrayList<String> bairros = new ArrayList<>();
+    String TIPO_MAPA;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,10 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Intent intent = getIntent();
+        String TIPO = intent.getStringExtra(MainActivity.TIPO_MAPA);
+        this.TIPO_MAPA = TIPO;
+        URL = URL + TIPO;
         try {
             this.run();
         } catch (IOException e) {
@@ -66,7 +74,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-7.2153453, -39.3153336);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 8.0f ) );
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 9.0f ) );
     }
 
     void run() throws IOException {
@@ -92,35 +100,84 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 MapaActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            JSONArray arr = new JSONArray(myResponse);
-                            cidades = new ArrayList<>();
-                            confirmados = new ArrayList<>();
-                            latitude = new ArrayList<>();
-                            longitude = new ArrayList<>();
-
-                            for (int i=0;i<arr.length();i++) {
-                                JSONObject obj = arr.getJSONObject(i);
-                                cidades.add(obj.getString("cidade"));
-                                confirmados.add(obj.getInt("confirmados"));
-                                latitude.add(obj.getDouble("latitude"));
-                                longitude.add(obj.getDouble("longitude"));
-
-                                LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(ponto)
-                                        .title(obj.getString("cidade"))
-                                        .snippet("Confirmados: " + String.valueOf(obj.getInt("confirmados")))
-                                        );
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (TIPO_MAPA.equals("cidades")) {
+                            setDadosCidades(myResponse);
                         }
+                        else {
+                            setDadosBairros(myResponse);
+                        }
+
                     }
                 });
 
             }
         });
+    }
+
+    private void setDadosCidades(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+            cidades = new ArrayList<>();
+            confirmados = new ArrayList<>();
+            latitude = new ArrayList<>();
+            longitude = new ArrayList<>();
+
+            for (int i=0;i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                cidades.add(obj.getString("cidade"));
+                confirmados.add(obj.getInt("confirmados"));
+                latitude.add(obj.getDouble("latitude"));
+                longitude.add(obj.getDouble("longitude"));
+
+                LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.map2);
+                mMap.addMarker(new MarkerOptions()
+                        .position(ponto)
+                        .title(obj.getString("cidade"))
+                        .icon(icon)
+                        .snippet("Confirmados: " + String.valueOf(obj.getInt("confirmados")))
+                );
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setDadosBairros(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+            cidades = new ArrayList<>();
+            bairros = new ArrayList<>();
+            latitude = new ArrayList<>();
+            longitude = new ArrayList<>();
+
+            for (int i=0;i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                cidades.add(obj.getString("cidade"));
+                bairros.add(obj.getString("bairro"));
+                latitude.add(obj.getDouble("latitude"));
+                longitude.add(obj.getDouble("longitude"));
+
+                LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marker64);
+                mMap.addMarker(new MarkerOptions()
+                        .position(ponto)
+                        .title(obj.getString("cidade"))
+                        .icon(icon)
+                        .snippet("Bairro: " + String.valueOf(obj.getString("bairro")))
+                );
+
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(ponto)
+                        .fillColor(Color.LTGRAY)
+                        .strokeColor(Color.RED)
+                        .radius(250);
+                mMap.addCircle(circleOptions);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

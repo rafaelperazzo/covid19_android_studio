@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.ProgressBar;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TIPO = "confirmados";
     public static final String TITULO = "Confirmações por ";
     public static final String TIPO_GRAFICO = "bar";
+    public static final String TIPO_MAPA = "cidades";
     public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
     public String url_cidades = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
     TextView confirmados;
@@ -52,16 +56,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void btnMapaCidadesClick(View view) {
-        //Intent intent = new Intent(this, MapaCidadesActivity.class);
-        Intent intent = new Intent(this, MapaActivity.class);
-        startActivity(intent);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.menu_mapa_bairros:
+                intent = new Intent(this, MapaActivity.class);
+                intent.putExtra(TIPO_MAPA,"bairros");
+                startActivity(intent);
+                return true;
+            case R.id.menu_evolucao_temporal:
+                intent =  new Intent(this,ChartActivity.class);
+                intent.putExtra(TIPO,"evolucao");
+                intent.putExtra(TITULO,"Evolução ao longo do tempo");
+                intent.putExtra(TIPO_GRAFICO,"line");
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void btnMapaCidadesClick(View view) {
+        Intent intent = new Intent(this, MapaActivity.class);
+        intent.putExtra(TIPO_MAPA,"cidades");
+        startActivity(intent);
+    }
+
+
+
     public void btnMapaBairrosClick(View view) {
-        /*Intent intent = new Intent(this, MapaBairrosActivity.class);
-        startActivity(intent);*/
         Intent intent = new Intent(this, TabelaActivity.class);
         startActivity(intent);
 
@@ -84,10 +118,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void confirmadosClick(View view) {
-        /*Intent intent = new Intent(this, WebViewActivity.class);
-        String SITE = "https://apps.yoko.pet/covid?q=5";
-        intent.putExtra(TIPO,SITE);
-        startActivity(intent);*/
         Intent intent =  new Intent(this,ChartActivity.class);
         intent.putExtra(TIPO,"evolucao");
         intent.putExtra(TITULO,"Evolução ao longo do tempo");
