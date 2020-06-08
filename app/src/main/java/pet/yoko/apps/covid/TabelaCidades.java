@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class TabelaCidades {
 
@@ -29,9 +31,18 @@ public class TabelaCidades {
             int confirmados = linha.getInt("confirmados");
             int suspeitos = linha.getInt("suspeitos");
             int obitos = linha.getInt("obitos");
-            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos));
+            double incidencia = linha.getDouble("taxa");
+            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia));
         }
-        items.add(new CidadeItem("",-1,-1,-1));
+        items.add(new CidadeItem("",-1,-1,-1,-1));
+
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return (o1.cidade.compareTo(o2.cidade));
+            }
+        });
+
         adapter.notifyDataSetChanged();
     }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -92,6 +95,57 @@ public class TabelaActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         DividerItemDecoration itemDecor = new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
+    }
+
+    public void cidadesClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return (o1.cidade.compareTo(o2.cidade));
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void confirmadosClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return(o1.confirmados-o2.confirmados);
+            }
+        });
+        adapter.notifyDataSetChanged();
+        //Collections.sort(items,Comparator.comparing(CidadeItem::getConfirmados));
+    }
+
+    public void suspeitosClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return(o1.suspeitos-o2.suspeitos);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void obitosClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return(o1.obitos-o2.obitos);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void incidenciaClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return (Double.compare(o1.incidencia,o2.incidencia));
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
     void run() throws IOException {

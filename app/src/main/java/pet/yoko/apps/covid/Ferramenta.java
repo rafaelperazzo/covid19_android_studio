@@ -46,7 +46,7 @@ public class Ferramenta {
                     filtrada.add(linha);
                 }
             }
-            filtrada.add((new CidadeItem("",-1,-1,-1)));
+            filtrada.add((new CidadeItem("",-1,-1,-1,-1)));
             adapter.setItems(filtrada);
         }
         else {
@@ -63,6 +63,7 @@ public class Ferramenta {
         st.nextCell().addLine("Confirmados");
         st.nextCell().addLine("Suspeitos");
         st.nextCell().addLine("Óbitos");
+        st.nextCell().addLine("Incidência");
 
         CidadeAdapter adapter = (CidadeAdapter)tabela.getAdapter();
 
@@ -71,11 +72,13 @@ public class Ferramenta {
             int confirmados = adapter.getItems().get(i).confirmados;
             int suspeitos = adapter.getItems().get(i).suspeitos;
             int obitos = adapter.getItems().get(i).obitos;
+            double incidencia = adapter.getItems().get(i).incidencia;
             st.nextRow();
             st.nextCell().addLine(cidade).applyToCell(VERTICAL_CENTER.withHeight(5));
             st.nextCell().addLine(String.valueOf(confirmados)).applyToCell(VERTICAL_CENTER.withHeight(5));
             st.nextCell().addLine(String.valueOf(suspeitos)).applyToCell(VERTICAL_CENTER.withHeight(5));
             st.nextCell().addLine(String.valueOf(obitos)).applyToCell(VERTICAL_CENTER.withHeight(5));
+            st.nextCell().addLine(String.valueOf(incidencia)).applyToCell(VERTICAL_CENTER.withHeight(5));
         }
 
         GridTable gt = st.toGrid();

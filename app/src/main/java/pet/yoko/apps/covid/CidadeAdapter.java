@@ -22,6 +22,7 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
         public TextView confirmados;
         public TextView suspeitos;
         public TextView obitos;
+        public TextView incidencia;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -29,6 +30,7 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             confirmados = (TextView)itemView.findViewById(R.id.txtConfirmados);
             suspeitos = (TextView)itemView.findViewById(R.id.txtSuspeitos);
             obitos = (TextView)itemView.findViewById(R.id.txtObitos);
+            incidencia = (TextView)itemView.findViewById(R.id.txtIncidencia);
         }
     }
 
@@ -63,11 +65,13 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
         TextView confirmados = holder.confirmados;
         TextView suspeitos = holder.suspeitos;
         TextView obitos = holder.obitos;
+        TextView incidencia = holder.incidencia;
         cidade.setText(item.cidade);
         if (item.confirmados!=-1) {
             confirmados.setText(String.valueOf(item.confirmados));
             suspeitos.setText(String.valueOf(item.suspeitos));
             obitos.setText(String.valueOf(item.obitos));
+            incidencia.setText(String.valueOf(item.incidencia));
             if (item.obitos>0) {
                 obitos.setTextColor(Color.RED);
             }
@@ -80,6 +84,7 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             confirmados.setText("");
             suspeitos.setText("");
             obitos.setText("");
+            incidencia.setText("");
         }
 
     }

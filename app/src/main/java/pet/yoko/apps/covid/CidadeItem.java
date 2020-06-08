@@ -6,7 +6,15 @@ public class CidadeItem {
     int confirmados;
     int suspeitos;
     int obitos;
+    double incidencia;
 
+    public double getIncidencia() {
+        return incidencia;
+    }
+
+    public void setIncidencia(double incidencia) {
+        this.incidencia = incidencia;
+    }
     public String getCidade() {
         return cidade;
     }
@@ -39,10 +47,11 @@ public class CidadeItem {
         this.obitos = obitos;
     }
 
-    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos) {
+    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia) {
         this.cidade = cidade;
         this.confirmados = confirmados;
         this.suspeitos = suspeitos;
         this.obitos = obitos;
+        this.incidencia = incidencia;
     }
 }

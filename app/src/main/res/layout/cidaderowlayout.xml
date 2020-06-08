@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/txtCidade"
-        android:layout_width="178dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="CIDADE"
@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/txtConfirmados"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="CONF"
@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/txtSuspeitos"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="SUSP"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/txtObitos"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="OBI"
@@ -39,4 +39,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#FB091D"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtIncidencia"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0.00"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>
