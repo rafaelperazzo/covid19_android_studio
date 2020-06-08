@@ -100,6 +100,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popup.show();
     }
 
+    public void showIdadeMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.menuidade);
+        popup.show();
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Intent intent;
@@ -112,6 +121,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.mapas_bairros:
                 intent = new Intent(this, MapaActivity.class);
                 intent.putExtra(TIPO_MAPA,"bairros");
+                startActivity(intent);
+                return true;
+            case R.id.idade_confirmados:
+                intent = new Intent(this, ChartActivity.class);
+                intent.putExtra(TIPO,"idade");
+                intent.putExtra(TIPO_GRAFICO,"bar");
+                intent.putExtra(TITULO,"Casos confirmados por idade (totais)");
+                startActivity(intent);
+                return true;
+            case R.id.idade_obitos:
+                intent = new Intent(this, ChartActivity.class);
+                intent.putExtra(TIPO,"obitosPorIdade");
+                intent.putExtra(TIPO_GRAFICO,"bar");
+                intent.putExtra(TITULO,"Óbitos confirmados por idade (totais)");
                 startActivity(intent);
                 return true;
             default:

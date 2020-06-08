@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/idade_obitos"
+        android:title="Óbitos" />
+    <item android:id="@+id/idade_confirmados"
+        android:title="Confirmados" />
+</menu>

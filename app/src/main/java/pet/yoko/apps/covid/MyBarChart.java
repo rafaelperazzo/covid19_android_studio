@@ -63,6 +63,13 @@ public class MyBarChart {
             barDataSet.setColors(randomColor);
             barDataSet.setValueTextColor(Color.BLACK);
             barDataSet.setValueTextSize(20f);
+            barDataSet.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    DecimalFormat format = new DecimalFormat("#.####");
+                    return(format.format(value));
+                }
+            });
             barData.addDataSet(barDataSet);
         }
 
