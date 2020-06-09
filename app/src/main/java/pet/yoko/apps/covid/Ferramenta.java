@@ -11,6 +11,12 @@ import com.inamik.text.tables.GridTable;
 import com.inamik.text.tables.SimpleTable;
 import com.inamik.text.tables.grid.Border;
 import com.inamik.text.tables.grid.Util;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import static com.inamik.text.tables.Cell.Functions.VERTICAL_CENTER;
 
@@ -111,4 +117,16 @@ public class Ferramenta {
         });
     }
 
+    public int getAppPlayStoreVersion(String html) {
+        Document doc = Jsoup.parse(html);
+        int versaoPublicada = 0;
+        Elements versao = doc.getElementsByClass("htlgb");
+        try {
+            versaoPublicada = Integer.parseInt(versao.get(7).text());
+        }
+        catch (NumberFormatException e) {
+            versaoPublicada = 0;
+        }
+        return (versaoPublicada);
+    }
 }

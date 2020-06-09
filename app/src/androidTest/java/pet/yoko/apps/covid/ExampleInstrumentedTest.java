@@ -1,25 +1,16 @@
 package pet.yoko.apps.covid;
 
-//import android.content.Context;
-
-//import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-
-//import static org.junit.Assert.*;
-
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-//import androidx.test.runner.AndroidJUnit4;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 //https://developer.android.com/training/testing/ui-testing/espresso-testing#java
 /**
@@ -36,29 +27,50 @@ public class ExampleInstrumentedTest {
 
 
     @Test
-    public void testaBotaoMapaCidades() {
-
+    public void testaBotaoMapaCidades() throws InterruptedException {
+        Thread.sleep(2000);
         onView(withId(R.id.btnCidades)).perform(click());
+        onView(withText("Por Cidade")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
+        onView(withId(R.id.btnCidades)).perform(click());
+        onView(withText("Por Bairro")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
     }
 
     @Test
-    public void testaBotaoMapaBairros() {
-        onView(withId(R.id.btnBairro)).perform(click());
-    }
-
-    @Test
-    public void testaBotaoIdade() {
-        onView(withId(R.id.btnIdade)).perform(click());
-    }
-
-    @Test
-    public void testaBotaoSexo() {
+    public void testaBotaoPorSexo() throws InterruptedException {
+        Thread.sleep(2000);
         onView(withId(R.id.btnSexo)).perform(click());
+        onView(withText("Óbitos")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
+        onView(withId(R.id.btnSexo)).perform(click());
+        onView(withText("Confirmados")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
     }
 
     @Test
-    public void testaConfirmados() {
-        onView(withId(R.id.confirmados)).perform(click());
+    public void testaBotaoPorIdade() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.btnIdade)).perform(click());
+        onView(withText("Óbitos")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
+        onView(withId(R.id.btnIdade)).perform(click());
+        onView(withText("Confirmados")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
+    }
+
+    @Test
+    public void testaBotaoMapaBairros() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.btnBairro)).perform(click());
+        Thread.sleep(2000);
+        pressBack();
     }
 
 }

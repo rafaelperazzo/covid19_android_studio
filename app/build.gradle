@@ -20,8 +20,8 @@ android {
         applicationId "pet.yoko.apps.covid"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 11
-        versionName '11'
+        versionCode 12
+        versionName '12'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -54,4 +54,5 @@ dependencies {
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.5.0'
     implementation group: 'com.github.inamik.text.tables', name: 'inamik-text-tables', version: '0.8'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 }

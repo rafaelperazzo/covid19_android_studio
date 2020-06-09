@@ -46,14 +46,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Última Atualização:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/atualizacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="italic" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,7 +129,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -155,7 +158,7 @@
         <TextView
             android:id="@+id/taxa"
             android:layout_width="209dp"
-            android:layout_height="41dp"
+            android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:text="0"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -223,9 +226,9 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:gravity="center_horizontal"
-        android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid"
+        android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel WEB disponível em\nhttps://apps.yoko.pet/covid"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel Completo disponível em\nhttps://apps.yoko.pet/covid" />
+        tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel WEB disponível em\nhttps://apps.yoko.pet/covid" />
 
     <TextView
         android:id="@+id/txtVersao"
