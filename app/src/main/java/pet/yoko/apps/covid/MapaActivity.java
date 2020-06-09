@@ -137,6 +137,14 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                         .icon(icon)
                         .snippet("Confirmados: " + String.valueOf(obj.getInt("confirmados")))
                 );
+
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(ponto)
+                        .fillColor(Color.LTGRAY)
+                        .strokeColor(Color.TRANSPARENT)
+                        .radius(30*(int)obj.getDouble("incidencia"));
+                mMap.addCircle(circleOptions);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
