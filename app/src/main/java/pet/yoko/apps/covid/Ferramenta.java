@@ -117,7 +117,7 @@ public class Ferramenta {
         });
     }
 
-    public int getAppPlayStoreVersion(String html) {
+    public static int getAppPlayStoreVersion(String html) {
         Document doc = Jsoup.parse(html);
         int versaoPublicada = 0;
         Elements versao = doc.getElementsByClass("htlgb");

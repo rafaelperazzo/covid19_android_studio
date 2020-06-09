@@ -66,7 +66,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
         VERSAO = getVersionCode();
         try {
-            run(url);
+            run(url,0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //VERIFICANDO POR ATUALIZAÇÃO
+        try {
+            run("https://play.google.com/store/apps/details?id=pet.yoko.apps.covid",1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -225,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         startActivity(intent);
     }
 
-    void run(String url) throws IOException {
+    void run(String url, final int tipo) throws IOException {
         progresso.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
@@ -248,12 +254,27 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ajustarDadosIniciais(myResponse);
+                        if (tipo==0) {
+                            ajustarDadosIniciais(myResponse);
+                        }
+                        else {
+                            verificarAtualizacao(myResponse);
+                        }
+
                     }
                 });
 
             }
         });
+    }
+
+    public void verificarAtualizacao(String myResponse) {
+        int versaoNova = Ferramenta.getAppPlayStoreVersion(myResponse);
+        if (VERSAO<versaoNova) {
+            versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
+            versao.setTextColor(Color.RED);
+            atualizar.setVisibility(View.VISIBLE);
+        }
     }
 
     public void ajustarDadosIniciais(String response) {
@@ -268,12 +289,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String data = obj.getString("atualizacao");
             atualizacao.setText(data);
             confirmacoes.setText(obj.getString("confirmacoes"));
-            int versaoNova = obj.getInt("versao");
-            if (VERSAO<versaoNova) {
-                versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
-                versao.setTextColor(Color.RED);
-                atualizar.setVisibility(View.VISIBLE);
-            }
             progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
