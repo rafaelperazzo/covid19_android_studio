@@ -130,7 +130,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 longitude.add(obj.getDouble("longitude"));
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.map2);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.virus26);
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))

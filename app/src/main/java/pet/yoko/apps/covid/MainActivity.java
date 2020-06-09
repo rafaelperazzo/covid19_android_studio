@@ -109,6 +109,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popup.show();
     }
 
+    public void showSexoMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.menusexo);
+        popup.show();
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Intent intent;
@@ -135,6 +143,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 intent.putExtra(TIPO,"obitosPorIdade");
                 intent.putExtra(TIPO_GRAFICO,"bar");
                 intent.putExtra(TITULO,"Óbitos confirmados por idade (totais)");
+                startActivity(intent);
+                return true;
+            case R.id.sexo_confirmados:
+                intent = new Intent(this, ChartActivity.class);
+                intent.putExtra(TIPO,"sexo");
+                intent.putExtra(TIPO_GRAFICO,"bar");
+                intent.putExtra(TITULO,"Casos confirmados por sexo (totais)");
+                startActivity(intent);
+                return true;
+            case R.id.sexo_obitos:
+                intent = new Intent(this, ChartActivity.class);
+                intent.putExtra(TIPO,"obitosPorSexo");
+                intent.putExtra(TIPO_GRAFICO,"bar");
+                intent.putExtra(TITULO,"Óbitos confirmados por sexo (totais)");
                 startActivity(intent);
                 return true;
             default:
