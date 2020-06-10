@@ -177,7 +177,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(ponto)
                         .title(obj.getString("cidade"))
                         .icon(icon)
-                        .snippet("Bairro: " + String.valueOf(obj.getString("bairro")))
+                        .snippet("Bairro: " + String.valueOf(obj.getString("bairro")) + " - " + obj.getInt("confirmados") + " confirmado(s)")
                 );
 
                 CircleOptions circleOptions = new CircleOptions()
