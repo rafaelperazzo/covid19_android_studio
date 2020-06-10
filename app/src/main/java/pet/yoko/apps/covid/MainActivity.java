@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,6 +27,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView taxa;
     TextView atualizacao;
     TextView confirmacoes;
+    TextView txtUti;
+    TextView txtEnfermaria;
     ProgressBar progresso;
     TextView versao;
     public int VERSAO;
@@ -57,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         obitos = (TextView)findViewById(R.id.obitos);
         taxa = (TextView)findViewById(R.id.taxa);
         confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
+        txtUti = (TextView)findViewById(R.id.txtUTI);
+        txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
@@ -73,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         //VERIFICANDO POR ATUALIZAÇÃO
         try {
             run("https://play.google.com/store/apps/details?id=pet.yoko.apps.covid",1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosInternacoes",2);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -184,11 +195,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         // Handle item selection
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.menu_mapa_bairros:
-                intent = new Intent(this, MapaActivity.class);
-                intent.putExtra(TIPO_MAPA,"bairros");
-                startActivity(intent);
-                return true;
+
             case R.id.menu_evolucao_temporal:
                 intent =  new Intent(this,ChartActivity.class);
                 intent.putExtra(TIPO,"evolucao");
@@ -257,8 +264,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         if (tipo==0) {
                             ajustarDadosIniciais(myResponse);
                         }
-                        else {
+                        else if (tipo==1){
                             verificarAtualizacao(myResponse);
+                        }
+                        else {
+                            ajustarTaxaOcupacaoLeitos(myResponse);
                         }
 
                     }
@@ -292,6 +302,54 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
+            progresso.setVisibility(View.GONE);
+        }
+    }
+
+    public void ajustarTaxaOcupacaoLeitos(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+            for (int i=0; i<arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                int uti = obj.getInt("uti");
+                int enfermaria = obj.getInt("enfermaria");
+                this.txtUti.setText(String.valueOf(uti) + "%");
+                this.txtEnfermaria.setText(String.valueOf(enfermaria) + "%");
+                if (uti>70) {
+                    this.txtUti.setBackgroundColor(Color.parseColor("#660000"));
+                    this.txtUti.setTextColor(Color.WHITE);
+                }
+                else {
+                    this.txtUti.setBackgroundColor(Color.parseColor("#009900"));
+                    this.txtUti.setTextColor(Color.WHITE);
+                }
+                if (enfermaria>70) {
+                    this.txtEnfermaria.setBackgroundColor(Color.parseColor("#660000"));
+                    this.txtEnfermaria.setTextColor(Color.WHITE);
+                }
+                else {
+                    this.txtEnfermaria.setBackgroundColor(Color.parseColor("#009900"));
+                    this.txtEnfermaria.setTextColor(Color.WHITE);
+                }
+                progresso.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            progresso.setVisibility(View.GONE);
+        }
+        catch (NumberFormatException e) {
+            e.printStackTrace();
+            progresso.setVisibility(View.GONE);
+        }
+    }
+
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            return !ipAddr.equals("");
+
+        } catch (Exception e) {
+            return false;
         }
     }
 
