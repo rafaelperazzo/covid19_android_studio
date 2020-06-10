@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="textStart"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textStyle="italic" />
     </LinearLayout>
 
@@ -220,41 +220,49 @@
             android:text="POR IDADE" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:gravity="center_horizontal"
-        android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel WEB disponível em\nhttps://apps.yoko.pet/covid"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel WEB disponível em\nhttps://apps.yoko.pet/covid" />
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtVersao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Versão"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:gravity="center_horizontal"
+            android:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva\nPainel WEB disponível em\nhttps://apps.yoko.pet/covid"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="Desenvolvido por Prof. Rafael Perazzo e Prof. Juscelino Silva" />
 
-    <TextView
-        android:id="@+id/txtAtualizar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:onClick="atualizarClick"
-        android:text="*** ATUALIZAR ***"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#3F51B5"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtVersao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Versão"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <ProgressBar
-        android:id="@+id/progresso"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtAtualizar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:onClick="atualizarClick"
+            android:text="*** ATUALIZAR ***"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#3F51B5"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progresso"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>
