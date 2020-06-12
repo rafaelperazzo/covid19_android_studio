@@ -68,7 +68,7 @@ public class ChartActivity extends AppCompatActivity {
 
     public void shareClick(View view) {
         Bitmap image;
-        if (view instanceof BarChart) {
+        if (TIPO_GRAFICO.equals("bar")) {
             image = grafico.getChartBitmap();
         }
         else {
