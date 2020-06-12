@@ -4,7 +4,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -20,7 +23,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-
+    UiDevice aparelho = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
     @Rule
     public ActivityTestRule<MainActivity> activityRule
             = new ActivityTestRule<>(MainActivity.class);
@@ -77,7 +80,7 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.txtTabelaIncidencia)).perform(click());
         pressBack();
     }
-    /*
+
     @Test
     public void testaCompartilhamentoGraficoPorSexo() throws InterruptedException {
         Thread.sleep(2000);
@@ -85,9 +88,9 @@ public class ExampleInstrumentedTest {
         onView(withText("Óbitos")).perform(click());
         Thread.sleep(2000);
         onView(withId(R.id.imgCompartilharGrafico)).perform(click());
-
+        aparelho.pressBack();
     }
-
+    /*
     @Test
     public void testaCompartilhamentoGraficoPorIdade() throws InterruptedException {
         Thread.sleep(2000);

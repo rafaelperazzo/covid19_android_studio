@@ -1,11 +1,8 @@
 package pet.yoko.apps.covid;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.DialogFragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -22,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.net.InetAddress;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -196,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -236,22 +231,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Intent intent = new Intent(this, TabelaActivity.class);
         startActivity(intent);
 
-    }
-
-    public void btnporIdadeClick(View view) {
-        Intent intent =  new Intent(this,ChartActivity.class);
-        intent.putExtra(TIPO,"idade");
-        intent.putExtra(TITULO,"Confirmações por idade");
-        intent.putExtra(TIPO_GRAFICO,"bar");
-        startActivity(intent);
-    }
-
-    public void btnporSexoClick(View view) {
-        Intent intent =  new Intent(this,ChartActivity.class);
-        intent.putExtra(TIPO,"sexo");
-        intent.putExtra(TITULO,"Confirmações por sexo");
-        intent.putExtra(TIPO_GRAFICO,"bar");
-        startActivity(intent);
     }
 
     public void confirmadosClick(View view) {
@@ -311,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
             versao.setTextColor(Color.RED);
             atualizar.setVisibility(View.VISIBLE);
+            popupAtualizar();
         }
     }
 
@@ -388,19 +368,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-    public boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            return !ipAddr.equals("");
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public void popupInternetNotAvailable() {
+    public void popupAtualizar() {
         DialogFragment newFragment = new AtualizarDialog();
-        newFragment.show(getSupportFragmentManager(),"Alerta");
+        newFragment.show(getSupportFragmentManager(),"Atualizar");
     }
 
 }
