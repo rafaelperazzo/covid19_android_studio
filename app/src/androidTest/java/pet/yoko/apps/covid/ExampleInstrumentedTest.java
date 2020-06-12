@@ -122,4 +122,13 @@ public class ExampleInstrumentedTest {
         aparelho.pressBack();
     }
 
+    @Test
+    public void testaConfirmadosClick() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.confirmados)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.imgCompartilharGrafico)).perform(click());
+        aparelho.pressBack();
+    }
+
 }

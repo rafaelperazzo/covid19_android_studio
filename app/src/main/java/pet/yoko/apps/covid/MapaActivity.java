@@ -1,6 +1,7 @@
 package pet.yoko.apps.covid;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -35,7 +36,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MapaActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class MapaActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     String URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=";
@@ -77,7 +78,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        //https://www.javatpoint.com/android-google-map-displaying-current-location
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-7.2153453, -39.3153336);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -193,46 +194,5 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        /*
-        Toast.makeText(getApplicationContext(),
-                "Chamando o OnLocationChanged", Toast.LENGTH_LONG)
-                .show();
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.map2);
-        LatLng ponto = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ponto));
-        mMap.addMarker(new MarkerOptions()
-                .position(ponto)
-                .title("VOCÊ")
-                .icon(icon)
-                .snippet("Você está aqui")
-        );
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mMap.setMyLocationEnabled(true);*/
-    }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }

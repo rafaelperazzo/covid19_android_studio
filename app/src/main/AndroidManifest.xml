@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ObitosActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -29,26 +28,14 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" /> <!-- android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" DEBUG -->
+            android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" />
+        <!-- android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" DEBUG -->
         <!-- android:value="AIzaSyDl13QkpMlGTHnQpLaCvz3_o3gt1dUn2q0" RELEASE -->
         <activity
             android:name=".MapaActivity"
             android:label="@string/title_activity_mapa" />
         <activity android:name=".ChartActivity" />
         <activity android:name=".TabelaActivity" />
-        <activity android:name=".WebViewActivity" />
-        <activity
-            android:name=".PorSexoActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".PorIdadeActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".MapaBairrosActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".MapaCidadesActivity"
-            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
