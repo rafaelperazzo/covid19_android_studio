@@ -1,8 +1,11 @@
 package pet.yoko.apps.covid;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
+import androidx.fragment.app.DialogFragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -48,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtEnfermaria;
     ProgressBar progresso;
     TextView versao;
+    TextView txtObitosComorbidades;
+    TextView txtObitosPorDia;
+    TextView txtObitosPorIdade;
     public int VERSAO;
     TextView atualizar;
 
@@ -63,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
         txtUti = (TextView)findViewById(R.id.txtUTI);
         txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
+        txtObitosComorbidades = (TextView)findViewById(R.id.txtObitosCoMorbidades);
+        txtObitosPorDia = (TextView)findViewById(R.id.txtObitosPorDia);
+        txtObitosPorIdade = (TextView)findViewById(R.id.txtMedianaIdade);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
@@ -87,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosResumo",3);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void atualizarClick(View v) {
@@ -203,6 +218,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 intent.putExtra(TIPO_GRAFICO,"line");
                 startActivity(intent);
                 return true;
+            case R.id.menu_compartilhar_app:
+                String conteudo = "https://play.google.com/store/apps/details?id=pet.yoko.apps.covid";
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, conteudo);
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, "Compartilhando dados...");
+                startActivity(shareIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -267,6 +291,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         else if (tipo==1){
                             verificarAtualizacao(myResponse);
                         }
+                        else if (tipo==3) {
+                            ajustarDadosObitos(myResponse);
+                        }
                         else {
                             ajustarTaxaOcupacaoLeitos(myResponse);
                         }
@@ -284,6 +311,24 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
             versao.setTextColor(Color.RED);
             atualizar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void ajustarDadosObitos(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                String comorbidades = obj.getString("comorbidades");
+                String porDia = obj.getString("porDia");
+                String mediana_idade = obj.getString("mediana_idade");
+                txtObitosComorbidades.setText(comorbidades);
+                txtObitosPorDia.setText(porDia);
+                txtObitosPorIdade.setText(mediana_idade);
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -351,6 +396,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void popupInternetNotAvailable() {
+        DialogFragment newFragment = new AtualizarDialog();
+        newFragment.show(getSupportFragmentManager(),"Alerta");
     }
 
 }

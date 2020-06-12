@@ -77,5 +77,33 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.txtTabelaIncidencia)).perform(click());
         pressBack();
     }
+    /*
+    @Test
+    public void testaCompartilhamentoGraficoPorSexo() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.btnSexo)).perform(click());
+        onView(withText("Óbitos")).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.imgCompartilharGrafico)).perform(click());
 
+    }
+
+    @Test
+    public void testaCompartilhamentoGraficoPorIdade() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.btnIdade)).perform(click());
+        onView(withText("Óbitos")).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.imgCompartilharGrafico)).perform(click());
+
+    }
+
+    @Test
+    public void testaCompartilhamentoTabela() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.btnBairro)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.imgShare)).perform(click());
+    }
+    */
 }

@@ -3,4 +3,6 @@
 
     <item android:id="@+id/menu_evolucao_temporal"
         android:title="Evolução temporal dos casos" />
+    <item android:id="@+id/menu_compartilhar_app"
+        android:title="Compartilhar este App" />
 </menu>
