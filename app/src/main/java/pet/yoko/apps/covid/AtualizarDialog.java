@@ -14,7 +14,7 @@ public class AtualizarDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.internet_indisponivel)
+        builder.setMessage(R.string.atualizacao)
                 .setPositiveButton("ATUALIZAR", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=pet.yoko.apps.covid");
