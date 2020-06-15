@@ -103,7 +103,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.zoomTo(9.0f));
         updateLocationUI();
         getDeviceLocation();
-
     }
 
     private void getDeviceLocation() {
@@ -123,6 +122,11 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), 9));
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
+                                    .title("Você está aqui!")
+                                    .snippet("Sua Localização!")
+                            );
                         } else {
                             Log.d(TAG, "current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -181,11 +185,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             if (mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
-                mMap.addMarker(new MarkerOptions()
-                        .position(mDefaultLocation)
-                        .title("Você está aqui!")
-                        .snippet("Sua Localização!")
-                );
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
