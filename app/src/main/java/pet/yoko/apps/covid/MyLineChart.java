@@ -14,6 +14,7 @@ public class MyLineChart {
     private ArrayList<Entry> dados2;
     private ArrayList<String> xLabels;
     private boolean labelsX;
+    private String descricao;
 
     public ArrayList<Entry> getDados2() {
         return dados2;
@@ -51,6 +52,15 @@ public class MyLineChart {
         this.labelsX = labelsX;
     }
 
+    public MyLineChart(LineChart grafico,ArrayList<Entry> dados, ArrayList<Entry> dados2, ArrayList<String> xLabels, boolean labelsX,String descricao) {
+        this.grafico = grafico;
+        this.dados = dados;
+        this.dados2 = dados2;
+        this.xLabels = xLabels;
+        this.labelsX = labelsX;
+        this.descricao = descricao;
+    }
+
     public void refresh() {
         this.grafico.invalidate();
     }
@@ -78,7 +88,9 @@ public class MyLineChart {
         grafico.setData(lineData);
         grafico.animateY(2000);
         grafico.getXAxis().setEnabled(false);
-        grafico.getDescription().setEnabled(false);
+        grafico.getDescription().setText("Coeficiente dos últimos 15 dias: " + descricao);
+        grafico.getDescription().setTextSize(10);
+        grafico.getDescription().setEnabled(true);
         grafico.invalidate();
         grafico.setSaveEnabled(true);
     }

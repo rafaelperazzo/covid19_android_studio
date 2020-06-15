@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public static final String TIPO = "confirmados";
     public static final String TITULO = "Confirmações por ";
     public static final String TIPO_GRAFICO = "bar";
+    public static final String DESCRICAO_GRAFICO = "DESCRIÇÃO";
     public static final String TIPO_MAPA = "cidades";
+    public String texto_descricao_grafico = "";
     public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
     public String url_cidades = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
     TextView confirmados;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtObitosComorbidades;
     TextView txtObitosPorDia;
     TextView txtObitosPorIdade;
+    TextView txtRecuperados;
     public int VERSAO;
     TextView atualizar;
 
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         txtObitosComorbidades = (TextView)findViewById(R.id.txtObitosCoMorbidades);
         txtObitosPorDia = (TextView)findViewById(R.id.txtObitosPorDia);
         txtObitosPorIdade = (TextView)findViewById(R.id.txtMedianaIdade);
+        txtRecuperados = (TextView)findViewById(R.id.txtRecuperados);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
@@ -94,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
         try {
             this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosResumo",3);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente",4);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -211,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 intent.putExtra(TIPO,"evolucao");
                 intent.putExtra(TITULO,"Evolução ao longo do tempo");
                 intent.putExtra(TIPO_GRAFICO,"line");
+                intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
                 startActivity(intent);
                 return true;
             case R.id.menu_compartilhar_app:
@@ -238,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         intent.putExtra(TIPO,"evolucao");
         intent.putExtra(TITULO,"Evolução ao longo do tempo");
         intent.putExtra(TIPO_GRAFICO,"line");
+        intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
         startActivity(intent);
     }
 
@@ -277,6 +288,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         }
                         else if (tipo==3) {
                             ajustarDadosObitos(myResponse);
+                        }
+                        else if (tipo==4) {
+                            ajustarCoeficiente(myResponse);
                         }
                         else {
                             ajustarTaxaOcupacaoLeitos(myResponse);
@@ -329,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String data = obj.getString("atualizacao");
             atualizacao.setText(data);
             confirmacoes.setText(obj.getString("confirmacoes"));
+            txtRecuperados.setText(obj.getString("recuperados"));
             progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -373,6 +388,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
+    public void ajustarCoeficiente(String myResponse) {
+        try {
+            JSONArray arr = new JSONArray(myResponse);
+            JSONObject ultima = arr.getJSONObject(0);
+            JSONObject primeira = arr.getJSONObject(arr.length() - 1);
+            double coficiente = (ultima.getDouble("quantidade")-primeira.getDouble("quantidade"))/(double)15;
+            texto_descricao_grafico = String.valueOf(coficiente);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        catch (NumberFormatException e) {
+            e.printStackTrace();
+            progresso.setVisibility(View.GONE);
+        }
+    }
     public void popupAtualizar() {
         DialogFragment newFragment = new AtualizarDialog();
         newFragment.show(getSupportFragmentManager(),"Atualizar");

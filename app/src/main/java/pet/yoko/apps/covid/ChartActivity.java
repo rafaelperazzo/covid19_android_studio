@@ -43,6 +43,7 @@ public class ChartActivity extends AppCompatActivity {
     String TITULO_GRAFICO;
     ImageView imagemGrafico;
     String TIPO_GRAFICO;
+    String DESCRICAO_GRAFICO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +58,9 @@ public class ChartActivity extends AppCompatActivity {
         String TIPO = intent.getStringExtra(MainActivity.TIPO);
         String TITULO = intent.getStringExtra(MainActivity.TITULO);
         TIPO_GRAFICO = intent.getStringExtra(MainActivity.TIPO_GRAFICO);
+        if (TIPO_GRAFICO.equals("line")) {
+            DESCRICAO_GRAFICO = intent.getStringExtra(MainActivity.DESCRICAO_GRAFICO);
+        }
         setTitle(TITULO);
         URL = URL + "tipo=" + TIPO;
         try {
@@ -181,7 +185,7 @@ public class ChartActivity extends AppCompatActivity {
             grafico.setVisibility(View.GONE);
             lineChart.setVisibility(View.VISIBLE);
             progresso.setVisibility(View.GONE);
-            MyLineChart chart = new MyLineChart(lineChart,valores,valores2,labels,true);
+            MyLineChart chart = new MyLineChart(lineChart,valores,valores2,labels,true,DESCRICAO_GRAFICO);
             chart.makeChart();
 
         } catch (JSONException e) {
