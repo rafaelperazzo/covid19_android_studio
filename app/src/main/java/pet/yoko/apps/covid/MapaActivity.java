@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -63,6 +64,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     private Location mLastKnownLocation;
     private static final String TAG = MapaActivity.class.getSimpleName();
     private final LatLng mDefaultLocation = new LatLng(-7.2153453, -39.3153336);
+    private Marker minhaLocalizacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,20 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateLocationUI();
+        getDeviceLocation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLocationUI();
+        getDeviceLocation();
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -100,7 +116,12 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-7.2153453, -39.3153336);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(9.0f));
+        if (TIPO_MAPA.equals("cidades")) {
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(9));
+        }
+        else {
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        }
         updateLocationUI();
         getDeviceLocation();
     }
@@ -121,16 +142,31 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                             mLastKnownLocation = (Location) task.getResult();
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), 9));
-                            mMap.addMarker(new MarkerOptions()
+                                            mLastKnownLocation.getLongitude()), 12));
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.user48);
+                            if (minhaLocalizacao!=null) {
+                                minhaLocalizacao.remove();
+                            }
+                            minhaLocalizacao = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
+                                    .icon(icon)
                                     .title("Você está aqui!")
                                     .snippet("Sua Localização!")
                             );
-                        } else {
+                            if (TIPO_MAPA.equals("cidades")) {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 12));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(9));
+                            }
+                            else {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 11));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                            }
+
+                        }
+                        else {
                             Log.d(TAG, "current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, 9));
+                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, 9));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
@@ -140,7 +176,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("Exception: %s", e.getMessage());
         }
     }
-
 
     private void getLocationPermission() {
         /*
@@ -247,7 +282,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 longitude.add(obj.getDouble("longitude"));
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.virus26);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.corona50);
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))
@@ -291,12 +326,12 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                         .icon(icon)
                         .snippet("Bairro: " + String.valueOf(obj.getString("bairro")) + " - " + obj.getInt("confirmados") + " confirmado(s)")
                 );
-
+                int confirmados = obj.getInt("confirmados");
                 CircleOptions circleOptions = new CircleOptions()
                         .center(ponto)
                         .fillColor(Color.LTGRAY)
                         .strokeColor(Color.RED)
-                        .radius(250);
+                        .radius(5*confirmados);
                 mMap.addCircle(circleOptions);
 
             }
