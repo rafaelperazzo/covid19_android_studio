@@ -28,6 +28,9 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
 <h3>Teste de todas as funcionalidades do app em Android 8.0</h3>
 <a href='https://www.youtube.com/watch?v=HPTWujJQ1C4'target="_blank"><img src='youtube.png' width="50%" heigth="50%"></a>
 
+<p>
+Os dados brutos podem ser coletados no <a href='https://github.com/rafaelperazzo/covid19'>projeto Covid19</a>.
+</p>
 
 <pre>   
     Copyright (C) &lt;2020&gt;  &lt;RAFAEL PERAZZO BARBOSA MOTA&gt;
