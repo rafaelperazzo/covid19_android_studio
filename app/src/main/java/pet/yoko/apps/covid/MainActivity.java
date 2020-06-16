@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -393,8 +394,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             JSONArray arr = new JSONArray(myResponse);
             JSONObject ultima = arr.getJSONObject(0);
             JSONObject primeira = arr.getJSONObject(arr.length() - 1);
-            double coficiente = (ultima.getDouble("quantidade")-primeira.getDouble("quantidade"))/(double)15;
-            texto_descricao_grafico = String.valueOf(coficiente);
+            double coeficiente = (ultima.getDouble("quantidade")-primeira.getDouble("quantidade"))/(double)15;
+            DecimalFormat df = new DecimalFormat("#0.00");
+            texto_descricao_grafico = df.format(coeficiente);
         } catch (JSONException e) {
             e.printStackTrace();
         }
