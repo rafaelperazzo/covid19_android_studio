@@ -1,5 +1,27 @@
 <html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
 
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
 <body>
 
 <h1>COVID19 - CARIRI</h1>
@@ -7,6 +29,21 @@
 <a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid' target="_blank"><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="20%" heigth="20%"></a>
 
 <h2>App de acompanhamento da evolução da covid19 na região do cariri cearense</h2> <BR>
+
+<div class="row">
+  <div class="column" style="background-color:#aaa;">
+    <h2>Column 1</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column" style="background-color:#bbb;">
+    <h2>Column 2</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column" style="background-color:#ccc;">
+    <h2>Column 3</h2>
+    <p>Some text..</p>
+  </div>
+</div>
 
 Informações coletadas em: <a href='https://indicadores.integrasus.saude.ce.gov.br/indicadores/indicadores-coronavirus'>INTEGRASUS</a><BR>
 
