@@ -1,19 +1,6 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 10px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-</style>
 </head>
 <body>
 
@@ -23,20 +10,8 @@
 
 <h2>App de acompanhamento da evolução da covid19 na região do cariri cearense</h2> <BR>
 
-<div class="row">
-  <div class="column" style="background-color:#aaa;">
-    <h2>Column 1</h2>
-    <p>Some text..</p>
-  </div>
-  <div class="column" style="background-color:#bbb;">
-    <h2>Column 2</h2>
-    <p>Some text..</p>
-  </div>
-  <div class="column" style="background-color:#ccc;">
-    <h2>Column 3</h2>
-    <p>Some text..</p>
-  </div>
-</div>
+<img src='todas.png'><br>
+
 
 Informações coletadas em: <a href='https://indicadores.integrasus.saude.ce.gov.br/indicadores/indicadores-coronavirus'>INTEGRASUS</a><BR>
 
