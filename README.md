@@ -1,11 +1,10 @@
-# covid19_android_studio
 <html>
 
 <body>
 
 <h1>COVID19 - CARIRI</h1>
 
-<a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid'><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="20%" heigth="20%"></a>
+<a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid' target="_blank"><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="20%" heigth="20%"></a>
 
 <h2>App de acompanhamento da evolução da covid19 na região do cariri cearense</h2> <BR>
 
@@ -26,8 +25,26 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
   <li>Mapa dos bairros com confirmações</li>
 </ul> 
 
+<h3>Teste de todas as funcionalidades do app em Android 8.0</h3>
+<a href='https://www.youtube.com/watch?v=HPTWujJQ1C4'target="_blank"><img src='youtube.png' width="50%" heigth="50%"></a>
 
-<a href='https://www.youtube.com/watch?v=HPTWujJQ1C4'><img src='youtube.png' width="50%" heigth="50%"></a>
+
+<pre>   
+    Copyright (C) &lt;2020&gt;  &lt;RAFAEL PERAZZO BARBOSA MOTA&gt;
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+</pre>
 
 </body>
 
