@@ -5,7 +5,7 @@
 
 <h1>COVID19 - CARIRI</h1>
 
-<a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid'><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="50%" heigth="50%"></a>
+<a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid'><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="20%" heigth="20%"></a>
 
 <h2>App de acompanhamento da evolução da covid19 na região do cariri cearense</h2> <BR>
 
