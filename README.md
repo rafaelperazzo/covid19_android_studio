@@ -27,7 +27,8 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
 </ul> 
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HPTWujJQ1C4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href='https://www.youtube.com/watch?v=HPTWujJQ1C4'><img src='youtube.png'></a>
+
 </body>
 
 </html>
