@@ -233,6 +233,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 Intent shareIntent = Intent.createChooser(sendIntent, "Compartilhando dados...");
                 startActivity(shareIntent);
                 return true;
+            case R.id.menu_pagina_app:
+                String url = "https://github.com/rafaelperazzo/covid19_android_studio";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

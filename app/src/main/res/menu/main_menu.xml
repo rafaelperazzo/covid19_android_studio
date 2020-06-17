@@ -5,4 +5,6 @@
         android:title="Evolução temporal dos casos" />
     <item android:id="@+id/menu_compartilhar_app"
         android:title="Compartilhar este App" />
+    <item android:id="@+id/menu_pagina_app"
+        android:title="Código Fonte deste app" />
 </menu>

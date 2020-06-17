@@ -85,16 +85,6 @@ public class TabelaActivity extends AppCompatActivity {
         });
     }
 
-
-    public void prepararRecycleView(RecyclerView recyclerView, ArrayList items, RecyclerView.Adapter adapter) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        DividerItemDecoration itemDecor = new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecor);
-    }
-
     public void cidadesClick(View v) {
         Collections.sort(items, new Comparator<CidadeItem>() {
             @Override
@@ -157,7 +147,12 @@ public class TabelaActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                progresso.setVisibility(View.GONE);
+                TabelaActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progresso.setVisibility(View.GONE);
+                    }
+                });
                 call.cancel();
             }
 

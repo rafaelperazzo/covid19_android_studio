@@ -112,7 +112,12 @@ public class ChartActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                progresso.setVisibility(View.GONE);
+                ChartActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progresso.setVisibility(View.GONE);
+                    }
+                });
                 call.cancel();
             }
 

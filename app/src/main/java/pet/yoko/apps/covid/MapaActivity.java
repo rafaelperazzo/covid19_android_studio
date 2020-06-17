@@ -52,11 +52,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     String URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=";
-    ArrayList<String> cidades = new ArrayList<>();
-    ArrayList<Integer> confirmados = new ArrayList<>();
-    ArrayList<Double> latitude = new ArrayList<>();
-    ArrayList<Double> longitude = new ArrayList<>();
-    ArrayList<String> bairros = new ArrayList<>();
     String TIPO_MAPA;
     FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -138,30 +133,34 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = (Location) task.getResult();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), 12));
-                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.user48);
-                            if (minhaLocalizacao!=null) {
-                                minhaLocalizacao.remove();
+                            try {
+                                // Set the map's camera position to the current location of the device.
+                                mLastKnownLocation = (Location) task.getResult();
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(mLastKnownLocation.getLatitude(),
+                                                mLastKnownLocation.getLongitude()), 12));
+                                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.user48);
+                                if (minhaLocalizacao!=null) {
+                                    minhaLocalizacao.remove();
+                                }
+                                minhaLocalizacao = mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
+                                        .icon(icon)
+                                        .title("Você está aqui!")
+                                        .snippet("Sua Localização!")
+                                );
+                                if (TIPO_MAPA.equals("cidades")) {
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 12));
+                                    mMap.animateCamera(CameraUpdateFactory.zoomTo(9));
+                                }
+                                else {
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 11));
+                                    mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                                }
                             }
-                            minhaLocalizacao = mMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()))
-                                    .icon(icon)
-                                    .title("Você está aqui!")
-                                    .snippet("Sua Localização!")
-                            );
-                            if (TIPO_MAPA.equals("cidades")) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 12));
-                                mMap.animateCamera(CameraUpdateFactory.zoomTo(9));
-                            }
-                            else {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 11));
-                                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-                            }
+                            catch (NullPointerException e) {
 
+                            }
                         }
                         else {
                             Log.d(TAG, "current location is null. Using defaults.");
@@ -183,32 +182,44 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
          * device. The result of the permission request is handled by a callback,
          * onRequestPermissionsResult.
          */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        try {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
         }
+        catch (Exception e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
+        try {
+            mLocationPermissionGranted = false;
+            switch (requestCode) {
+                case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                    // If request is cancelled, the result arrays are empty.
+                    if (grantResults.length > 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        mLocationPermissionGranted = true;
+                    }
                 }
             }
+            updateLocationUI();
         }
-        updateLocationUI();
+        catch (Exception e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+
     }
 
 
@@ -226,7 +237,11 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        }
+        catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+        catch (Exception e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -269,17 +284,9 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     private void setDadosCidades(String myResponse) {
         try {
             JSONArray arr = new JSONArray(myResponse);
-            cidades = new ArrayList<>();
-            confirmados = new ArrayList<>();
-            latitude = new ArrayList<>();
-            longitude = new ArrayList<>();
 
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
-                cidades.add(obj.getString("cidade"));
-                confirmados.add(obj.getInt("confirmados"));
-                latitude.add(obj.getDouble("latitude"));
-                longitude.add(obj.getDouble("longitude"));
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.corona50);
@@ -298,28 +305,24 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addCircle(circleOptions);
 
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }
+        catch (JSONException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("Exception: %s", e.getMessage());
         }
     }
 
     private void setDadosBairros(String myResponse) {
         try {
             JSONArray arr = new JSONArray(myResponse);
-            cidades = new ArrayList<>();
-            bairros = new ArrayList<>();
-            latitude = new ArrayList<>();
-            longitude = new ArrayList<>();
 
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
-                cidades.add(obj.getString("cidade"));
-                bairros.add(obj.getString("bairro"));
-                latitude.add(obj.getDouble("latitude"));
-                longitude.add(obj.getDouble("longitude"));
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.map30);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marcador16);
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))
@@ -335,8 +338,12 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addCircle(circleOptions);
 
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }
+        catch (JSONException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("Exception: %s", e.getMessage());
         }
     }
 
