@@ -289,7 +289,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 JSONObject obj = arr.getJSONObject(i);
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.corona50);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.covid32);
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))
@@ -315,6 +315,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setDadosBairros(String myResponse) {
+        //https://www.flaticon.com/
         try {
             JSONArray arr = new JSONArray(myResponse);
 
@@ -322,7 +323,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 JSONObject obj = arr.getJSONObject(i);
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marcador16);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.pin16);
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))
@@ -332,8 +333,8 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 int confirmados = obj.getInt("confirmados");
                 CircleOptions circleOptions = new CircleOptions()
                         .center(ponto)
-                        .fillColor(Color.LTGRAY)
-                        .strokeColor(Color.RED)
+                        .fillColor(Color.parseColor("#33FFFF"))
+                        .strokeColor(Color.parseColor("#33FFFF"))
                         .radius(5*confirmados);
                 mMap.addCircle(circleOptions);
 

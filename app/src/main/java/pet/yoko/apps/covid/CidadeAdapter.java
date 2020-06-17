@@ -23,6 +23,8 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
         public TextView suspeitos;
         public TextView obitos;
         public TextView incidencia;
+        public TextView recuperados;
+        public TextView emRecuperacao;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -31,6 +33,8 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             suspeitos = (TextView)itemView.findViewById(R.id.txtSuspeitos);
             obitos = (TextView)itemView.findViewById(R.id.txtObitos);
             incidencia = (TextView)itemView.findViewById(R.id.txtIncidencia);
+            recuperados = (TextView)itemView.findViewById(R.id.txtRec);
+            emRecuperacao = (TextView)itemView.findViewById(R.id.txtEmRec);
         }
     }
 
@@ -66,12 +70,16 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
         TextView suspeitos = holder.suspeitos;
         TextView obitos = holder.obitos;
         TextView incidencia = holder.incidencia;
+        TextView recuperados = holder.recuperados;
+        TextView emRecuperacao = holder.emRecuperacao;
         cidade.setText(item.cidade);
         if (item.confirmados!=-1) {
             confirmados.setText(String.valueOf(item.confirmados));
             suspeitos.setText(String.valueOf(item.suspeitos));
             obitos.setText(String.valueOf(item.obitos));
             incidencia.setText(String.valueOf(item.incidencia));
+            recuperados.setText(String.valueOf(item.recuperados));
+            emRecuperacao.setText(String.valueOf(item.emRecuperacao));
             if (item.obitos>0) {
                 obitos.setTextColor(Color.RED);
             }
@@ -85,6 +93,8 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             suspeitos.setText("");
             obitos.setText("");
             incidencia.setText("");
+            recuperados.setText("");
+            emRecuperacao.setText("");
         }
 
     }

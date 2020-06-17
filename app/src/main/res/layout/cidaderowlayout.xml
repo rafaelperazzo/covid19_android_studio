@@ -41,6 +41,24 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/txtRec"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="REC"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:id="@+id/txtEmRec"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="EMREC"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <TextView
         android:id="@+id/txtIncidencia"
         android:layout_width="40dp"
         android:layout_height="wrap_content"

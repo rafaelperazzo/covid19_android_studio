@@ -27,7 +27,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class TabelaActivity extends AppCompatActivity {
-    public String url = "https://apps.yoko.pet/api/covidapi.php";
+    public String url = "https://apps.yoko.pet/webapi/covidapi.php";
     ProgressBar progresso;
 
     RecyclerView recyclerView;
@@ -121,6 +121,26 @@ public class TabelaActivity extends AppCompatActivity {
             @Override
             public int compare(CidadeItem o1, CidadeItem o2) {
                 return(o1.obitos-o2.obitos);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void recuperadosClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return(o1.recuperados-o2.recuperados);
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void emRecuperacaoClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return(o1.emRecuperacao-o2.emRecuperacao);
             }
         });
         adapter.notifyDataSetChanged();

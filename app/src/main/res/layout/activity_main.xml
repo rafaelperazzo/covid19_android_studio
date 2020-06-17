@@ -18,7 +18,7 @@
             android:layout_width="222dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/virus96" />
+            app:srcCompat="@drawable/handwash128" />
 
         <ImageView
             android:id="@+id/imageView9"
@@ -67,21 +67,21 @@
 
         <TextView
             android:id="@+id/textView18"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="CONFIRMADOS"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView
             android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+            android:layout_width="79dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="EM ANÁLISE"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:text="EM RECUPERAÇÃO"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <TextView
             android:id="@+id/textView20"
@@ -90,7 +90,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="ÓBITOS"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>
 
     <LinearLayout
@@ -207,7 +207,7 @@
 
         <TextView
             android:id="@+id/textView11"
-            android:layout_width="260dp"
+            android:layout_width="158dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="ÓBITOS COM COMORBIDADES"
@@ -216,7 +216,7 @@
 
         <TextView
             android:id="@+id/textView13"
-            android:layout_width="223dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="MÉDIA DE ÓBITOS POR DIA"
@@ -240,7 +240,7 @@
 
         <TextView
             android:id="@+id/txtObitosCoMorbidades"
-            android:layout_width="61dp"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0"
@@ -249,7 +249,7 @@
 
         <TextView
             android:id="@+id/txtObitosPorDia"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="0"
@@ -271,7 +271,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/btnCidades"
             android:layout_width="142dp"
             android:layout_height="wrap_content"
@@ -279,6 +279,7 @@
             android:enabled="true"
             android:fadeScrollbars="false"
             android:onClick="showMapasMenu"
+            android:src="@drawable/location32"
             android:text="MAPA" />
 
         <Button

@@ -32,9 +32,11 @@ public class TabelaCidades {
             int suspeitos = linha.getInt("suspeitos");
             int obitos = linha.getInt("obitos");
             double incidencia = linha.getDouble("taxa");
-            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia));
+            int recuperados = linha.getInt("recuperados");
+            int emRecuperacao = confirmados-obitos-recuperados;
+            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao));
         }
-        items.add(new CidadeItem("",-1,-1,-1,-1));
+        items.add(new CidadeItem("",-1,-1,-1,-1,-1,-1));
 
         Collections.sort(items, new Comparator<CidadeItem>() {
             @Override

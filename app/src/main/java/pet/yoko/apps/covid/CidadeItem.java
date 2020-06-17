@@ -7,6 +7,24 @@ public class CidadeItem {
     int suspeitos;
     int obitos;
     double incidencia;
+    int recuperados;
+    int emRecuperacao;
+
+    public int getRecuperados() {
+        return recuperados;
+    }
+
+    public void setRecuperados(int recuperados) {
+        this.recuperados = recuperados;
+    }
+
+    public int getEmRecuperacao() {
+        return emRecuperacao;
+    }
+
+    public void setEmRecuperacao(int emRecuperacao) {
+        this.emRecuperacao = emRecuperacao;
+    }
 
     public double getIncidencia() {
         return incidencia;
@@ -53,5 +71,15 @@ public class CidadeItem {
         this.suspeitos = suspeitos;
         this.obitos = obitos;
         this.incidencia = incidencia;
+    }
+
+    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia,int recuperados,int emRecuperacao) {
+        this.cidade = cidade;
+        this.confirmados = confirmados;
+        this.suspeitos = suspeitos;
+        this.obitos = obitos;
+        this.incidencia = incidencia;
+        this.recuperados=recuperados;
+        this.emRecuperacao=emRecuperacao;
     }
 }

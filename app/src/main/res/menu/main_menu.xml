@@ -3,6 +3,8 @@
 
     <item android:id="@+id/menu_evolucao_temporal"
         android:title="Evolução temporal dos casos" />
+    <item android:id="@+id/menu_resumo"
+        android:title="Gráfico resumo da situação atual" />
     <item android:id="@+id/menu_compartilhar_app"
         android:title="Compartilhar este App" />
     <item android:id="@+id/menu_pagina_app"

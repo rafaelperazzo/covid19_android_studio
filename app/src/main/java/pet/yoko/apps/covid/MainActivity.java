@@ -224,6 +224,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
                 startActivity(intent);
                 return true;
+            case R.id.menu_resumo:
+                intent =  new Intent(this,ChartActivity.class);
+                intent.putExtra(TIPO,"resumo");
+                intent.putExtra(TITULO,"Dentre os confirmados:");
+                intent.putExtra(TIPO_GRAFICO,"bar");
+                startActivity(intent);
+                return true;
             case R.id.menu_compartilhar_app:
                 String conteudo = "https://play.google.com/store/apps/details?id=pet.yoko.apps.covid";
                 Intent sendIntent = new Intent();
@@ -342,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         try {
             JSONObject obj = new JSONObject(response);
             confirmados.setText(obj.getString("confirmados"));
-            suspeitos.setText(obj.getString("suspeitos"));
             obitos.setText(obj.getString("obitos"));
             double dblTaxa = obj.getDouble("taxa");
             String strTaxa = String.format("%.2f",dblTaxa);
@@ -351,6 +357,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             atualizacao.setText(data);
             confirmacoes.setText(obj.getString("confirmacoes"));
             txtRecuperados.setText(obj.getString("recuperados"));
+            int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
+            suspeitos.setText(String.valueOf(emRecuperacao));
             progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
