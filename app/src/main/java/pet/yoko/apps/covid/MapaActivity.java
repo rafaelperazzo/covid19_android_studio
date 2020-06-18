@@ -10,11 +10,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -149,6 +154,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                                         .title("Você está aqui!")
                                         .snippet("Sua Localização!")
                                 );
+                                minhaLocalizacao.showInfoWindow();
                                 if (TIPO_MAPA.equals("cidades")) {
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude()), 12));
                                     mMap.animateCamera(CameraUpdateFactory.zoomTo(9));
@@ -290,13 +296,17 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.covid32);
+                String snippet = "Confirmados: " + String.valueOf(obj.getInt("confirmados"));
+                snippet = snippet + "\n" + "Recuperados: " + String.valueOf(obj.getInt("recuperados"));
+                snippet = snippet + "\n" + "Óbitos: " + String.valueOf(obj.getInt("obitos"));
+                snippet = snippet + "\n" + "Em recuperação: " + String.valueOf(obj.getInt("emRecuperacao"));
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))
                         .icon(icon)
-                        .snippet("Confirmados: " + String.valueOf(obj.getInt("confirmados")))
+                        .snippet(snippet)
                 );
-
+                this.ajustarInformacoes();
                 CircleOptions circleOptions = new CircleOptions()
                         .center(ponto)
                         .fillColor(Color.LTGRAY)
@@ -323,7 +333,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 JSONObject obj = arr.getJSONObject(i);
 
                 LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.pin16);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.bairro32);
                 mMap.addMarker(new MarkerOptions()
                         .position(ponto)
                         .title(obj.getString("cidade"))
@@ -346,6 +356,38 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         catch (Exception e) {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private void ajustarInformacoes() {
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                LinearLayout info = new LinearLayout(getApplicationContext());
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(getApplicationContext());
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(getApplicationContext());
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
     }
 
 }

@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="shareClick"
-        app:srcCompat="@drawable/share48" />
+        app:srcCompat="@drawable/share32" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart"

@@ -5,6 +5,8 @@
         android:title="Evolução temporal dos casos" />
     <item android:id="@+id/menu_resumo"
         android:title="Gráfico resumo da situação atual" />
+    <item android:id="@+id/menu_percentuais"
+        android:title="Valores em percentuais" />
     <item android:id="@+id/menu_compartilhar_app"
         android:title="Compartilhar este App" />
     <item android:id="@+id/menu_pagina_app"

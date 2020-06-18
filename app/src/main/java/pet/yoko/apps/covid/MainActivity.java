@@ -246,6 +246,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 i.setData(Uri.parse(url));
                 startActivity(i);
                 return true;
+            case R.id.menu_percentuais:
+                int total = Integer.parseInt(this.confirmados.getText().toString());
+                double obitos = (Integer.parseInt(this.obitos.getText().toString())/total)*100;
+                double recuperados = (Integer.parseInt(this.txtRecuperados.getText().toString())/total)*100;
+                double emRecuperacao = (Integer.parseInt(this.suspeitos.getText().toString())/total)*100;
+                
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -356,6 +363,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String data = obj.getString("atualizacao");
             atualizacao.setText(data);
             confirmacoes.setText(obj.getString("confirmacoes"));
+            double percentualRecuperados = obj.getInt("recuperados")/obj.getInt("confirmacoes");
+            DecimalFormat df = new DecimalFormat("#0.00");
             txtRecuperados.setText(obj.getString("recuperados"));
             int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
             suspeitos.setText(String.valueOf(emRecuperacao));
