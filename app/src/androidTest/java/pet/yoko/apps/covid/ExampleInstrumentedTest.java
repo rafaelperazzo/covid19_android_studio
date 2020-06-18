@@ -131,4 +131,48 @@ public class ExampleInstrumentedTest {
         aparelho.pressBack();
     }
 
+    @Test
+    public void testaMenuCodigoFonte() throws InterruptedException {
+        aparelho.pressMenu();
+        onView(withText("Código Fonte deste app")).perform(click());
+        Thread.sleep(2000);
+        aparelho.pressBack();
+
+    }
+
+    @Test
+    public void testaMenuEvolucao() throws InterruptedException {
+        aparelho.pressMenu();
+        onView(withText("Evolução temporal dos casos")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
+    }
+
+    @Test
+    public void testaMenuGraficoResumo() throws InterruptedException {
+
+        aparelho.pressMenu();
+        onView(withText("Gráfico resumo da situação atual")).perform(click());
+        Thread.sleep(2000);
+        pressBack();
+
+    }
+
+    @Test
+    public void testaMenuPercentuais() throws InterruptedException {
+
+        aparelho.pressMenu();
+        onView(withText("Alternar Percentuais/Totais")).perform(click());
+        Thread.sleep(2000);
+
+    }
+
+    @Test
+    public void testaMenuCompartilharApp() throws InterruptedException {
+        aparelho.pressMenu();
+        onView(withText("Compartilhar este App")).perform(click());
+        Thread.sleep(2000);
+        aparelho.pressBack();
+    }
+
 }

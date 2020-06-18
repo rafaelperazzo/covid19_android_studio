@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setTitle("COVID19 APP - Totais");
 
     }
 
@@ -247,11 +249,25 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 startActivity(i);
                 return true;
             case R.id.menu_percentuais:
-                int total = Integer.parseInt(this.confirmados.getText().toString());
-                double obitos = (Integer.parseInt(this.obitos.getText().toString())/total)*100;
-                double recuperados = (Integer.parseInt(this.txtRecuperados.getText().toString())/total)*100;
-                double emRecuperacao = (Integer.parseInt(this.suspeitos.getText().toString())/total)*100;
-                
+                if (getTitle().toString().contains("%")) {
+                    setTitle("COVID19 APP");
+                    try {
+                        this.run(this.url,0);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    int total = Integer.parseInt(this.confirmados.getText().toString());
+                    double obitos = (Integer.parseInt(this.obitos.getText().toString())/(double)total)*100;
+                    double recuperados = (Integer.parseInt(this.txtRecuperados.getText().toString())/(double)total)*100;
+                    double emRecuperacao = (Integer.parseInt(this.suspeitos.getText().toString())/(double)total)*100;
+                    DecimalFormat df = new DecimalFormat("#0.00");
+                    this.obitos.setText(df.format(obitos) + "%");
+                    this.txtRecuperados.setText(df.format(recuperados) + "%");
+                    this.suspeitos.setText(df.format(emRecuperacao) + "%");
+                    setTitle("COVID19 APP (%)");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
