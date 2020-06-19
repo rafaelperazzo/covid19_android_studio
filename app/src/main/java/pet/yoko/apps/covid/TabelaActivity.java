@@ -27,6 +27,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import pet.yoko.apps.covid.db.AppDatabase;
 import pet.yoko.apps.covid.db.CarregarCidades;
+import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.DeletarCidades;
 import pet.yoko.apps.covid.db.SalvarCidade;
 
@@ -43,7 +44,7 @@ public class TabelaActivity extends AppCompatActivity {
 
     Ferramenta tools;
 
-    AppDatabase db;
+    //AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class TabelaActivity extends AppCompatActivity {
         items = new ArrayList<CidadeItem>();
         adapter = new CidadeAdapter(items);
         tools.prepararRecycleView(recyclerView,items,adapter);
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "covidUFCA_db").build();
+        //db = Room.databaseBuilder(getApplicationContext(),
+        //        AppDatabase.class, "covidUFCA_db").build();
 
         try {
             this.run();
@@ -182,7 +183,7 @@ public class TabelaActivity extends AppCompatActivity {
                         progresso.setVisibility(View.GONE);
                     }
                 });
-                CarregarCidades cc = new CarregarCidades(db,recyclerView);
+                CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),recyclerView);
                 cc.execute();
                 call.cancel();
             }
@@ -214,7 +215,7 @@ public class TabelaActivity extends AppCompatActivity {
     private void salvarNoDb(String myResponse) {
         try {
             JSONArray arr = new JSONArray(myResponse);
-            DeletarCidades dc = new DeletarCidades(db);
+            DeletarCidades dc = new DeletarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
             dc.execute();
             for (int i=0; i<arr.length();i++) {
                 JSONObject linha = arr.getJSONObject(i);
@@ -226,7 +227,7 @@ public class TabelaActivity extends AppCompatActivity {
                 int recuperados = linha.getInt("recuperados");
                 int emRecuperacao = confirmados-obitos-recuperados;
                 CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao);
-                SalvarCidade sc = new SalvarCidade(cidadeNumero,db);
+                SalvarCidade sc = new SalvarCidade(cidadeNumero,DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
                 try {
                     sc.execute();
                 }
