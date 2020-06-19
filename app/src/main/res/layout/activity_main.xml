@@ -406,6 +406,16 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
+            android:id="@+id/txtAvisos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AVISOS"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#880202"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/txtAtualizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtRecuperados;
     public int VERSAO;
     TextView atualizar;
-
+    TextView txtAvisos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         txtObitosPorDia = (TextView)findViewById(R.id.txtObitosPorDia);
         txtObitosPorIdade = (TextView)findViewById(R.id.txtMedianaIdade);
         txtRecuperados = (TextView)findViewById(R.id.txtRecuperados);
+        txtAvisos = (TextView)findViewById(R.id.txtAvisos);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
@@ -105,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
         try {
             this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente",4);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=avisos",5);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -329,8 +336,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         else if (tipo==4) {
                             ajustarCoeficiente(myResponse);
                         }
-                        else {
+                        else if(tipo==2){
                             ajustarTaxaOcupacaoLeitos(myResponse);
+                        }
+                        else {
+                            ajustarAvisos(myResponse);
                         }
 
                     }
@@ -340,13 +350,29 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
     }
 
+    public void ajustarAvisos(String myResponse) {
+        if (myResponse.equals("")){
+            txtAvisos.setVisibility(View.GONE);
+        }
+        else {
+            txtAvisos.setVisibility(View.VISIBLE);
+            txtAvisos.setText(myResponse);
+        }
+    }
+
     public void verificarAtualizacao(String myResponse) {
         int versaoNova = Ferramenta.getAppPlayStoreVersion(myResponse);
         if (VERSAO<versaoNova) {
             versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
             versao.setTextColor(Color.RED);
             atualizar.setVisibility(View.VISIBLE);
-            popupAtualizar();
+            try {
+                popupAtualizar();
+            }
+            catch (IllegalStateException e) {
+                Log.e("Exception: %s", e.getMessage());
+            }
+
         }
     }
 
@@ -445,8 +471,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
     public void popupAtualizar() {
-        DialogFragment newFragment = new AtualizarDialog();
-        newFragment.show(getSupportFragmentManager(),"Atualizar");
+        try {
+            DialogFragment newFragment = new AtualizarDialog();
+            newFragment.show(getSupportFragmentManager(),"Atualizar");
+        }
+        catch (IllegalStateException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+
     }
 
 }

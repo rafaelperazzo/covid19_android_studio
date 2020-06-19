@@ -78,6 +78,8 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.txtTabelaAnalise)).perform(click());
         onView(withId(R.id.txtTabelaObitos)).perform(click());
         onView(withId(R.id.txtTabelaIncidencia)).perform(click());
+        onView(withId(R.id.txtTabelaRecuperados)).perform(click());
+        onView(withId(R.id.txtTabelaEmRecuperacao)).perform(click());
         pressBack();
     }
 
@@ -134,8 +136,8 @@ public class ExampleInstrumentedTest {
     @Test
     public void testaMenuCodigoFonte() throws InterruptedException {
         aparelho.pressMenu();
-        onView(withText("Código Fonte deste app")).perform(click());
         Thread.sleep(2000);
+        onView(withText("Código Fonte deste app")).perform(click());
         aparelho.pressBack();
 
     }
@@ -143,8 +145,8 @@ public class ExampleInstrumentedTest {
     @Test
     public void testaMenuEvolucao() throws InterruptedException {
         aparelho.pressMenu();
-        onView(withText("Evolução temporal dos casos")).perform(click());
         Thread.sleep(2000);
+        onView(withText("Evolução temporal dos casos")).perform(click());
         pressBack();
     }
 
@@ -152,8 +154,8 @@ public class ExampleInstrumentedTest {
     public void testaMenuGraficoResumo() throws InterruptedException {
 
         aparelho.pressMenu();
-        onView(withText("Gráfico resumo da situação atual")).perform(click());
         Thread.sleep(2000);
+        onView(withText("Gráfico resumo da situação atual")).perform(click());
         pressBack();
 
     }
@@ -162,16 +164,15 @@ public class ExampleInstrumentedTest {
     public void testaMenuPercentuais() throws InterruptedException {
 
         aparelho.pressMenu();
-        onView(withText("Alternar Percentuais/Totais")).perform(click());
         Thread.sleep(2000);
-
+        onView(withText("Alternar Percentuais/Totais")).perform(click());
     }
 
     @Test
     public void testaMenuCompartilharApp() throws InterruptedException {
         aparelho.pressMenu();
-        onView(withText("Compartilhar este App")).perform(click());
         Thread.sleep(2000);
+        onView(withText("Compartilhar este App")).perform(click());
         aparelho.pressBack();
     }
 
