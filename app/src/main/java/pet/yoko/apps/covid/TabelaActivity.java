@@ -1,8 +1,6 @@
 package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
@@ -29,7 +27,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import pet.yoko.apps.covid.db.AppDatabase;
 import pet.yoko.apps.covid.db.CarregarCidades;
-import pet.yoko.apps.covid.db.CidadesNumeros;
 import pet.yoko.apps.covid.db.DeletarCidades;
 import pet.yoko.apps.covid.db.SalvarCidade;
 
