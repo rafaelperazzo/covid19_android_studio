@@ -311,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     @Override
                     public void run() {
                         progresso.setVisibility(View.GONE);
+                        txtAvisos.setText("ERRO DE REDE. VERIFIQUE SUA CONEXÃO");
                     }
                 });
                 call.cancel();

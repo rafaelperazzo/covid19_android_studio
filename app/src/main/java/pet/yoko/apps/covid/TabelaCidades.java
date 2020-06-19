@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import pet.yoko.apps.covid.db.AppDatabase;
+import pet.yoko.apps.covid.db.CidadesNumeros;
+
 public class TabelaCidades {
 
     private JSONArray obj;
