@@ -28,6 +28,11 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pet.yoko.apps.covid.db.CarregarDadosIniciais;
+import pet.yoko.apps.covid.db.DadosIniciais;
+import pet.yoko.apps.covid.db.DatabaseClient;
+import pet.yoko.apps.covid.db.DeletarDadosIniciais;
+import pet.yoko.apps.covid.db.SalvarDadosIniciais;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,23 +90,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
         VERSAO = getVersionCode();
         try {
-            run(url,0);
+            run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais",0);
         } catch (IOException e) {
             e.printStackTrace();
         }
         //VERIFICANDO POR ATUALIZAÇÃO
         try {
             run("https://play.google.com/store/apps/details?id=pet.yoko.apps.covid",1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosInternacoes",2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosResumo",3);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -314,6 +309,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         txtAvisos.setText("ERRO DE REDE. VERIFIQUE SUA CONEXÃO");
                     }
                 });
+                CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
+                cdi.execute();
                 call.cancel();
             }
 
@@ -332,13 +329,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                             verificarAtualizacao(myResponse);
                         }
                         else if (tipo==3) {
-                            ajustarDadosObitos(myResponse);
+
                         }
                         else if (tipo==4) {
                             ajustarCoeficiente(myResponse);
                         }
                         else if(tipo==2){
-                            ajustarTaxaOcupacaoLeitos(myResponse);
+
                         }
                         else {
                             ajustarAvisos(myResponse);
@@ -377,40 +374,62 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-    public void ajustarDadosObitos(String myResponse) {
-        try {
-            JSONArray arr = new JSONArray(myResponse);
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-                String comorbidades = obj.getString("comorbidades");
-                String porDia = obj.getString("porDia");
-                String mediana_idade = obj.getString("mediana_idade");
-                txtObitosComorbidades.setText(comorbidades);
-                txtObitosPorDia.setText(porDia);
-                txtObitosPorIdade.setText(mediana_idade);
-            }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void ajustarDadosIniciais(String response) {
         try {
+            DeletarDadosIniciais ddi = new DeletarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+            ddi.execute();
             JSONObject obj = new JSONObject(response);
             confirmados.setText(obj.getString("confirmados"));
             obitos.setText(obj.getString("obitos"));
             double dblTaxa = obj.getDouble("taxa");
             String strTaxa = String.format("%.2f",dblTaxa);
             taxa.setText(strTaxa);
-            String data = obj.getString("atualizacao");
-            atualizacao.setText(data);
             confirmacoes.setText(obj.getString("confirmacoes"));
             double percentualRecuperados = obj.getInt("recuperados")/obj.getInt("confirmacoes");
             DecimalFormat df = new DecimalFormat("#0.00");
             txtRecuperados.setText(obj.getString("recuperados"));
             int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
             suspeitos.setText(String.valueOf(emRecuperacao));
+
+            String comorbidades = obj.getString("comorbidades");
+            txtObitosComorbidades.setText(comorbidades);
+            double mediaObitosDia = obj.getDouble("porDia");
+            txtObitosPorDia.setText(df.format(mediaObitosDia));
+            double medianaIdade = obj.getDouble("mediana_idade");
+            txtObitosPorIdade.setText(df.format(medianaIdade));
+            int uti = obj.getInt("uti");
+            int enfermaria = obj.getInt("enfermaria");
+            txtUti.setText(uti + "%");
+            txtEnfermaria.setText(enfermaria + "%");
+            if (uti>70) {
+                this.txtUti.setBackgroundColor(Color.parseColor("#660000"));
+                this.txtUti.setTextColor(Color.WHITE);
+            }
+            else {
+                this.txtUti.setBackgroundColor(Color.parseColor("#009900"));
+                this.txtUti.setTextColor(Color.WHITE);
+            }
+            if (enfermaria>70) {
+                this.txtEnfermaria.setBackgroundColor(Color.parseColor("#660000"));
+                this.txtEnfermaria.setTextColor(Color.WHITE);
+            }
+            else {
+                this.txtEnfermaria.setBackgroundColor(Color.parseColor("#009900"));
+                this.txtEnfermaria.setTextColor(Color.WHITE);
+            }
+
+            String data = obj.getString("atualizacao");
+            atualizacao.setText(data);
+
+            DadosIniciais di = new DadosIniciais(obj.getInt("confirmados"),obj.getInt("obitos"),obj.getInt("recuperados"),emRecuperacao,obj.getString("atualizacao"),Double.parseDouble(strTaxa),obj.getInt("confirmacoes"),comorbidades,mediaObitosDia,medianaIdade,uti,enfermaria);
+            SalvarDadosIniciais sdi = new SalvarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),di);
+            try {
+                sdi.execute();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
             progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -418,42 +437,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-    public void ajustarTaxaOcupacaoLeitos(String myResponse) {
-        try {
-            JSONArray arr = new JSONArray(myResponse);
-            for (int i=0; i<arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-                int uti = obj.getInt("uti");
-                int enfermaria = obj.getInt("enfermaria");
-                this.txtUti.setText(String.valueOf(uti) + "%");
-                this.txtEnfermaria.setText(String.valueOf(enfermaria) + "%");
-                if (uti>70) {
-                    this.txtUti.setBackgroundColor(Color.parseColor("#660000"));
-                    this.txtUti.setTextColor(Color.WHITE);
-                }
-                else {
-                    this.txtUti.setBackgroundColor(Color.parseColor("#009900"));
-                    this.txtUti.setTextColor(Color.WHITE);
-                }
-                if (enfermaria>70) {
-                    this.txtEnfermaria.setBackgroundColor(Color.parseColor("#660000"));
-                    this.txtEnfermaria.setTextColor(Color.WHITE);
-                }
-                else {
-                    this.txtEnfermaria.setBackgroundColor(Color.parseColor("#009900"));
-                    this.txtEnfermaria.setTextColor(Color.WHITE);
-                }
-                progresso.setVisibility(View.GONE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            progresso.setVisibility(View.GONE);
-        }
-        catch (NumberFormatException e) {
-            e.printStackTrace();
-            progresso.setVisibility(View.GONE);
-        }
-    }
 
     public void ajustarCoeficiente(String myResponse) {
         try {
