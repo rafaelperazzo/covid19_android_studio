@@ -32,6 +32,7 @@ import pet.yoko.apps.covid.db.CarregarDadosIniciais;
 import pet.yoko.apps.covid.db.DadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.DeletarDadosIniciais;
+import pet.yoko.apps.covid.db.DownloadData;
 import pet.yoko.apps.covid.db.SalvarDadosIniciais;
 
 import org.json.JSONArray;
@@ -111,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             e.printStackTrace();
         }
         setTitle("COVID19 APP - Totais");
-
+        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+        dd.execute();
     }
 
     public void atualizarClick(View v) {
