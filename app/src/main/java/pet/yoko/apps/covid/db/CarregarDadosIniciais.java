@@ -6,9 +6,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import pet.yoko.apps.covid.CidadeAdapter;
-import pet.yoko.apps.covid.CidadeItem;
-
 public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosIniciais>> {
 
     private AppDatabase db;
