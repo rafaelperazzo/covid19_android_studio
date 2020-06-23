@@ -3,7 +3,9 @@ package pet.yoko.apps.covid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -64,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public int VERSAO;
     TextView atualizar;
     TextView txtAvisos;
+    SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
         VERSAO = getVersionCode();
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
         //CARREGANDO DADOS INICIAIS
         try {
             run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais",0);
@@ -114,7 +120,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             e.printStackTrace();
         }
         setTitle("COVID19 APP - Totais");
-        this.downloadData();
+    }
+
+    private void setAtualizacao(String atualizacao) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("atualizacao", atualizacao);
+        editor.commit();
+    }
+
+    private String getAtualizacao() {
+        String value = "00/00/0000 00:00";
+        String atualizacao = sharedPref.getString("atualizacao",value);
+        return (atualizacao);
+    }
+
+    public void carregarDadosIniciais() {
+        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
+        cdi.execute();
     }
 
     private void downloadData() {
@@ -316,8 +338,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         txtAvisos.setText("ERRO DE REDE. VERIFIQUE SUA CONEXÃO");
                     }
                 });
-                CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
-                cdi.execute();
+                carregarDadosIniciais();
                 call.cancel();
             }
 
@@ -347,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         else {
                             ajustarAvisos(myResponse);
                         }
-
+                        progresso.setVisibility(View.GONE);
                     }
                 });
 
@@ -383,66 +404,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     public void ajustarDadosIniciais(String response) {
         try {
-            DeletarDadosIniciais ddi = new DeletarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
-            ddi.execute();
             JSONObject obj = new JSONObject(response);
-            DecimalFormat df = new DecimalFormat("#0.00");
-            confirmados.setText(obj.getString("confirmados"));
-            obitos.setText(obj.getString("obitos"));
-            double dblTaxa = obj.getDouble("taxa");
-            String strTaxa = df.format(dblTaxa);
-            taxa.setText(strTaxa);
-            confirmacoes.setText(obj.getString("confirmacoes"));
-            double percentualRecuperados = obj.getInt("recuperados")/obj.getInt("confirmacoes");
-            txtRecuperados.setText(obj.getString("recuperados"));
-            int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
-            suspeitos.setText(String.valueOf(emRecuperacao));
-            String comorbidades = obj.getString("comorbidades");
-            txtObitosComorbidades.setText(comorbidades);
-            double mediaObitosDia = obj.getDouble("porDia");
-            txtObitosPorDia.setText(df.format(mediaObitosDia));
-            double medianaIdade = obj.getDouble("mediana_idade");
-            txtObitosPorIdade.setText(df.format(medianaIdade));
-            int uti = obj.getInt("uti");
-            int enfermaria = obj.getInt("enfermaria");
-            txtUti.setText(uti + "%");
-            txtEnfermaria.setText(enfermaria + "%");
-            if (uti>70) {
-                this.txtUti.setBackgroundColor(Color.parseColor("#660000"));
-                this.txtUti.setTextColor(Color.WHITE);
+            String data_agora = obj.getString("atualizacao");
+            String data_armazenada = getAtualizacao();
+            if (data_agora.equals(data_armazenada)) {
+                this.carregarDadosIniciais();
             }
             else {
-                this.txtUti.setBackgroundColor(Color.parseColor("#009900"));
-                this.txtUti.setTextColor(Color.WHITE);
-            }
-            if (enfermaria>70) {
-                this.txtEnfermaria.setBackgroundColor(Color.parseColor("#660000"));
-                this.txtEnfermaria.setTextColor(Color.WHITE);
-            }
-            else {
-                this.txtEnfermaria.setBackgroundColor(Color.parseColor("#009900"));
-                this.txtEnfermaria.setTextColor(Color.WHITE);
+                setAtualizacao(data_agora);
+                this.downloadData();
+                this.carregarDadosIniciais();
             }
 
-            String data = obj.getString("atualizacao");
-            atualizacao.setText(data);
-
-            DadosIniciais di = new DadosIniciais(obj.getInt("confirmados"),obj.getInt("obitos"),obj.getInt("recuperados"),emRecuperacao,obj.getString("atualizacao"),Double.parseDouble(strTaxa),obj.getInt("confirmacoes"),comorbidades,mediaObitosDia,medianaIdade,uti,enfermaria);
-            SalvarDadosIniciais sdi = new SalvarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),di);
-            try {
-                sdi.execute();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            progresso.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
-            progresso.setVisibility(View.GONE);
         }
     }
-
 
     public void ajustarCoeficiente(String myResponse) {
         try {

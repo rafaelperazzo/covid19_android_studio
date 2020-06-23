@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosIniciais>> {
@@ -48,10 +49,11 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
     protected void onPostExecute(List<DadosIniciais> items) {
         super.onPostExecute(items);
         try {
+            DecimalFormat df = new DecimalFormat("#0.00");
             this.confirmados.setText(String.valueOf(items.get(0).getConfirmados()));
             this.emRecuperacao.setText(String.valueOf(items.get(0).getEmRecuperacao()));
             this.obitos.setText(String.valueOf(items.get(0).getObitos()));
-            this.taxa.setText(String.valueOf(items.get(0).getTaxa()));
+            this.taxa.setText(df.format(items.get(0).getTaxa()));
             this.confirmacoes.setText(String.valueOf(items.get(0).getConfirmacoes()));
             this.recuperados.setText(String.valueOf(items.get(0).getRecuperados()));
             this.comorbidades.setText(items.get(0).getComorbidades());

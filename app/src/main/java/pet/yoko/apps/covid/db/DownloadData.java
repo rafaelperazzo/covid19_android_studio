@@ -64,7 +64,8 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
 
     private void baixarDadosCidades(String url) {
         try {
-            JSONArray arr = new JSONArray(url);
+            String myResponse = run(url);
+            JSONArray arr = new JSONArray(myResponse);
             DeletarCidades dc = new DeletarCidades(db);
             dc.execute();
             for (int i=0; i<arr.length();i++) {
@@ -86,14 +87,43 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 }
             }
         }
-        catch (JSONException e) {
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void baixarDadosIniciais(String url) {
+        try {
+            DeletarDadosIniciais ddi = new DeletarDadosIniciais(db);
+            ddi.execute();
+            String myResponse = run(url);
+            JSONObject obj = new JSONObject(myResponse);
+            int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
+            DadosIniciais di = new DadosIniciais(obj.getInt("confirmados"),obj.getInt("obitos"),obj.getInt("recuperados"),emRecuperacao,obj.getString("atualizacao"),obj.getDouble("taxa"),obj.getInt("confirmacoes"),obj.getString("comorbidades"),obj.getDouble("porDia"),obj.getDouble("mediana_idade"),obj.getInt("uti"),obj.getInt("enfermaria"));
+            SalvarDadosIniciais sdi = new SalvarDadosIniciais(db,di);
+            sdi.execute();
+        }
+        catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected void onPreExecute() {
+        super.onPreExecute();
         progresso.setVisibility(View.VISIBLE);
+    }
+
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        progresso.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+
         db.graficoItemDao().delete_all();
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosPorSexo","obitosPorSexo");
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosPorIdade","obitosPorIdade");
@@ -103,7 +133,11 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
         baixarDadosCidades("https://apps.yoko.pet/webapi/covidapi.php");
-        progresso.setVisibility(View.GONE);
+        baixarDadosIniciais("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
+
         return null;
     }
+
+
+
 }
