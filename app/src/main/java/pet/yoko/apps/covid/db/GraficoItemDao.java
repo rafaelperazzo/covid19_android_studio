@@ -12,7 +12,7 @@ public interface GraficoItemDao {
     @Query("SELECT * FROM GraficoItem")
     List<GraficoItem> getAll();
 
-    @Query("SELECT id,label,quantidade FROM GraficoItem WHERE tipo LIKE :tipo")
+    @Query("SELECT id,label,quantidade,quantidade2 FROM GraficoItem WHERE tipo LIKE :tipo")
     List<GraficoItem> getPorTipo(String tipo);
 
     @Query("DELETE FROM GraficoItem")

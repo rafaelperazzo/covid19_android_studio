@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
         VERSAO = getVersionCode();
+        //CARREGANDO DADOS INICIAIS
         try {
             run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais",0);
         } catch (IOException e) {
@@ -101,18 +101,24 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //CALCULANDO O COEFICIENTE
         try {
             this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente",4);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //RECEBENDO OS AVISOS
         try {
             this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=avisos",5);
         } catch (IOException e) {
             e.printStackTrace();
         }
         setTitle("COVID19 APP - Totais");
-        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+        this.downloadData();
+    }
+
+    private void downloadData() {
+        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
         dd.execute();
     }
 

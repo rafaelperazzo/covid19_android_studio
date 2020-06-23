@@ -21,10 +21,22 @@ public class GraficoItem implements Serializable {
     @ColumnInfo(name = "quantidade")
     int quantidade;
 
-    public GraficoItem(String tipo, String label, int quantidade) {
+    @ColumnInfo(name = "quantidade2")
+    int quantidade2;
+
+    public GraficoItem(String tipo, String label, int quantidade, int quantidade2) {
         this.tipo = tipo;
         this.label = label;
         this.quantidade = quantidade;
+        this.quantidade2 = quantidade2;
+    }
+
+    public int getQuantidade2() {
+        return quantidade2;
+    }
+
+    public void setQuantidade2(int quantidade2) {
+        this.quantidade2 = quantidade2;
     }
 
     public int getId() {

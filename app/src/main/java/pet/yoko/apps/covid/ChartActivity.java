@@ -33,6 +33,8 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pet.yoko.apps.covid.db.CarregarGraficoItem;
+import pet.yoko.apps.covid.db.DatabaseClient;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -63,11 +65,12 @@ public class ChartActivity extends AppCompatActivity {
         }
         setTitle(TITULO);
         URL = URL + "tipo=" + TIPO;
-        try {
-            this.run("");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.carregarDados();
+    }
+
+    public void carregarDados() {
+        CarregarGraficoItem cgi = new CarregarGraficoItem(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),TIPO,TIPO_GRAFICO,grafico,lineChart,DESCRICAO_GRAFICO,progresso);
+        cgi.execute();
     }
 
     public void shareClick(View view) {
