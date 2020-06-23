@@ -13,6 +13,7 @@ import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pet.yoko.apps.covid.CidadeItem;
 
 public class DownloadData extends AsyncTask<Void, Void, Void> {
 
@@ -61,6 +62,35 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    private void baixarDadosCidades(String url) {
+        try {
+            JSONArray arr = new JSONArray(url);
+            DeletarCidades dc = new DeletarCidades(db);
+            dc.execute();
+            for (int i=0; i<arr.length();i++) {
+                JSONObject linha = arr.getJSONObject(i);
+                String cidade = linha.getString("cidade");
+                int confirmados = linha.getInt("confirmados");
+                int suspeitos = linha.getInt("suspeitos");
+                int obitos = linha.getInt("obitos");
+                double incidencia = linha.getDouble("taxa");
+                int recuperados = linha.getInt("recuperados");
+                int emRecuperacao = confirmados-obitos-recuperados;
+                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao);
+                SalvarCidade sc = new SalvarCidade(cidadeNumero,db);
+                try {
+                    sc.execute();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected Void doInBackground(Void... voids) {
         progresso.setVisibility(View.VISIBLE);
@@ -72,6 +102,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
+        baixarDadosCidades("https://apps.yoko.pet/webapi/covidapi.php");
         progresso.setVisibility(View.GONE);
         return null;
     }

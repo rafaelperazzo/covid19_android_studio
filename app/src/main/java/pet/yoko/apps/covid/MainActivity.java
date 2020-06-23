@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         int versionCode = 0;
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String versionName = packageInfo.versionName;
             versionCode = packageInfo.versionCode;
         }
         catch (PackageManager.NameNotFoundException e) {
@@ -387,18 +386,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             DeletarDadosIniciais ddi = new DeletarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
             ddi.execute();
             JSONObject obj = new JSONObject(response);
+            DecimalFormat df = new DecimalFormat("#0.00");
             confirmados.setText(obj.getString("confirmados"));
             obitos.setText(obj.getString("obitos"));
             double dblTaxa = obj.getDouble("taxa");
-            String strTaxa = String.format("%.2f",dblTaxa);
+            String strTaxa = df.format(dblTaxa);
             taxa.setText(strTaxa);
             confirmacoes.setText(obj.getString("confirmacoes"));
             double percentualRecuperados = obj.getInt("recuperados")/obj.getInt("confirmacoes");
-            DecimalFormat df = new DecimalFormat("#0.00");
             txtRecuperados.setText(obj.getString("recuperados"));
             int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
             suspeitos.setText(String.valueOf(emRecuperacao));
-
             String comorbidades = obj.getString("comorbidades");
             txtObitosComorbidades.setText(comorbidades);
             double mediaObitosDia = obj.getDouble("porDia");

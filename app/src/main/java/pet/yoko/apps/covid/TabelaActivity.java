@@ -2,49 +2,26 @@ package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import pet.yoko.apps.covid.db.AppDatabase;
 import pet.yoko.apps.covid.db.CarregarCidades;
 import pet.yoko.apps.covid.db.DatabaseClient;
-import pet.yoko.apps.covid.db.DeletarCidades;
-import pet.yoko.apps.covid.db.SalvarCidade;
 
 public class TabelaActivity extends AppCompatActivity {
-    public String url = "https://apps.yoko.pet/webapi/covidapi.php";
     ProgressBar progresso;
-
     RecyclerView recyclerView;
     ArrayList<CidadeItem> items;
     CidadeAdapter adapter;
-
     SearchView pesquisar;
     ImageView share;
-
     Ferramenta tools;
-
-    //AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +29,14 @@ public class TabelaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tabela);
         tools = new Ferramenta(getApplicationContext());
         progresso = (ProgressBar)findViewById(R.id.progressoTabela);
+        progresso.setVisibility(View.GONE);
         recyclerView = (RecyclerView)findViewById(R.id.tabela);
         items = new ArrayList<CidadeItem>();
         adapter = new CidadeAdapter(items);
         tools.prepararRecycleView(recyclerView,items,adapter);
-        //db = Room.databaseBuilder(getApplicationContext(),
-        //        AppDatabase.class, "covidUFCA_db").build();
 
-        try {
-            this.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),recyclerView);
+        cc.execute();
         pesquisar = (SearchView)findViewById(R.id.search);
         pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -164,82 +136,6 @@ public class TabelaActivity extends AppCompatActivity {
             }
         });
         adapter.notifyDataSetChanged();
-    }
-
-    void run() throws IOException {
-        progresso.setVisibility(View.VISIBLE);
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                TabelaActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progresso.setVisibility(View.GONE);
-                    }
-                });
-                CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),recyclerView);
-                cc.execute();
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                final String myResponse = response.body().string();
-
-                TabelaActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONArray arr = new JSONArray(myResponse);
-                            TabelaCidades tabela = new TabelaCidades(arr,items,adapter);
-                            tabela.makeTable();
-                            salvarNoDb(myResponse);
-                            progresso.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-            }
-        });
-    }
-
-    private void salvarNoDb(String myResponse) {
-        try {
-            JSONArray arr = new JSONArray(myResponse);
-            DeletarCidades dc = new DeletarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
-            dc.execute();
-            for (int i=0; i<arr.length();i++) {
-                JSONObject linha = arr.getJSONObject(i);
-                String cidade = linha.getString("cidade");
-                int confirmados = linha.getInt("confirmados");
-                int suspeitos = linha.getInt("suspeitos");
-                int obitos = linha.getInt("obitos");
-                double incidencia = linha.getDouble("taxa");
-                int recuperados = linha.getInt("recuperados");
-                int emRecuperacao = confirmados-obitos-recuperados;
-                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao);
-                SalvarCidade sc = new SalvarCidade(cidadeNumero,DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
-                try {
-                    sc.execute();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
 }
