@@ -10,5 +10,5 @@
     <item android:id="@+id/menu_compartilhar_app"
         android:title="Compartilhar este App" />
     <item android:id="@+id/menu_pagina_app"
-        android:title="Código Fonte deste app" />
+        android:title="Sobre este app" />
 </menu>

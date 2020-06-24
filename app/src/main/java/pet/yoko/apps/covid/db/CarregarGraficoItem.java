@@ -49,8 +49,13 @@ public class CarregarGraficoItem extends AsyncTask<Void, Void, List<GraficoItem>
     }
 
     @Override
-    protected List<GraficoItem> doInBackground(Void... voids) {
+    protected void onPreExecute() {
+        super.onPreExecute();
         this.progresso.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected List<GraficoItem> doInBackground(Void... voids) {
         List<GraficoItem> items = db.graficoItemDao().getPorTipo(this.where);
         for (int i=0; i<items.size();i++) {
             labels.add(items.get(i).label);
@@ -62,13 +67,14 @@ public class CarregarGraficoItem extends AsyncTask<Void, Void, List<GraficoItem>
                 valores_barra.add(new BarEntry(i,items.get(i).quantidade));
             }
         }
-        this.progresso.setVisibility(View.GONE);
+
         return null;
     }
 
     @Override
     protected void onPostExecute(List<GraficoItem> graficoItems) {
         super.onPostExecute(graficoItems);
+        this.progresso.setVisibility(View.GONE);
         if (tipo.equals("bar")) {
             MyBarChart chart = new MyBarChart(grafico,valores_barra,labels,true);
             chart.makeChart();

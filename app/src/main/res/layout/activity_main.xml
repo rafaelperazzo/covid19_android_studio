@@ -393,9 +393,9 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:gravity="center_horizontal"
-            android:text="Desenvolvido por Prof. Rafael Perazzo.\n Este app é parte do projeto do Prof. Juscelino Silva"
+            android:text="@string/integrasus"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="Desenvolvido por Prof. Rafael Perazzo.\n Este app é parte do projeto do Prof. Juscelino Silva" />
+            tools:text="@string/integrasus" />
 
         <TextView
             android:id="@+id/txtVersao"

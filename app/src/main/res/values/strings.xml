@@ -4,4 +4,5 @@
     <string name="title_activity_mapa">Map</string>
     <string name="internet_indisponivel">Internet indisponível! Verifique sua conexão!</string>
     <string name="atualizacao">Uma nova versão do aplicativo está disponível, com correções e novos recursos</string>
+    <string name="integrasus">Informações processadas a partir dos dados coletados da Plataforma IntegraSus</string>
 </resources>

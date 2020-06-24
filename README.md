@@ -9,6 +9,8 @@
 <a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid' target="_blank"><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="20%" heigth="20%"></a>
 
 <h2>App de acompanhamento da evolução da covid19 na região do cariri cearense</h2> <BR>
+<h3>Desenvolvido por Rafael Perazzo Barbosa Mota</h3>
+<h4>Parte do <a href="https://app.powerbi.com/view?r=eyJrIjoiYWYzMDRkZjctNzgzNy00NDY2LTk4YjMtNWRkMTIzYzA0MTFjIiwidCI6IjMyMTEyODk1LTEwNzItNDFiZS04MjVjLWExNzlhNmYyMzFiNiJ9">Painel de Monitoramento</a> do Prof. Juscelino Silva</h4>
 
 <img src='todas.png'><br>
 

@@ -16,11 +16,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
@@ -30,13 +28,10 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pet.yoko.apps.covid.db.CarregarCoeficiente;
 import pet.yoko.apps.covid.db.CarregarDadosIniciais;
-import pet.yoko.apps.covid.db.DadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
-import pet.yoko.apps.covid.db.DeletarDadosIniciais;
 import pet.yoko.apps.covid.db.DownloadData;
-import pet.yoko.apps.covid.db.SalvarDadosIniciais;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         sharedPref = getPreferences(Context.MODE_PRIVATE);
         //CARREGANDO DADOS INICIAIS
         try {
-            run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais",0);
+            run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=ultimaAtualizacao",0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,12 +102,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //CALCULANDO O COEFICIENTE
-        try {
-            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente",4);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         //RECEBENDO OS AVISOS
         try {
             this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=avisos",5);
@@ -137,6 +127,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void carregarDadosIniciais() {
         CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
         cdi.execute();
+        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+        try {
+            String coeficiente = cc.execute().get();
+            texto_descricao_grafico = coeficiente;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void downloadData() {
@@ -321,7 +320,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     void run(String url, final int tipo) throws IOException {
-        progresso.setVisibility(View.VISIBLE);
+        MainActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progresso.setVisibility(View.VISIBLE);
+            }
+        });
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -355,15 +359,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         }
                         else if (tipo==1){
                             verificarAtualizacao(myResponse);
-                        }
-                        else if (tipo==3) {
-
-                        }
-                        else if (tipo==4) {
-                            ajustarCoeficiente(myResponse);
-                        }
-                        else if(tipo==2){
-
                         }
                         else {
                             ajustarAvisos(myResponse);
@@ -412,31 +407,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
             else {
                 setAtualizacao(data_agora);
-                this.downloadData();
+                DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
+                Void retorno = dd.execute().get();
                 this.carregarDadosIniciais();
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
-    public void ajustarCoeficiente(String myResponse) {
-        try {
-            JSONArray arr = new JSONArray(myResponse);
-            JSONObject ultima = arr.getJSONObject(0);
-            JSONObject primeira = arr.getJSONObject(arr.length() - 1);
-            double coeficiente = (ultima.getDouble("quantidade")-primeira.getDouble("quantidade"))/(double)15;
-            DecimalFormat df = new DecimalFormat("#0.00");
-            texto_descricao_grafico = df.format(coeficiente);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        catch (NumberFormatException e) {
-            e.printStackTrace();
-            progresso.setVisibility(View.GONE);
-        }
-    }
     public void popupAtualizar() {
         try {
             DialogFragment newFragment = new AtualizarDialog();
@@ -447,5 +431,4 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
 
     }
-
 }
