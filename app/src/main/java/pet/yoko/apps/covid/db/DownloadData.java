@@ -66,8 +66,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         try {
             String myResponse = run(url);
             JSONArray arr = new JSONArray(myResponse);
-            DeletarCidades dc = new DeletarCidades(db);
-            dc.execute();
+            db.cidadesNumerosDao().delete_all();
             for (int i=0; i<arr.length();i++) {
                 JSONObject linha = arr.getJSONObject(i);
                 String cidade = linha.getString("cidade");
@@ -78,13 +77,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 int recuperados = linha.getInt("recuperados");
                 int emRecuperacao = confirmados-obitos-recuperados;
                 CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao);
-                SalvarCidade sc = new SalvarCidade(cidadeNumero,db);
-                try {
-                    sc.execute();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+                db.cidadesNumerosDao().insert(cidadeNumero);
             }
         }
         catch (JSONException | IOException e) {
@@ -94,14 +87,44 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
 
     private void baixarDadosIniciais(String url) {
         try {
-            DeletarDadosIniciais ddi = new DeletarDadosIniciais(db);
-            ddi.execute();
+            db.dadosIniciaisDao().delete_all();
             String myResponse = run(url);
             JSONObject obj = new JSONObject(myResponse);
             int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
             DadosIniciais di = new DadosIniciais(obj.getInt("confirmados"),obj.getInt("obitos"),obj.getInt("recuperados"),emRecuperacao,obj.getString("atualizacao"),obj.getDouble("taxa"),obj.getInt("confirmacoes"),obj.getString("comorbidades"),obj.getDouble("porDia"),obj.getDouble("mediana_idade"),obj.getInt("uti"),obj.getInt("enfermaria"));
-            SalvarDadosIniciais sdi = new SalvarDadosIniciais(db,di);
-            sdi.execute();
+            db.dadosIniciaisDao().insert(di);
+        }
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void baixarDadosCidadesMapa(String url) {
+        try {
+            String myResponse = run(url);
+            JSONArray arr = new JSONArray(myResponse);
+            db.cidadeMapaItemDao().delete_all();
+            for (int i=0; i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                CidadeMapaItem cidade = new CidadeMapaItem(obj.getString("cidade"),obj.getInt("confirmados"),obj.getInt("emRecuperacao"),obj.getInt("obitos"),obj.getInt("recuperados"),obj.getDouble("latitude"),obj.getDouble("longitude"),obj.getDouble("incidencia"));
+                db.cidadeMapaItemDao().insert(cidade);
+            }
+        }
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void baixarDadosBairrosMapa(String url) {
+        try {
+            String myResponse = run(url);
+            JSONArray arr = new JSONArray(myResponse);
+            db.bairroMapaItemDao().delete_all();
+            for (int i=0; i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                BairroMapaItem bairro = new BairroMapaItem(obj.getString("cidade"),obj.getString("bairro"),obj.getInt("confirmados"),obj.getDouble("latitude"),obj.getDouble("longitude"));
+                db.bairroMapaItemDao().insert(bairro);
+            }
         }
         catch (JSONException | IOException e) {
             e.printStackTrace();
@@ -134,7 +157,8 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
         baixarDadosCidades("https://apps.yoko.pet/webapi/covidapi.php");
         baixarDadosIniciais("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
-
+        baixarDadosCidadesMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades");
+        baixarDadosBairrosMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=bairros");
         return null;
     }
 
