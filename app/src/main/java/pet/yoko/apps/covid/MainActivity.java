@@ -330,12 +330,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     void run(String url, final int tipo) throws IOException {
-        MainActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progresso.setVisibility(View.VISIBLE);
-            }
-        });
+
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -373,7 +368,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         else {
                             ajustarAvisos(myResponse);
                         }
-                        progresso.setVisibility(View.GONE);
                     }
                 });
 
