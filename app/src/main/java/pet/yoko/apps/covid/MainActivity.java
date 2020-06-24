@@ -91,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         VERSAO = getVersionCode();
         sharedPref = getPreferences(Context.MODE_PRIVATE);
         //CARREGANDO DADOS INICIAIS
+        if (!getAtualizacao().equals("00/00/0000 00:00")) {
+            this.carregarDadosIniciais();
+        }
         try {
             run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=ultimaAtualizacao",0);
         } catch (IOException e) {
@@ -110,6 +113,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             e.printStackTrace();
         }
         setTitle("COVID19 APP - Totais");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+
     }
 
     private void setAtualizacao(String atualizacao) {

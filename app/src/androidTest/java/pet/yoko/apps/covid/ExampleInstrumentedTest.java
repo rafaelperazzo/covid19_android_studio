@@ -137,7 +137,7 @@ public class ExampleInstrumentedTest {
     public void testaMenuCodigoFonte() throws InterruptedException {
         aparelho.pressMenu();
         Thread.sleep(2000);
-        onView(withText("Código Fonte deste app")).perform(click());
+        onView(withText("Sobre este app")).perform(click());
         aparelho.pressBack();
 
     }

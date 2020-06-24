@@ -1,7 +1,6 @@
 package pet.yoko.apps.covid;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -12,20 +11,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
-import android.location.LocationListener;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,19 +32,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import pet.yoko.apps.covid.db.BairroMapaItem;
+import pet.yoko.apps.covid.db.CarregarDadosMapa;
+import pet.yoko.apps.covid.db.CarregarDadosMapaBairros;
+import pet.yoko.apps.covid.db.CidadeMapaItem;
+import pet.yoko.apps.covid.db.DatabaseClient;
 
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -79,12 +66,8 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         this.TIPO_MAPA = TIPO;
         URL = URL + TIPO;
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        try {
-            this.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
+
 
     @Override
     protected void onRestart() {
@@ -124,7 +107,99 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         }
         updateLocationUI();
         getDeviceLocation();
+        this.iniciar();
     }
+
+    private void iniciar() {
+        MapaActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (TIPO_MAPA.equals("cidades")) {
+                    CarregarDadosMapa cdm = new CarregarDadosMapa(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+                    try {
+                        List<CidadeMapaItem> cidades = cdm.execute().get();
+                        setDadosCidades(cidades);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    CarregarDadosMapaBairros cdmb = new CarregarDadosMapaBairros(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+                    try {
+                        List<BairroMapaItem> bairros = cdmb.execute().get();
+                        setDadosBairros(bairros);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void setDadosCidades(List<CidadeMapaItem> cidades) {
+        try {
+            for (int i = 0; i < cidades.size(); i++) {
+                CidadeMapaItem cidade = cidades.get(i);
+                LatLng ponto = new LatLng(cidade.getLatitude(), cidade.getLongitude());
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.covid32);
+                String snippet = "Confirmados: " + String.valueOf(cidade.getConfirmados());
+                snippet = snippet + "\n" + "Recuperados: " + String.valueOf(cidade.getRecuperados());
+                snippet = snippet + "\n" + "Óbitos: " + String.valueOf(cidade.getObitos());
+                snippet = snippet + "\n" + "Em recuperação: " + String.valueOf(cidade.getEmRecuperacao());
+                mMap.addMarker(new MarkerOptions()
+                        .position(ponto)
+                        .title(cidade.getCidade())
+                        .icon(icon)
+                        .snippet(snippet)
+                );
+                this.ajustarInformacoes();
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(ponto)
+                        .fillColor(Color.LTGRAY)
+                        .strokeColor(Color.TRANSPARENT)
+                        .radius(30 * (int) cidade.getIncidencia());
+                mMap.addCircle(circleOptions);
+
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setDadosBairros(List<BairroMapaItem> bairros) {
+        //https://www.flaticon.com/
+        try {
+
+            for (int i = 0; i < bairros.size(); i++) {
+                BairroMapaItem bairro = bairros.get(i);
+                LatLng ponto = new LatLng(bairro.getLatitude(), bairro.getLongitude());
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.bairro32);
+                mMap.addMarker(new MarkerOptions()
+                        .position(ponto)
+                        .title(bairro.getCidade())
+                        .icon(icon)
+                        .snippet("Bairro: " + bairro.getBairro() + " - " + bairro.getConfirmados() + " confirmado(s)")
+                );
+                int confirmados = bairro.getConfirmados();
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(ponto)
+                        .fillColor(Color.parseColor("#33FFFF"))
+                        .strokeColor(Color.parseColor("#33FFFF"))
+                        .radius(5*confirmados);
+                mMap.addCircle(circleOptions);
+
+            }
+        }
+        catch (Exception e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
 
     private void getDeviceLocation() {
         /*
@@ -245,112 +320,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
         catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
-        catch (Exception e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-
-
-    void run() throws IOException {
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(URL)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                final String myResponse = response.body().string();
-
-                MapaActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (TIPO_MAPA.equals("cidades")) {
-                            setDadosCidades(myResponse);
-                        } else {
-                            setDadosBairros(myResponse);
-                        }
-
-                    }
-                });
-
-            }
-        });
-    }
-
-    private void setDadosCidades(String myResponse) {
-        try {
-            JSONArray arr = new JSONArray(myResponse);
-
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-
-                LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.covid32);
-                String snippet = "Confirmados: " + String.valueOf(obj.getInt("confirmados"));
-                snippet = snippet + "\n" + "Recuperados: " + String.valueOf(obj.getInt("recuperados"));
-                snippet = snippet + "\n" + "Óbitos: " + String.valueOf(obj.getInt("obitos"));
-                snippet = snippet + "\n" + "Em recuperação: " + String.valueOf(obj.getInt("emRecuperacao"));
-                mMap.addMarker(new MarkerOptions()
-                        .position(ponto)
-                        .title(obj.getString("cidade"))
-                        .icon(icon)
-                        .snippet(snippet)
-                );
-                this.ajustarInformacoes();
-                CircleOptions circleOptions = new CircleOptions()
-                        .center(ponto)
-                        .fillColor(Color.LTGRAY)
-                        .strokeColor(Color.TRANSPARENT)
-                        .radius(30 * (int) obj.getDouble("incidencia"));
-                mMap.addCircle(circleOptions);
-
-            }
-        }
-        catch (JSONException e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-        catch (Exception e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-
-    private void setDadosBairros(String myResponse) {
-        //https://www.flaticon.com/
-        try {
-            JSONArray arr = new JSONArray(myResponse);
-
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-
-                LatLng ponto = new LatLng(obj.getDouble("latitude"), obj.getDouble("longitude"));
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.bairro32);
-                mMap.addMarker(new MarkerOptions()
-                        .position(ponto)
-                        .title(obj.getString("cidade"))
-                        .icon(icon)
-                        .snippet("Bairro: " + String.valueOf(obj.getString("bairro")) + " - " + obj.getInt("confirmados") + " confirmado(s)")
-                );
-                int confirmados = obj.getInt("confirmados");
-                CircleOptions circleOptions = new CircleOptions()
-                        .center(ponto)
-                        .fillColor(Color.parseColor("#33FFFF"))
-                        .strokeColor(Color.parseColor("#33FFFF"))
-                        .radius(5*confirmados);
-                mMap.addCircle(circleOptions);
-
-            }
-        }
-        catch (JSONException e) {
             Log.e("Exception: %s", e.getMessage());
         }
         catch (Exception e) {
