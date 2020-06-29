@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
         VERSAO = getVersionCode();
+        txtAvisos.setVisibility(View.GONE);
         sharedPref = getPreferences(Context.MODE_PRIVATE);
         //CARREGANDO DADOS INICIAIS
         if (!getAtualizacao().equals("00/00/0000 00:00")) {
@@ -299,9 +300,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 }
                 else {
                     int total = Integer.parseInt(this.confirmados.getText().toString());
-                    double obitos = (Integer.parseInt(this.obitos.getText().toString())/(double)total)*100;
-                    double recuperados = (Integer.parseInt(this.txtRecuperados.getText().toString())/(double)total)*100;
-                    double emRecuperacao = (Integer.parseInt(this.suspeitos.getText().toString())/(double)total)*100;
+                    double obitos = 0;
+                    double recuperados = 0;
+                    double emRecuperacao = 0;
+                    try {
+                        obitos = (Integer.parseInt(this.obitos.getText().toString())/(double)total)*100;
+                        recuperados = (Integer.parseInt(this.txtRecuperados.getText().toString())/(double)total)*100;
+                        emRecuperacao = (Integer.parseInt(this.suspeitos.getText().toString())/(double)total)*100;
+                    }
+                    catch (ArithmeticException e) {
+                        obitos = 0;
+                        recuperados = 0;
+                        emRecuperacao = 0;
+                        e.printStackTrace();
+                    }
+
                     DecimalFormat df = new DecimalFormat("#0.00");
                     this.obitos.setText(df.format(obitos) + "%");
                     this.txtRecuperados.setText(df.format(recuperados) + "%");
@@ -408,12 +421,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String data_armazenada = getAtualizacao();
             if (data_agora.equals(data_armazenada)) {
                 this.carregarDadosIniciais();
+                progresso.setVisibility(View.GONE);
             }
             else {
                 setAtualizacao(data_agora);
                 DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
                 Void retorno = dd.execute().get();
                 this.carregarDadosIniciais();
+                progresso.setVisibility(View.GONE);
             }
 
         } catch (JSONException e) {

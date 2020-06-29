@@ -11,6 +11,8 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.ExecutionException;
+
 import pet.yoko.apps.covid.db.CarregarCidades;
 import pet.yoko.apps.covid.db.DatabaseClient;
 
@@ -35,8 +37,8 @@ public class TabelaActivity extends AppCompatActivity {
         adapter = new CidadeAdapter(items);
         tools.prepararRecycleView(recyclerView,items,adapter);
 
-        CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),recyclerView);
-        cc.execute();
+        iniciar();
+
         pesquisar = (SearchView)findViewById(R.id.search);
         pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -63,6 +65,23 @@ public class TabelaActivity extends AppCompatActivity {
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, "Compartilhando dados...");
                 startActivity(shareIntent);
+            }
+        });
+    }
+
+    public void iniciar() {
+        TabelaActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),recyclerView,adapter,items);
+                try {
+                    items = (ArrayList<CidadeItem>) cc.execute().get();
+                    adapter.notifyDataSetChanged();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

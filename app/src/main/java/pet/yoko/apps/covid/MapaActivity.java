@@ -159,9 +159,9 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 this.ajustarInformacoes();
                 CircleOptions circleOptions = new CircleOptions()
                         .center(ponto)
-                        .fillColor(Color.LTGRAY)
+                        .fillColor(Color.YELLOW)
                         .strokeColor(Color.TRANSPARENT)
-                        .radius(30 * (int) cidade.getIncidencia());
+                        .radius(30 * (int) cidade.getEmRecuperacao());
                 mMap.addCircle(circleOptions);
 
             }
