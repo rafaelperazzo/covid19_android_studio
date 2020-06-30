@@ -4,7 +4,7 @@
 </head>
 <body>
 
-<h1>COVID19 - CARIRI</h1>
+<h1><a href="https://apps.yoko.pet/covid">COVID19 - CARIRI</a></h1>
 
 <a href='https://play.google.com/store/apps/details?id=pet.yoko.apps.covid' target="_blank"><img src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="20%" heigth="20%"></a>
 
