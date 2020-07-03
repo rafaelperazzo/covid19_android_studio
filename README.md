@@ -31,7 +31,7 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
   <li>Mapa das cidades com confirmações</li>
   <li>Mapa dos bairros com confirmações</li>
   <li>Tabela dos números por cidade</li>
-  <li>Situação geral baseada na escala do Prof. Maxwell Oliveira: <a href="http://www.covidometro.com.br">Covidometro</a><a href='https://www.youtube.com/watch?v=bNk99jr4U20'>VÍDEO</a></li>
+  <li>Situação geral baseada na escala do Prof. Maxwell Oliveira: <a href="http://www.covidometro.com.br">Covidometro</a> - <a href='https://www.youtube.com/watch?v=bNk99jr4U20'>VÍDEO</a></li>
 </ul> 
 
 <h2>ESCALA DA SITUAÇÃO</h2>
