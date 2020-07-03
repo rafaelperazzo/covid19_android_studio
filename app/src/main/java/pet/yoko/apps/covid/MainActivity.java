@@ -140,8 +140,31 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         cdi.execute();
         CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
         try {
-            String coeficiente = cc.execute().get();
-            texto_descricao_grafico = coeficiente;
+            double coeficiente = cc.execute().get();
+            DecimalFormat df = new DecimalFormat("#0.00");
+            texto_descricao_grafico = df.format(coeficiente);
+            if ((coeficiente>=0) && (coeficiente<0.58)) {
+                this.confirmacoes.setText("TRÁGICA");
+                this.confirmacoes.setBackgroundColor(Color.RED);
+                this.confirmacoes.setTextColor(Color.WHITE);
+            }
+            else if ((coeficiente>=0.58) && (coeficiente<5)) {
+                this.confirmacoes.setText("CRÍTICA");
+                this.confirmacoes.setBackgroundColor(Color.parseColor("#FF3333"));
+            }
+            else if ((coeficiente>=5) && (coeficiente<20)) {
+                this.confirmacoes.setText("GRAVE");
+                this.confirmacoes.setBackgroundColor(Color.parseColor("#FF8000"));
+            }
+            else if ((coeficiente>=20) && (coeficiente<56.8)) {
+                this.confirmacoes.setText("CONTROLADA");
+                this.confirmacoes.setBackgroundColor(Color.YELLOW);
+            }
+            else {
+                this.confirmacoes.setText("NORMALIDADE");
+                this.confirmacoes.setBackgroundColor(Color.parseColor("#336600"));
+                this.confirmacoes.setTextColor(Color.WHITE);
+            }
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

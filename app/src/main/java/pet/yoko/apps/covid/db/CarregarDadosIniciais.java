@@ -54,7 +54,7 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             this.emRecuperacao.setText(String.valueOf(items.get(0).getEmRecuperacao()));
             this.obitos.setText(String.valueOf(items.get(0).getObitos()));
             this.taxa.setText(df.format(items.get(0).getTaxa()));
-            this.confirmacoes.setText(String.valueOf(items.get(0).getConfirmacoes()));
+            //this.confirmacoes.setText(String.valueOf(items.get(0).getConfirmacoes()));
             this.recuperados.setText(String.valueOf(items.get(0).getRecuperados()));
             this.comorbidades.setText(items.get(0).getComorbidades());
             this.mediaObitosPorDia.setText(String.valueOf(items.get(0).getMediaObitosPorDia()));

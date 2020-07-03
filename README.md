@@ -23,13 +23,15 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
   <li>Quantidade de confirmações</li>
   <li>Quantidade de recuperados</li>
   <li>Quantidade de Óbitos</li>
-  <li>Quantidade de casos em análise</li>
-  <li>Quantidade de cidades com confirmação</li>
+  <li>Quantidade de casos em recuperação</li>
   <li>Média de óbitos por dia</li>
+  <li>Taxa de pacientes em recuperação por 100.000 habitantes</li>
   <li>Perfil dos óbitos: Por idade e sexo e comorbidades;</li>
   <li>Gráficos dos totais de confirmações e óbitos: Por idade e sexo</li>
   <li>Mapa das cidades com confirmações</li>
   <li>Mapa dos bairros com confirmações</li>
+  <li>Tabela dos números por cidade</li>
+  <li>Situação geral baseada na escala do Prof. Maxwell Oliveira: <a href="http://www.covidometro.com.br">Covidometro</a><a href='https://www.youtube.com/watch?v=bNk99jr4U20'>VÍDEO</a></li>
 </ul> 
 
 <h3>Teste de todas as funcionalidades do app em Android 8.0</h3>

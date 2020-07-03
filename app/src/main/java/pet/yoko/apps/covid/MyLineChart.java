@@ -88,7 +88,7 @@ public class MyLineChart {
         grafico.setData(lineData);
         grafico.animateY(2000);
         grafico.getXAxis().setEnabled(false);
-        grafico.getDescription().setText("Coeficiente dos últimos 15 dias: " + descricao);
+        grafico.getDescription().setText("Covidometro: " + descricao);
         grafico.getDescription().setTextSize(10);
         grafico.getDescription().setEnabled(true);
         grafico.invalidate();

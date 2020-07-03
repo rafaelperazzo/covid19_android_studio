@@ -24,7 +24,8 @@ public class Ferramenta {
 
     private Context c;
     private ProgressBar progressoMain;
-
+    public static final int populacao = 1026210;
+    public static final int TEMPO = 7;
     public Ferramenta(Context c) {
         this.c = c;
     }
