@@ -34,6 +34,74 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
   <li>Situação geral baseada na escala do Prof. Maxwell Oliveira: <a href="http://www.covidometro.com.br">Covidometro</a><a href='https://www.youtube.com/watch?v=bNk99jr4U20'>VÍDEO</a></li>
 </ul> 
 
+<h2>ESCALA DA SITUAÇÃO</h2>
+<h3>Baseada na definição do Covidometro.com.br</h3>
+<table>
+
+  <tr>
+    <td>
+    SITUAÇÃO
+    </td>
+    <td>
+    DESCRIÇÃO*
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>
+    TRÁGICA
+    </td>
+    <td>
+    Velocidade entre 0 e 0.58
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>
+    CRÍTICA
+    </td>
+    <td>
+    Velocidade entre 0.58 e 5
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>
+    GRAVE
+    </td>
+    <td>
+    Velocidade entre 5 e 20
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>
+    CONTROLADA
+    </td>
+    <td>
+    Velocidade entre 20 e 56.8
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>
+    NORMALIDADE
+    </td>
+    <td>
+    Velocidade maior que 56.8
+    </td>
+
+  </tr>
+
+</table>
+*Velocidade significa o tempo (em dias) para um novo óbito por 100.000 habitantes.
+<Hr>
+
 <h3>Teste de todas as funcionalidades do app em Android 8.0</h3>
 <a href='https://www.youtube.com/watch?v=HPTWujJQ1C4'target="_blank"><img src='youtube.png' width="50%" heigth="50%"></a>
 

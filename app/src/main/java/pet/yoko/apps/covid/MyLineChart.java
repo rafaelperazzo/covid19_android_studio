@@ -88,7 +88,7 @@ public class MyLineChart {
         grafico.setData(lineData);
         grafico.animateY(2000);
         grafico.getXAxis().setEnabled(false);
-        grafico.getDescription().setText("Covidometro: " + descricao);
+        grafico.getDescription().setText("Um novo óbito (por 100.000 hab) a cada " + descricao + " dia(s)");
         grafico.getDescription().setTextSize(10);
         grafico.getDescription().setEnabled(true);
         grafico.invalidate();
