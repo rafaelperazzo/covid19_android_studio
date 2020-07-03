@@ -3,6 +3,7 @@ package pet.yoko.apps.covid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,14 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.github.anastr.speedviewlib.DeluxeSpeedView;
+import com.github.anastr.speedviewlib.SpeedView;
+import com.github.anastr.speedviewlib.Speedometer;
+import com.github.anastr.speedviewlib.components.Section;
+import com.github.anastr.speedviewlib.components.note.Note;
+import com.github.anastr.speedviewlib.components.note.TextNote;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.concurrent.ExecutionException;
@@ -63,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView atualizar;
     TextView txtAvisos;
     SharedPreferences sharedPref;
+    SpeedView velocimetro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
         atualizar.setVisibility(View.GONE);
+        velocimetro = (SpeedView)findViewById(R.id.velocimetro);
+        ajustarVelocimetro();
         String versionName;
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
@@ -123,6 +135,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     }
 
+    public void ajustarVelocimetro() {
+        velocimetro.setSpeedometerMode(Speedometer.Mode.NORMAL);
+        velocimetro.setUnit("");
+        velocimetro.setWithIndicatorLight(true);
+        velocimetro.setSpeedTextSize(32);
+        velocimetro.setMaxSpeed(200);
+        velocimetro.clearSections();
+        velocimetro.addSections(new Section(.0f,.06f,Color.GREEN,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.06f,.17f,Color.YELLOW,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.17f,.32f,Color.parseColor("#FF8000"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.32f,.55f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.55f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.setWithTremble(false);
+        velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
+    }
+
     private void setAtualizacao(String atualizacao) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("atualizacao", atualizacao);
@@ -135,36 +163,59 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         return (atualizacao);
     }
 
+    public double coeficiente2Velocidade(double coeficiente) {
+        double retorno;
+        retorno = 100*(2-(1+(Math.log(coeficiente)/Math.log(100))));
+        return (retorno);
+    }
+
     public void carregarDadosIniciais() {
         CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
         cdi.execute();
         CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
         try {
             double coeficiente = cc.execute().get();
+            double velocidade;
+            if (coeficiente>100) {
+                velocidade = 0;
+            }
+            else if (coeficiente<0.01) {
+                velocidade = 200;
+            }
+            else {
+                velocidade = coeficiente2Velocidade(coeficiente);
+            }
+            velocimetro.speedTo((float)velocidade,3000);
             DecimalFormat df = new DecimalFormat("#0.00");
             texto_descricao_grafico = df.format(coeficiente);
             if ((coeficiente>=0) && (coeficiente<0.58)) {
                 this.confirmacoes.setText("TRÁGICA");
                 this.confirmacoes.setBackgroundColor(Color.RED);
                 this.confirmacoes.setTextColor(Color.WHITE);
+
             }
             else if ((coeficiente>=0.58) && (coeficiente<5)) {
                 this.confirmacoes.setText("CRÍTICA");
                 this.confirmacoes.setBackgroundColor(Color.parseColor("#FF3333"));
+
             }
             else if ((coeficiente>=5) && (coeficiente<20)) {
                 this.confirmacoes.setText("GRAVE");
                 this.confirmacoes.setBackgroundColor(Color.parseColor("#FF8000"));
+
             }
             else if ((coeficiente>=20) && (coeficiente<56.8)) {
                 this.confirmacoes.setText("CONTROLADA");
                 this.confirmacoes.setBackgroundColor(Color.YELLOW);
+
             }
             else {
                 this.confirmacoes.setText("NORMALIDADE");
                 this.confirmacoes.setBackgroundColor(Color.parseColor("#336600"));
                 this.confirmacoes.setTextColor(Color.WHITE);
+
             }
+            velocimetro.removeAllNotes();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

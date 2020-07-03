@@ -102,8 +102,8 @@ Os dados são coletados diretamente da plataforma IntegraSUS (3 vezes ao dia) e 
 *Velocidade significa o tempo (em dias) para um novo óbito por 100.000 habitantes.
 <Hr>
 
-<h3>Teste de todas as funcionalidades do app em Android 8.0</h3>
-<a href='https://www.youtube.com/watch?v=HPTWujJQ1C4'target="_blank"><img src='youtube.png' width="50%" heigth="50%"></a>
+<h3>Teste de todas as funcionalidades do app em Android 7.0</h3>
+<a href='https://www.youtube.com/watch?v=CrH0neNXlxA'target="_blank"><img src='youtube.png' width="50%" heigth="50%"></a>
 
 <p>
 Os dados brutos podem ser coletados no <a href='https://github.com/rafaelperazzo/covid19'>projeto Covid19</a>.

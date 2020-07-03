@@ -9,9 +9,11 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="126dp"
         android:orientation="horizontal">
+
 
         <ImageView
             android:id="@+id/imageView8"
@@ -19,6 +21,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:srcCompat="@drawable/handwash128" />
+
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/velocimetro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/imageView9"
