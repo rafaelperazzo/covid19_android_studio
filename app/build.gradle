@@ -63,4 +63,5 @@ dependencies {
     implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.4.0'
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.4.0'
     implementation 'com.github.anastr:speedviewlib:1.5.2'
+    implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.2'
  }
