@@ -2,6 +2,8 @@ package pet.yoko.apps.covid.db;
 
 import android.os.AsyncTask;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 import java.util.List;
 
 public class CarregarEvolucaoTotal extends AsyncTask<Void,Void, List<EvolucaoTotalItem>> {
@@ -9,6 +11,7 @@ public class CarregarEvolucaoTotal extends AsyncTask<Void,Void, List<EvolucaoTot
     private AppDatabase db;
     String tipo; //Geral e últimos 7 dias;
     String cidade;
+    private LineChart lineChart;
 
     public CarregarEvolucaoTotal(AppDatabase db, String tipo, String cidade) {
         this.db = db;
@@ -20,10 +23,10 @@ public class CarregarEvolucaoTotal extends AsyncTask<Void,Void, List<EvolucaoTot
     protected List<EvolucaoTotalItem> doInBackground(Void... voids) {
         List<EvolucaoTotalItem> items;
         if (cidade.equals("TODAS")) { //TODAS AS CIDADES
-            if (tipo.equals("GERAL")) {
+            if (tipo.equals("GERAL")) { //TODO_ O PERIODO
                 items = db.evolucaoItemDao().getAll();
             }
-            else {
+            else { //ÚLTIMOS 7 DIAS
                 items = db.evolucaoItemDao().getAll7();
             }
         }

@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public static final String TIPO_GRAFICO = "bar";
     public static final String DESCRICAO_GRAFICO = "DESCRIÇÃO";
     public static final String TIPO_MAPA = "cidades";
+    public static final String CIDADE = "TODAS AS CIDADES";
     public String texto_descricao_grafico = "";
     public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
     public String url_cidades = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
@@ -152,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 }
                 else {
                     carregarDadosIniciaisCidade(cidade.getSelectedItem().toString(),"cidadeUnica");
+                    carregarDadosCoeficiente();
                 }
             }
 
@@ -218,7 +220,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void carregarDadosIniciais() {
         CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
         cdi.execute();
-        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase());
+        carregarDadosCoeficiente();
+    }
+
+    private void carregarDadosCoeficiente() {
+        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString());
         try {
             double coeficiente = cc.execute().get();
             double velocidade;
@@ -382,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.menu_evolucao_temporal:
                 intent =  new Intent(this,ChartActivity.class);
                 intent.putExtra(TIPO,"evolucao");
+                intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
                 intent.putExtra(TITULO,"Evolução ao longo do tempo");
                 intent.putExtra(TIPO_GRAFICO,"line");
                 intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
@@ -454,8 +461,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void confirmadosClick(View view) {
-        Intent intent =  new Intent(this,ChartActivity.class);
+        Intent intent;
+        intent =  new Intent(this,ChartActivity.class);
         intent.putExtra(TIPO,"evolucao");
+        intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
         intent.putExtra(TITULO,"Evolução ao longo do tempo");
         intent.putExtra(TIPO_GRAFICO,"line");
         intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);

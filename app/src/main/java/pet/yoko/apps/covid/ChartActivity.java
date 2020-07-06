@@ -11,11 +11,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import pet.yoko.apps.covid.db.CarregarEvolucaoTotal;
 import pet.yoko.apps.covid.db.CarregarGraficoItem;
 import pet.yoko.apps.covid.db.DatabaseClient;
+import pet.yoko.apps.covid.db.EvolucaoTotalItem;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -49,12 +56,43 @@ public class ChartActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String TIPO = intent.getStringExtra(MainActivity.TIPO);
         if (TIPO.equals("evolucao")) {
-
+            String CIDADE = intent.getStringExtra(MainActivity.CIDADE);
+            CarregarEvolucaoTotal cet;
+            if (CIDADE.equals("TODAS AS CIDADES")) {
+                cet = new CarregarEvolucaoTotal(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"GERAL","TODAS");
+            }
+            else {
+                cet = new CarregarEvolucaoTotal(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"GERAL",CIDADE);
+            }
+            try {
+                ArrayList<EvolucaoTotalItem> items = (ArrayList<EvolucaoTotalItem>)cet.execute().get();
+                items2grafico(items);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         else {
             CarregarGraficoItem cgi = new CarregarGraficoItem(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),TIPO,TIPO_GRAFICO,grafico,lineChart,DESCRICAO_GRAFICO,progresso);
             cgi.execute();
         }
+    }
+
+    private void items2grafico(ArrayList<EvolucaoTotalItem> items) {
+        ArrayList<Entry> valores_line = new ArrayList<>();
+        ArrayList<Entry> valores_line2 = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+        for (int i=0; i<items.size();i++) {
+            labels.add(items.get(i).getData());
+            valores_line.add(new Entry(i,items.get(i).getConfirmados()));
+            valores_line2.add(new Entry(i,items.get(i).getObitos()));
+        }
+        grafico.setVisibility(View.GONE);
+        lineChart.setVisibility(View.VISIBLE);
+        progresso.setVisibility(View.GONE);
+        MyLineChart chart = new MyLineChart(lineChart,valores_line,valores_line2,labels,true,DESCRICAO_GRAFICO);
+        chart.makeChart();
     }
 
     public void shareClick(View view) {

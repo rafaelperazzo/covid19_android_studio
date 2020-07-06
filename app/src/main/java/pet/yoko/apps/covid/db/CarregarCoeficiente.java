@@ -11,22 +11,39 @@ import pet.yoko.apps.covid.Ferramenta;
 public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
 
     AppDatabase db;
+    String cidade = "TODAS AS CIDADES";
+    int tipo = 0; //0 - ÓBITOS; 1 - CONFIRMAÇÕES
 
-    public CarregarCoeficiente(AppDatabase db) {
+    public CarregarCoeficiente(AppDatabase db,String cidade) {
         this.db = db;
+        this.cidade = cidade;
     }
 
     @Override
     protected Double doInBackground(Void... voids) {
-        List<GraficoItem> graficoItems = db.graficoItemDao().getPorTipo("coeficiente");
-        int ultimo_indice = graficoItems.size()-1;
-        double coeficiente;
+        double coeficiente = 0;
+        List<EvolucaoTotalItem> items;
+        if (this.cidade.equals("TODAS AS CIDADES")) {
+            items = db.evolucaoItemDao().getAll7();
+        }
+        else {
+            items = db.evolucaoItemDao().getAgrupadosCidade7(this.cidade);
+        }
 
         try {
-            GraficoItem primeiro = graficoItems.get(0);
-            GraficoItem ultimo = graficoItems.get(ultimo_indice);
-            double indice1 = ((primeiro.getQuantidade2()*100000)/(double) Ferramenta.populacao);
-            double indice2 = ((ultimo.getQuantidade2()*100000)/(double) Ferramenta.populacao);
+            EvolucaoTotalItem primeiro = items.get(0);
+            EvolucaoTotalItem ultimo = items.get(items.size()-1);
+            double indice1;
+            double indice2;
+            if (this.cidade.equals("TODAS AS CIDADES")) {
+                indice1 = (primeiro.getObitos()*100000)/(double)Ferramenta.populacao;
+                indice2 = (ultimo.getObitos()*100000)/(double)Ferramenta.populacao;
+            }
+            else {
+                int populacao = db.cidadesNumerosDao().getPopulacao(this.cidade);
+                indice1 = (primeiro.getObitos()*100000)/(double)populacao;
+                indice2 = (ultimo.getObitos()*100000)/(double)populacao;
+            }
             coeficiente = Ferramenta.TEMPO/(indice1-indice2);
         }
         catch (IndexOutOfBoundsException e) {
@@ -36,9 +53,8 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
             coeficiente = 0;
         }
 
-        //DecimalFormat df = new DecimalFormat("#0.00");
-        //return df.format(coeficiente);
-        return(coeficiente);
+        return (coeficiente);
+
     }
 
 }
