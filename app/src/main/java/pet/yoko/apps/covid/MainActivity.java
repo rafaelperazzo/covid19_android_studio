@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtAvisos;
     SharedPreferences sharedPref;
     SpeedView velocimetro;
+    SpeedView velocimetro2;
     Spinner cidade;
 
     @Override
@@ -102,9 +103,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
         atualizar.setVisibility(View.GONE);
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
+        velocimetro2 = (SpeedView)findViewById(R.id.velocimetro2);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         this.onSelectCity();
-        ajustarVelocimetro();
+        ajustarVelocimetro(velocimetro);
+        ajustarVelocimetro(velocimetro2);
         String versionName;
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
@@ -153,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 }
                 else {
                     carregarDadosIniciaisCidade(cidade.getSelectedItem().toString(),"cidadeUnica");
-                    carregarDadosCoeficiente();
+                    carregarDadosCoeficiente(velocimetro2,1);
+                    carregarDadosCoeficiente(velocimetro,0);
                 }
             }
 
@@ -164,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
     }
 
-    public void ajustarVelocimetro() {
+    public void ajustarVelocimetro(SpeedView velocimetro) {
         velocimetro.setSpeedometerMode(Speedometer.Mode.NORMAL);
         velocimetro.setUnit("");
         velocimetro.setWithIndicatorLight(true);
@@ -177,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.addSections(new Section(.32f,.55f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.addSections(new Section(.55f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.setWithTremble(false);
-        velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
+        //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
+        velocimetro.setCenterCircleRadius(30);
     }
 
     private void setAtualizacao(String atualizacao) {
@@ -220,11 +225,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void carregarDadosIniciais() {
         CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
         cdi.execute();
-        carregarDadosCoeficiente();
+        carregarDadosCoeficiente(velocimetro2,1);
+        carregarDadosCoeficiente(velocimetro,0);
     }
 
-    private void carregarDadosCoeficiente() {
-        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString());
+    private void carregarDadosCoeficiente(SpeedView velocimetro, int tipo) {
+        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),tipo);
         try {
             double coeficiente = cc.execute().get();
             double velocidade;
@@ -262,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
             }
             else {
-                this.confirmacoes.setText("NORMALIDADE");
+                this.confirmacoes.setText("NORMAL");
                 this.confirmacoes.setBackgroundColor(Color.parseColor("#336600"));
                 this.confirmacoes.setTextColor(Color.WHITE);
 

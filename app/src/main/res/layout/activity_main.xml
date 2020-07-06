@@ -14,18 +14,20 @@
         android:layout_height="126dp"
         android:orientation="horizontal">
 
-
+        <!--
         <ImageView
             android:id="@+id/imageView8"
             android:layout_width="222dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:srcCompat="@drawable/handwash128" />
-
+        -->
         <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/velocimetro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
 
         <ImageView
             android:id="@+id/imageView9"
@@ -33,6 +35,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:srcCompat="@drawable/ufca" />
+
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/velocimetro2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -42,7 +49,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="MONITORAMENTO DO COVID19 NA REGIÃO DO CARIRI"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/cmbCidades"
