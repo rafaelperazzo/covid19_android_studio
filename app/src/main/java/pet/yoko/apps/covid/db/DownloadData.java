@@ -76,7 +76,8 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 double incidencia = linha.getDouble("taxa");
                 int recuperados = linha.getInt("recuperados");
                 int emRecuperacao = confirmados-obitos-recuperados;
-                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao);
+                int populacao = linha.getInt("populacao");
+                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao);
                 db.cidadesNumerosDao().insert(cidadeNumero);
             }
         }
@@ -131,6 +132,22 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    private void baixarDadosEvolucaoTotal(String url) {
+        try {
+            String myResponse = run(url);
+            JSONArray arr = new JSONArray(myResponse);
+            db.evolucaoItemDao().delete_all();
+            for (int i=0; i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                EvolucaoTotalItem evolucao = new EvolucaoTotalItem(obj.getString("cidade"),obj.getString("data"),obj.getInt("confirmado"),obj.getInt("obitos"));
+                db.evolucaoItemDao().insert(evolucao);
+            }
+        }
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -159,6 +176,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         baixarDadosIniciais("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
         baixarDadosCidadesMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades");
         baixarDadosBairrosMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=bairros");
+        baixarDadosEvolucaoTotal("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
         return null;
     }
 

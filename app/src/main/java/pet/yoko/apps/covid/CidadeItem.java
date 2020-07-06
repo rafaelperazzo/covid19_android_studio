@@ -25,6 +25,16 @@ public class CidadeItem implements Serializable {
     int recuperados;
     @ColumnInfo(name = "emRecuperacao")
     int emRecuperacao;
+    @ColumnInfo(name = "populacao")
+    int populacao;
+
+    public int getPopulacao() {
+        return populacao;
+    }
+
+    public void setPopulacao(int populacao) {
+        this.populacao = populacao;
+    }
 
     public int getRecuperados() {
         return recuperados;
@@ -89,15 +99,8 @@ public class CidadeItem implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    /*public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia) {
-        this.cidade = cidade;
-        this.confirmados = confirmados;
-        this.suspeitos = suspeitos;
-        this.obitos = obitos;
-        this.incidencia = incidencia;
-    }*/
-
-    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia,int recuperados,int emRecuperacao) {
+    
+    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia,int recuperados,int emRecuperacao,int populacao) {
         this.cidade = cidade;
         this.confirmados = confirmados;
         this.suspeitos = suspeitos;
@@ -105,5 +108,6 @@ public class CidadeItem implements Serializable {
         this.incidencia = incidencia;
         this.recuperados=recuperados;
         this.emRecuperacao=emRecuperacao;
+        this.populacao=populacao;
     }
 }

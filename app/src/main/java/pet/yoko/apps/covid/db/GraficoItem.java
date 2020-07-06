@@ -15,6 +15,9 @@ public class GraficoItem implements Serializable {
     @ColumnInfo(name = "tipo")
     String tipo;
 
+    @ColumnInfo(name = "cidade")
+    String cidade;
+
     @ColumnInfo(name = "label")
     String label;
 
@@ -29,6 +32,15 @@ public class GraficoItem implements Serializable {
         this.label = label;
         this.quantidade = quantidade;
         this.quantidade2 = quantidade2;
+        this.cidade = "INDEFINIDA";
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
     public int getQuantidade2() {

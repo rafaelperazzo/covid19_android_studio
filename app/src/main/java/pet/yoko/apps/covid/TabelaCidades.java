@@ -34,9 +34,10 @@ public class TabelaCidades {
             double incidencia = linha.getDouble("taxa");
             int recuperados = linha.getInt("recuperados");
             int emRecuperacao = confirmados-obitos-recuperados;
-            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao));
+            int populacao = linha.getInt("populacao");
+            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao));
         }
-        items.add(new CidadeItem("",-1,-1,-1,-1,-1,-1));
+        items.add(new CidadeItem("",-1,-1,-1,-1,-1,-1,-1));
 
         Collections.sort(items, new Comparator<CidadeItem>() {
             @Override

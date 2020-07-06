@@ -17,8 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.anastr.speedviewlib.DeluxeSpeedView;
@@ -30,6 +32,7 @@ import com.github.anastr.speedviewlib.components.note.TextNote;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
@@ -37,6 +40,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import pet.yoko.apps.covid.db.CarregarCidades;
 import pet.yoko.apps.covid.db.CarregarCoeficiente;
 import pet.yoko.apps.covid.db.CarregarDadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtAvisos;
     SharedPreferences sharedPref;
     SpeedView velocimetro;
+    Spinner cidade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
         atualizar.setVisibility(View.GONE);
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
+        cidade = (Spinner)findViewById(R.id.cmbCidades);
+        this.onSelectCity();
         ajustarVelocimetro();
         String versionName;
         int versionCode;
@@ -103,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         VERSAO = getVersionCode();
         txtAvisos.setVisibility(View.GONE);
         sharedPref = getPreferences(Context.MODE_PRIVATE);
+
         //CARREGANDO DADOS INICIAIS
         if (!getAtualizacao().equals("00/00/0000 00:00")) {
             this.carregarDadosIniciais();
@@ -133,6 +141,25 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onResume();
 
 
+    }
+
+    public void onSelectCity() {
+        cidade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0) { //TODAS AS CIDADES
+                    carregarDadosIniciais();
+                }
+                else {
+                    carregarDadosIniciaisCidade(cidade.getSelectedItem().toString(),"cidadeUnica");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void ajustarVelocimetro() {
@@ -167,6 +194,25 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         double retorno;
         retorno = 100*(2-(1+(Math.log(coeficiente)/Math.log(100))));
         return (retorno);
+    }
+
+    public void carregarDadosIniciaisCidade(String cidade, String tipo) {
+        CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),tipo,cidade);
+        try {
+            ArrayList<CidadeItem> dados = (ArrayList<CidadeItem>)cc.execute().get();
+            CidadeItem cidadeAtual = dados.get(0);
+            this.confirmados.setText(String.valueOf(cidadeAtual.getConfirmados()));
+            this.suspeitos.setText(String.valueOf(cidadeAtual.getEmRecuperacao()));
+            this.obitos.setText(String.valueOf(cidadeAtual.getObitos()));
+            this.taxa.setText(Ferramenta.df.format(cidadeAtual.getIncidencia()));
+            this.txtRecuperados.setText(String.valueOf(cidadeAtual.getRecuperados()));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 
     public void carregarDadosIniciais() {

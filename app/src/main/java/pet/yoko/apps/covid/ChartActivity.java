@@ -48,8 +48,13 @@ public class ChartActivity extends AppCompatActivity {
     public void carregarDados() {
         Intent intent = getIntent();
         String TIPO = intent.getStringExtra(MainActivity.TIPO);
-        CarregarGraficoItem cgi = new CarregarGraficoItem(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),TIPO,TIPO_GRAFICO,grafico,lineChart,DESCRICAO_GRAFICO,progresso);
-        cgi.execute();
+        if (TIPO.equals("evolucao")) {
+
+        }
+        else {
+            CarregarGraficoItem cgi = new CarregarGraficoItem(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),TIPO,TIPO_GRAFICO,grafico,lineChart,DESCRICAO_GRAFICO,progresso);
+            cgi.execute();
+        }
     }
 
     public void shareClick(View view) {

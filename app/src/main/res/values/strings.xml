@@ -5,4 +5,37 @@
     <string name="internet_indisponivel">Internet indisponível! Verifique sua conexão!</string>
     <string name="atualizacao">Uma nova versão do aplicativo está disponível, com correções e novos recursos</string>
     <string name="integrasus">Informações processadas a partir dos dados coletados da Plataforma IntegraSus. Velocímetro baseado no projeto Covidometro (http://www.covidometro.com.br)</string>
+    <string-array name="cariri_array">
+        <item>TODAS AS CIDADES</item>
+        <item>ABAIARA</item>
+        <item>ALTANEIRA</item>
+        <item>ANTONINA DO NORTE</item>
+        <item>ARARIPE</item>
+        <item>ASSARE</item>
+        <item>AURORA</item>
+        <item>BARBALHA</item>
+        <item>BARRO</item>
+        <item>BREJO SANTO</item>
+        <item>CAMPOS SALES</item>
+        <item>CARIRIACU</item>
+        <item>CRATO</item>
+        <item>FARIAS BRITO</item>
+        <item>GRANJEIRO</item>
+        <item>JARDIM</item>
+        <item>JATI</item>
+        <item>JUAZEIRO DO NORTE</item>
+        <item>LAVRAS DA MANGABEIRA</item>
+        <item>MAURITI</item>
+        <item>MILAGRES</item>
+        <item>MISSAO VELHA</item>
+        <item>NOVA OLINDA</item>
+        <item>PENAFORTE</item>
+        <item>PORTEIRAS</item>
+        <item>POTENGI</item>
+        <item>SALITRE</item>
+        <item>SANTANA DO CARIRI</item>
+        <item>TARRAFAS</item>
+        <item>VARZEA ALEGRE</item>
+    </string-array>
+
 </resources>

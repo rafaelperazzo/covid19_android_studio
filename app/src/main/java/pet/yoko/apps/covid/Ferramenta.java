@@ -17,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import static com.inamik.text.tables.Cell.Functions.VERTICAL_CENTER;
 
@@ -26,6 +27,7 @@ public class Ferramenta {
     private ProgressBar progressoMain;
     public static final int populacao = 1026210;
     public static final int TEMPO = 7;
+    public static DecimalFormat df = new DecimalFormat("#0.00");
     public Ferramenta(Context c) {
         this.c = c;
     }
@@ -53,7 +55,7 @@ public class Ferramenta {
                     filtrada.add(linha);
                 }
             }
-            filtrada.add((new CidadeItem("",-1,-1,-1,-1,-1,-1)));
+            filtrada.add((new CidadeItem("",-1,-1,-1,-1,-1,-1,-1)));
             adapter.setItems(filtrada);
         }
         else {

@@ -44,6 +44,12 @@
         android:text="MONITORAMENTO DO COVID19 NA REGIÃO DO CARIRI"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+    <Spinner
+        android:id="@+id/cmbCidades"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/cariri_array" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

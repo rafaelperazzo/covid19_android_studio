@@ -16,6 +16,12 @@ public interface CidadesNumerosDao {
     @Query("SELECT * FROM CidadeItem")
     List<CidadeItem> getAll();
 
+    @Query("SELECT 0 as id,sum(confirmados) as confirmados, sum(suspeitos) as suspeitos, sum(obitos) as obitos, sum(populacao) as populacao, sum(recuperados) as recuperados, sum(confirmados)-sum(recuperados)-sum(obitos) as emRecuperacao, (sum(confirmados)-sum(recuperados)-sum(obitos))/(1.0*sum(populacao))*100000 as incidencia FROM CidadeItem")
+    List<CidadeItem> getResumo();
+
+    @Query("SELECT * FROM CidadeItem WHERE cidade LIKE :cidade")
+    List<CidadeItem> getCidade(String cidade);
+
     @Query("DELETE FROM CidadeItem")
     void delete_all();
 

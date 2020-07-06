@@ -12,7 +12,7 @@ public class DatabaseClient {
 
     private DatabaseClient(Context mCtx) {
         this.context = mCtx;
-        appDatabase = Room.databaseBuilder(mCtx, AppDatabase.class, "covidUFCA_db").build();
+        appDatabase = Room.databaseBuilder(mCtx, AppDatabase.class, "covidUFCA_db").fallbackToDestructiveMigration().build();
     }
 
     public static synchronized DatabaseClient getInstance(Context mCtx) {
