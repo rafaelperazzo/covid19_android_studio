@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtEnfermaria;
     ProgressBar progresso;
     TextView versao;
-    TextView txtObitosComorbidades;
-    TextView txtObitosPorDia;
-    TextView txtObitosPorIdade;
+    TextView txtDias;
+    TextView txtHoras;
+    TextView txtMinutos;
     public int VERSAO;
     TextView atualizar;
     TextView txtAvisos;
@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         obitos = (TextView)findViewById(R.id.obitos);
         txtUti = (TextView)findViewById(R.id.txtUTI);
         txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
-        txtObitosComorbidades = (TextView)findViewById(R.id.txtObitosCoMorbidades);
-        txtObitosPorDia = (TextView)findViewById(R.id.txtObitosPorDia);
-        txtObitosPorIdade = (TextView)findViewById(R.id.txtMedianaIdade);
+        txtDias = (TextView)findViewById(R.id.txtDias);
+        txtHoras = (TextView)findViewById(R.id.txtHoras);
+        txtMinutos = (TextView)findViewById(R.id.txtMinutos);
         txtAvisos = (TextView)findViewById(R.id.txtAvisos);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void carregarDadosIniciais() {
-        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
+        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,txtUti,txtEnfermaria,atualizacao);
         List<DadosIniciais> items;
         try {
             items = cdi.execute().get();
@@ -272,7 +272,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             int horas = (int)(resto*24);
             resto = (resto*24)-horas;
             int minutos = (int)(resto*60);
-
+            if (coeficiente<1000) {
+                txtDias.setText(String.valueOf(dias));
+                txtHoras.setText(String.valueOf(horas));
+                txtMinutos.setText(String.valueOf(minutos));
+            }
+            else {
+                txtDias.setText(String.valueOf(0));
+                txtHoras.setText(String.valueOf(0));
+                txtMinutos.setText(String.valueOf(0));
+            }
             if (coeficiente>100) {
                 velocidade = 0;
             }

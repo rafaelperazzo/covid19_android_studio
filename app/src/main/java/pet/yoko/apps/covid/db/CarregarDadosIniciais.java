@@ -20,14 +20,14 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
     TextView enfermaria;
     TextView atualizacao;
 
-    public CarregarDadosIniciais(AppDatabase db, TextView confirmados, TextView emRecuperacao, TextView obitos, TextView comorbidades, TextView mediaObitosPorDia, TextView medianaIdade, TextView uti, TextView enfermaria,TextView atualizacao) {
+    public CarregarDadosIniciais(AppDatabase db, TextView confirmados, TextView emRecuperacao, TextView obitos,TextView uti, TextView enfermaria,TextView atualizacao) {
         this.db = db;
         this.confirmados = confirmados;
         this.emRecuperacao = emRecuperacao;
         this.obitos = obitos;
-        this.comorbidades = comorbidades;
-        this.mediaObitosPorDia = mediaObitosPorDia;
-        this.medianaIdade = medianaIdade;
+        //this.comorbidades = comorbidades;
+        //this.mediaObitosPorDia = mediaObitosPorDia;
+        //this.medianaIdade = medianaIdade;
         this.uti = uti;
         this.enfermaria = enfermaria;
         this.atualizacao = atualizacao;
@@ -47,9 +47,9 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             this.confirmados.setText(String.valueOf(items.get(0).getConfirmados()));
             this.emRecuperacao.setText(String.valueOf(items.get(0).getEmRecuperacao()));
             this.obitos.setText(String.valueOf(items.get(0).getObitos()));
-            this.comorbidades.setText(items.get(0).getComorbidades());
-            this.mediaObitosPorDia.setText(String.valueOf(items.get(0).getMediaObitosPorDia()));
-            this.medianaIdade.setText(String.valueOf(items.get(0).getMedianaIdade()));
+            //this.comorbidades.setText(items.get(0).getComorbidades());
+            //this.mediaObitosPorDia.setText(String.valueOf(items.get(0).getMediaObitosPorDia()));
+            //this.medianaIdade.setText(String.valueOf(items.get(0).getMedianaIdade()));
             this.uti.setText(items.get(0).getUti() + "%");
             this.enfermaria.setText(items.get(0).getEnfermaria() + "%");
             int uti = items.get(0).getUti();
@@ -77,9 +77,9 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             this.confirmados.setText("0");
             this.emRecuperacao.setText("0");
             this.obitos.setText("0");
-            this.comorbidades.setText("0");
-            this.mediaObitosPorDia.setText("0");
-            this.medianaIdade.setText("0");
+            //this.comorbidades.setText("0");
+            //this.mediaObitosPorDia.setText("0");
+            //this.medianaIdade.setText("0");
             this.uti.setText("0");
             this.enfermaria.setText("0");
             this.atualizacao.setText("0");
