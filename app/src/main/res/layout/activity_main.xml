@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="126dp"
+        android:layout_height="146dp"
         android:orientation="horizontal">
 
         <!--
@@ -33,7 +33,7 @@
             android:layout_width="191dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ufcacovid" />
+            app:srcCompat="@drawable/ufca" />
 
         <com.github.anastr.speedviewlib.TubeSpeedometer
             android:id="@+id/velocimetro2"
@@ -102,6 +102,15 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MONITORAMENTO DA COVID19  - CARIRI"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
     </LinearLayout>
 
     <Spinner

@@ -1,6 +1,7 @@
 package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +17,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.Speedometer;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
 
     }
+
 
     public void onSelectCity() {
         cidade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
