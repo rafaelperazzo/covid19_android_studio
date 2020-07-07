@@ -2,8 +2,6 @@ package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,13 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.github.anastr.speedviewlib.DeluxeSpeedView;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.Speedometer;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
-import com.github.anastr.speedviewlib.components.note.Note;
-import com.github.anastr.speedviewlib.components.note.TextNote;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -48,7 +43,6 @@ import pet.yoko.apps.covid.db.CarregarDadosIniciais;
 import pet.yoko.apps.covid.db.DadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.DownloadData;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,9 +59,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView confirmados;
     TextView suspeitos;
     TextView obitos;
-    TextView taxa;
     TextView atualizacao;
-    TextView confirmacoes;
     TextView txtUti;
     TextView txtEnfermaria;
     ProgressBar progresso;
@@ -75,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtObitosComorbidades;
     TextView txtObitosPorDia;
     TextView txtObitosPorIdade;
-    TextView txtRecuperados;
     public int VERSAO;
     TextView atualizar;
     TextView txtAvisos;
@@ -83,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     SpeedView velocimetro;
     TubeSpeedometer velocimetro2;
     Spinner cidade;
+    TextView txtSituacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,14 +84,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         confirmados = (TextView)findViewById(R.id.confirmados);
         suspeitos = (TextView)findViewById(R.id.suspeitos);
         obitos = (TextView)findViewById(R.id.obitos);
-        taxa = (TextView)findViewById(R.id.taxa);
-        confirmacoes = (TextView)findViewById(R.id.total_confirmacoes);
         txtUti = (TextView)findViewById(R.id.txtUTI);
         txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
         txtObitosComorbidades = (TextView)findViewById(R.id.txtObitosCoMorbidades);
         txtObitosPorDia = (TextView)findViewById(R.id.txtObitosPorDia);
         txtObitosPorIdade = (TextView)findViewById(R.id.txtMedianaIdade);
-        txtRecuperados = (TextView)findViewById(R.id.txtRecuperados);
         txtAvisos = (TextView)findViewById(R.id.txtAvisos);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
@@ -108,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
         velocimetro2 = (TubeSpeedometer) findViewById(R.id.velocimetro2);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
+        txtSituacao = (TextView)findViewById(R.id.txtSituacao);
         this.onSelectCity();
         ajustarVelocimetro(velocimetro);
         ajustarVelocimetroTube(velocimetro2);
@@ -230,8 +220,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             this.confirmados.setText(String.valueOf(cidadeAtual.getConfirmados()));
             this.suspeitos.setText(String.valueOf(cidadeAtual.getEmRecuperacao()));
             this.obitos.setText(String.valueOf(cidadeAtual.getObitos()));
-            this.taxa.setText(Ferramenta.df.format(cidadeAtual.getIncidencia()));
-            this.txtRecuperados.setText(String.valueOf(cidadeAtual.getRecuperados()));
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -242,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void carregarDadosIniciais() {
-        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
+        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
         List<DadosIniciais> items;
         try {
             items = cdi.execute().get();
@@ -274,30 +263,30 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             DecimalFormat df = new DecimalFormat("#0.00");
             texto_descricao_grafico = df.format(coeficiente);
             if ((coeficiente>=0) && (coeficiente<0.58)) {
-                this.confirmacoes.setText("GRAVE");
-                this.confirmacoes.setBackgroundColor(Color.RED);
-                this.confirmacoes.setTextColor(Color.WHITE);
+                this.txtSituacao.setText("GRAVE");
+                this.txtSituacao.setBackgroundColor(Color.RED);
+                this.txtSituacao.setTextColor(Color.WHITE);
 
             }
             else if ((coeficiente>=0.58) && (coeficiente<5)) {
-                this.confirmacoes.setText("ALERTA");
-                this.confirmacoes.setBackgroundColor(Color.parseColor("#FF3333"));
+                this.txtSituacao.setText("ALERTA");
+                this.txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
 
             }
             else if ((coeficiente>=5) && (coeficiente<20)) {
-                this.confirmacoes.setText("ATENÇÃO");
-                this.confirmacoes.setBackgroundColor(Color.parseColor("#FF8000"));
+                this.txtSituacao.setText("ATENÇÃO");
+                this.txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
 
             }
             else if ((coeficiente>=20) && (coeficiente<56.8)) {
-                this.confirmacoes.setText("CONTROLADA");
-                this.confirmacoes.setBackgroundColor(Color.YELLOW);
+                this.txtSituacao.setText("CONTROLADA");
+                this.txtSituacao.setBackgroundColor(Color.YELLOW);
 
             }
             else {
-                this.confirmacoes.setText("NORMAL");
-                this.confirmacoes.setBackgroundColor(Color.parseColor("#336600"));
-                this.confirmacoes.setTextColor(Color.WHITE);
+                this.txtSituacao.setText("NORMAL");
+                this.txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
+                this.txtSituacao.setTextColor(Color.WHITE);
 
             }
             velocimetro.removeAllNotes();
@@ -306,11 +295,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private void downloadData() {
-        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
-        dd.execute();
     }
 
     public void atualizarClick(View v) {
@@ -465,7 +449,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     double emRecuperacao = 0;
                     try {
                         obitos = (Integer.parseInt(this.obitos.getText().toString())/(double)total)*100;
-                        recuperados = (Integer.parseInt(this.txtRecuperados.getText().toString())/(double)total)*100;
                         emRecuperacao = (Integer.parseInt(this.suspeitos.getText().toString())/(double)total)*100;
                     }
                     catch (ArithmeticException e) {
@@ -477,7 +460,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
                     DecimalFormat df = new DecimalFormat("#0.00");
                     this.obitos.setText(df.format(obitos) + "%");
-                    this.txtRecuperados.setText(df.format(recuperados) + "%");
                     this.suspeitos.setText(df.format(emRecuperacao) + "%");
                     setTitle("COVID19 APP (%)");
                 }
