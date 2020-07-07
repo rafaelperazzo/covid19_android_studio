@@ -4,7 +4,7 @@
     <string name="title_activity_mapa">Map</string>
     <string name="internet_indisponivel">Internet indisponível! Verifique sua conexão!</string>
     <string name="atualizacao">Uma nova versão do aplicativo está disponível, com correções e novos recursos</string>
-    <string name="integrasus">Informações processadas a partir dos dados coletados da Plataforma IntegraSus. Velocímetro baseado no projeto Covidometro (https://www.covidometro.com.br)</string>
+    <string name="integrasus">Informações processadas a partir dos dados coletados da Plataforma IntegraSus. Velocímetro inspirado no projeto Covidometro (https://www.covidometro.com.br)</string>
     <string-array name="cariri_array">
         <item>TODAS AS CIDADES</item>
         <item>ABAIARA</item>

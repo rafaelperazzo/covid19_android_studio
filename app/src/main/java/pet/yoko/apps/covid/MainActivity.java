@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.github.anastr.speedviewlib.DeluxeSpeedView;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.Speedometer;
+import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
 import com.github.anastr.speedviewlib.components.note.Note;
 import com.github.anastr.speedviewlib.components.note.TextNote;
@@ -33,6 +34,7 @@ import com.github.anastr.speedviewlib.components.note.TextNote;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
@@ -43,6 +45,7 @@ import okhttp3.Response;
 import pet.yoko.apps.covid.db.CarregarCidades;
 import pet.yoko.apps.covid.db.CarregarCoeficiente;
 import pet.yoko.apps.covid.db.CarregarDadosIniciais;
+import pet.yoko.apps.covid.db.DadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.DownloadData;
 import org.json.JSONArray;
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtAvisos;
     SharedPreferences sharedPref;
     SpeedView velocimetro;
-    SpeedView velocimetro2;
+    TubeSpeedometer velocimetro2;
     Spinner cidade;
 
     @Override
@@ -103,11 +106,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
         atualizar.setVisibility(View.GONE);
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
-        velocimetro2 = (SpeedView)findViewById(R.id.velocimetro2);
+        velocimetro2 = (TubeSpeedometer) findViewById(R.id.velocimetro2);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         this.onSelectCity();
         ajustarVelocimetro(velocimetro);
-        ajustarVelocimetro(velocimetro2);
+        ajustarVelocimetroTube(velocimetro2);
         String versionName;
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 }
                 else {
                     carregarDadosIniciaisCidade(cidade.getSelectedItem().toString(),"cidadeUnica");
-                    carregarDadosCoeficiente(velocimetro2,1);
+                    //carregarDadosCoeficiente(velocimetro2,1);
                     carregarDadosCoeficiente(velocimetro,0);
                 }
             }
@@ -183,6 +186,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.setWithTremble(false);
         //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
         velocimetro.setCenterCircleRadius(30);
+    }
+
+    public void ajustarVelocimetroTube(TubeSpeedometer velocimetro) {
+        velocimetro.setSpeedometerMode(Speedometer.Mode.NORMAL);
+        velocimetro.setUnit("%");
+        velocimetro.setWithIndicatorLight(true);
+        velocimetro.setSpeedTextSize(32);
+        velocimetro.setMaxSpeed(100);
+        velocimetro.clearSections();
+        velocimetro.addSections(new Section(.0f,.7f,Color.GREEN,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.7f,.85f,Color.YELLOW,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.85f,.95f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.95f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.setWithTremble(false);
+        velocimetro.setUnitUnderSpeedText(true);
+        //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
     }
 
     private void setAtualizacao(String atualizacao) {
@@ -224,8 +243,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     public void carregarDadosIniciais() {
         CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,taxa,confirmacoes,txtRecuperados,txtObitosComorbidades,txtObitosPorDia,txtObitosPorIdade,txtUti,txtEnfermaria,atualizacao);
-        cdi.execute();
-        carregarDadosCoeficiente(velocimetro2,1);
+        List<DadosIniciais> items;
+        try {
+            items = cdi.execute().get();
+            velocimetro2.speedTo(items.get(0).getUti());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //carregarDadosCoeficiente(velocimetro2,1);
         carregarDadosCoeficiente(velocimetro,0);
     }
 
@@ -247,18 +274,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             DecimalFormat df = new DecimalFormat("#0.00");
             texto_descricao_grafico = df.format(coeficiente);
             if ((coeficiente>=0) && (coeficiente<0.58)) {
-                this.confirmacoes.setText("TRÁGICA");
+                this.confirmacoes.setText("GRAVE");
                 this.confirmacoes.setBackgroundColor(Color.RED);
                 this.confirmacoes.setTextColor(Color.WHITE);
 
             }
             else if ((coeficiente>=0.58) && (coeficiente<5)) {
-                this.confirmacoes.setText("CRÍTICA");
+                this.confirmacoes.setText("ALERTA");
                 this.confirmacoes.setBackgroundColor(Color.parseColor("#FF3333"));
 
             }
             else if ((coeficiente>=5) && (coeficiente<20)) {
-                this.confirmacoes.setText("GRAVE");
+                this.confirmacoes.setText("ATENÇÃO");
                 this.confirmacoes.setBackgroundColor(Color.parseColor("#FF8000"));
 
             }

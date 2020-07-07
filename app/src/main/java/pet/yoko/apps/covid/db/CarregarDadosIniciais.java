@@ -63,7 +63,7 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             this.enfermaria.setText(items.get(0).getEnfermaria() + "%");
             int uti = items.get(0).getUti();
             int enfermaria = items.get(0).getEnfermaria();
-            if (uti>70) {
+            if (uti>85) {
                 this.uti.setBackgroundColor(Color.parseColor("#660000"));
                 this.uti.setTextColor(Color.WHITE);
             }
