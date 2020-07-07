@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
             }
             else {
-                this.txtSituacao.setText("NORMAL");
+                this.txtSituacao.setText("NORMALIDADE");
                 this.txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
                 this.txtSituacao.setTextColor(Color.WHITE);
 
