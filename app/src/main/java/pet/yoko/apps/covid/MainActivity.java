@@ -22,8 +22,6 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.Speedometer;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
@@ -78,11 +76,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TubeSpeedometer velocimetro2;
     Spinner cidade;
     TextView txtSituacao;
+    ImageView imgClassificacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imgClassificacao = (ImageView)findViewById(R.id.imgClassificacao);
+        imgClassificacao.setVisibility(View.GONE);
         atualizacao = (TextView)findViewById(R.id.atualizacao);
         confirmados = (TextView)findViewById(R.id.confirmados);
         suspeitos = (TextView)findViewById(R.id.suspeitos);
@@ -143,6 +144,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     }
 
+    public void situacaoClick(View v) {
+        if (imgClassificacao.getVisibility()==View.GONE) {
+            imgClassificacao.setVisibility(View.VISIBLE);
+        }
+        else {
+            imgClassificacao.setVisibility(View.GONE);
+        }
+    }
+
+    public void classificacaoClick(View v) {
+        imgClassificacao.setVisibility(View.GONE);
+    }
 
     public void onSelectCity() {
         cidade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -254,6 +267,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         try {
             double coeficiente = cc.execute().get();
             double velocidade;
+            int dias = (int) coeficiente;
+            double resto = coeficiente - dias;
+            int horas = (int)(resto*24);
+            resto = (resto*24)-horas;
+            int minutos = (int)(resto*60);
+
             if (coeficiente>100) {
                 velocidade = 0;
             }

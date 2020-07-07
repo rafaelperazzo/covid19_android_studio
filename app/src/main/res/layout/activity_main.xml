@@ -6,41 +6,8 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
+    android:textAlignment="center"
     tools:context=".MainActivity">
-
-    <LinearLayout
-        android:id="@+id/mainLayout"
-        android:layout_width="match_parent"
-        android:layout_height="146dp"
-        android:orientation="horizontal">
-
-        <!--
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="222dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/handwash128" />
-        -->
-        <com.github.anastr.speedviewlib.SpeedView
-            android:id="@+id/velocimetro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="191dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ufca" />
-
-        <com.github.anastr.speedviewlib.TubeSpeedometer
-            android:id="@+id/velocimetro2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -74,19 +41,71 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:orientation="horizontal">
+
+        <!--
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="222dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/handwash128" />
+        -->
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/velocimetro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="situacaoClick" />
+
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="191dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ufca" />
+
+        <com.github.anastr.speedviewlib.TubeSpeedometer
+            android:id="@+id/velocimetro2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000000"
-            android:text="SITUAÇÃO"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#FFFFFF" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="362dp"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:gravity="center_horizontal|center_vertical"
+                android:onClick="situacaoClick"
+                android:text="SITUAÇÃO"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/imgAjuda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000000"
+                android:onClick="situacaoClick"
+                app:srcCompat="@drawable/interrogacao32" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,6 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:text="CALCULANDO..."
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -113,11 +133,20 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imgClassificacao"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="classificacaoClick"
+        app:srcCompat="@drawable/classificacao"
+        tools:visibility="gone" />
+
     <Spinner
         android:id="@+id/cmbCidades"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/cariri_array" />
+        android:entries="@array/cariri_array"
+        android:gravity="center|center_horizontal|center_vertical" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -219,7 +248,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
     <LinearLayout
         android:layout_width="match_parent"
