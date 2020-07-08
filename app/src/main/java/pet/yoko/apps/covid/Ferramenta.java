@@ -55,7 +55,7 @@ public class Ferramenta {
                     filtrada.add(linha);
                 }
             }
-            filtrada.add((new CidadeItem("",-1,-1,-1,-1,-1,-1,-1)));
+            filtrada.add((new CidadeItem("",-1,-1,-1,-1,-1,-1,-1,-1)));
             adapter.setItems(filtrada);
         }
         else {

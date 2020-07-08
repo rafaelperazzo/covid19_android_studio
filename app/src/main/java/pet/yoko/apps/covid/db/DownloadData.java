@@ -77,7 +77,8 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 int recuperados = linha.getInt("recuperados");
                 int emRecuperacao = confirmados-obitos-recuperados;
                 int populacao = linha.getInt("populacao");
-                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao);
+                int primeiro = linha.getInt("primeiro");
+                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao,primeiro);
                 db.cidadesNumerosDao().insert(cidadeNumero);
             }
         }
@@ -172,7 +173,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
         processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
-        baixarDadosCidades("https://apps.yoko.pet/webapi/covidapi.php");
+        baixarDadosCidades("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=hoje");
         baixarDadosIniciais("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
         baixarDadosCidadesMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades");
         baixarDadosBairrosMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=bairros");

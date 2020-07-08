@@ -38,9 +38,9 @@ public class TabelaCidades {
             int emRecuperacao = confirmados-obitos-recuperados;
             int populacao = linha.getInt("populacao");
 
-            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao));
+            items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao,0));
         }
-        items.add(new CidadeItem("",-1,-1,-1,-1,-1,-1,-1));
+        items.add(new CidadeItem("",-1,-1,-1,-1,-1,-1,-1,0));
 
         Collections.sort(items, new Comparator<CidadeItem>() {
             @Override
