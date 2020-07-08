@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView suspeitos;
     TextView obitos;
     TextView atualizacao;
-    TextView txtUti;
-    TextView txtEnfermaria;
+    //TextView txtUti;
+    //TextView txtEnfermaria;
     ProgressBar progresso;
     TextView versao;
     TextView txtDias;
@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         confirmados = (TextView)findViewById(R.id.confirmados);
         suspeitos = (TextView)findViewById(R.id.suspeitos);
         obitos = (TextView)findViewById(R.id.obitos);
-        txtUti = (TextView)findViewById(R.id.txtUTI);
-        txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
+        //txtUti = (TextView)findViewById(R.id.txtUTI);
+        //txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
         txtDias = (TextView)findViewById(R.id.txtDias);
         txtHoras = (TextView)findViewById(R.id.txtHoras);
         txtMinutos = (TextView)findViewById(R.id.txtMinutos);
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void carregarDadosIniciais() {
-        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,txtUti,txtEnfermaria,atualizacao);
+        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,atualizacao);
         List<DadosIniciais> items;
         try {
             items = cdi.execute().get();

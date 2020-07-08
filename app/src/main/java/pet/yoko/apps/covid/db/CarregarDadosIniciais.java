@@ -16,11 +16,11 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
     TextView comorbidades;
     TextView mediaObitosPorDia;
     TextView medianaIdade;
-    TextView uti;
-    TextView enfermaria;
+    //TextView uti;
+    //TextView enfermaria;
     TextView atualizacao;
 
-    public CarregarDadosIniciais(AppDatabase db, TextView confirmados, TextView emRecuperacao, TextView obitos,TextView uti, TextView enfermaria,TextView atualizacao) {
+    public CarregarDadosIniciais(AppDatabase db, TextView confirmados, TextView emRecuperacao, TextView obitos,TextView atualizacao) {
         this.db = db;
         this.confirmados = confirmados;
         this.emRecuperacao = emRecuperacao;
@@ -28,8 +28,8 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
         //this.comorbidades = comorbidades;
         //this.mediaObitosPorDia = mediaObitosPorDia;
         //this.medianaIdade = medianaIdade;
-        this.uti = uti;
-        this.enfermaria = enfermaria;
+        //this.uti = uti;
+        //this.enfermaria = enfermaria;
         this.atualizacao = atualizacao;
     }
 
@@ -50,11 +50,11 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             //this.comorbidades.setText(items.get(0).getComorbidades());
             //this.mediaObitosPorDia.setText(String.valueOf(items.get(0).getMediaObitosPorDia()));
             //this.medianaIdade.setText(String.valueOf(items.get(0).getMedianaIdade()));
-            this.uti.setText(items.get(0).getUti() + "%");
-            this.enfermaria.setText(items.get(0).getEnfermaria() + "%");
+            //this.uti.setText(items.get(0).getUti() + "%");
+            //this.enfermaria.setText(items.get(0).getEnfermaria() + "%");
             int uti = items.get(0).getUti();
             int enfermaria = items.get(0).getEnfermaria();
-            if (uti>85) {
+            /*if (uti>85) {
                 this.uti.setBackgroundColor(Color.parseColor("#660000"));
                 this.uti.setTextColor(Color.WHITE);
             }
@@ -69,7 +69,7 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             else {
                 this.enfermaria.setBackgroundColor(Color.parseColor("#009900"));
                 this.enfermaria.setTextColor(Color.WHITE);
-            }
+            }*/
 
             this.atualizacao.setText(items.get(0).getAtualizacao());
         }
@@ -80,8 +80,8 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
             //this.comorbidades.setText("0");
             //this.mediaObitosPorDia.setText("0");
             //this.medianaIdade.setText("0");
-            this.uti.setText("0");
-            this.enfermaria.setText("0");
+            //this.uti.setText("0");
+            //this.enfermaria.setText("0");
             this.atualizacao.setText("0");
         }
 
