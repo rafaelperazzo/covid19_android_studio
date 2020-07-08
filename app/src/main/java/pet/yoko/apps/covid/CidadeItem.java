@@ -28,6 +28,27 @@ public class CidadeItem implements Serializable {
     @ColumnInfo(name = "populacao")
     int populacao;
 
+    /*@ColumnInfo(name = "primeiro")
+    int primeiro; //Quantidade de obitos de 60 dias atrás
+    @ColumnInfo(name = "ultimo")
+    int ultimo; //Quantidade de obitos de hoje
+
+    public int getPrimeiro() {
+        return primeiro;
+    }
+
+    public void setPrimeiro(int primeiro) {
+        this.primeiro = primeiro;
+    }
+
+    public int getUltimo() {
+        return ultimo;
+    }
+
+    public void setUltimo(int ultimo) {
+        this.ultimo = ultimo;
+    }*/
+
     public int getPopulacao() {
         return populacao;
     }

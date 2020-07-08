@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
         //carregarDadosCoeficiente(velocimetro2,1);
         carregarDadosCoeficiente(velocimetro,0);

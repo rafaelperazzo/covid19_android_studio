@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import pet.yoko.apps.covid.db.AppDatabase;
+
 public class TabelaCidades {
 
     private JSONArray obj;
@@ -35,6 +37,7 @@ public class TabelaCidades {
             int recuperados = linha.getInt("recuperados");
             int emRecuperacao = confirmados-obitos-recuperados;
             int populacao = linha.getInt("populacao");
+
             items.add(new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao));
         }
         items.add(new CidadeItem("",-1,-1,-1,-1,-1,-1,-1));
