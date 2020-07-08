@@ -20,21 +20,19 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
 
         public TextView cidade;
         public TextView confirmados;
-        public TextView suspeitos;
         public TextView obitos;
         public TextView incidencia;
-        public TextView recuperados;
         public TextView emRecuperacao;
+        public TextView situacao;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cidade = (TextView)itemView.findViewById(R.id.txtCidade);
             confirmados = (TextView)itemView.findViewById(R.id.txtConfirmados);
-            suspeitos = (TextView)itemView.findViewById(R.id.txtSuspeitos);
             obitos = (TextView)itemView.findViewById(R.id.txtObitos);
             incidencia = (TextView)itemView.findViewById(R.id.txtIncidencia);
-            recuperados = (TextView)itemView.findViewById(R.id.txtRec);
             emRecuperacao = (TextView)itemView.findViewById(R.id.txtEmRec);
+            situacao = (TextView)itemView.findViewById(R.id.txtSituacaoCidade);
         }
     }
 
@@ -67,33 +65,45 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
         CidadeItem item = items.get(position);
         TextView cidade = holder.cidade;
         TextView confirmados = holder.confirmados;
-        TextView suspeitos = holder.suspeitos;
         TextView obitos = holder.obitos;
         TextView incidencia = holder.incidencia;
-        TextView recuperados = holder.recuperados;
         TextView emRecuperacao = holder.emRecuperacao;
+        TextView situacao = holder.situacao;
         cidade.setText(item.cidade);
         if (item.confirmados!=-1) {
             confirmados.setText(String.valueOf(item.confirmados));
-            suspeitos.setText(String.valueOf(item.suspeitos));
             obitos.setText(String.valueOf(item.obitos));
             incidencia.setText(String.valueOf(item.incidencia));
-            recuperados.setText(String.valueOf(item.recuperados));
             emRecuperacao.setText(String.valueOf(item.emRecuperacao));
+            situacao.setText(item.getSituacao());
             if (item.obitos>0) {
                 obitos.setTextColor(Color.RED);
             }
             else {
                 obitos.setTextColor(Color.BLACK);
             }
+            if (item.situacao.equals("GRAVE")) {
+                situacao.setBackgroundColor(Color.RED);;
+            }
+            else if (item.situacao.equals("ALERTA")) {
+                situacao.setBackgroundColor(Color.parseColor("#FF3333"));
+            }
+            else if (item.situacao.equals("ATENÇÃO")) {
+                situacao.setBackgroundColor(Color.parseColor("#FF8000"));
+            }
+            else if (item.situacao.equals("CONTROLADA")) {
+                situacao.setBackgroundColor(Color.YELLOW);
+            }
+            else {
+                situacao.setBackgroundColor(Color.parseColor("#336600"));
+                situacao.setTextColor(Color.WHITE);
+            }
 
         }
         else {
             confirmados.setText("");
-            suspeitos.setText("");
             obitos.setText("");
             incidencia.setText("");
-            recuperados.setText("");
             emRecuperacao.setText("");
         }
 

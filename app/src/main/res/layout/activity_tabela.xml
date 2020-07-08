@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/txtTabelaCidade"
-            android:layout_width="90dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
             android:onClick="cidadesClick"
@@ -49,7 +49,7 @@
 
         <TextView
             android:id="@+id/txtTabelaConfirmados"
-            android:layout_width="40dp"
+            android:layout_width="24dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
@@ -61,20 +61,8 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtTabelaAnalise"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
-            android:onClick="suspeitosClick"
-            android:text="Em Análise"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/txtTabelaObitos"
-            android:layout_width="40dp"
+            android:layout_width="24dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
@@ -85,23 +73,23 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtTabelaRecuperados"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:id="@+id/txtTabelaEmRecuperacao"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="recuperadosClick"
-            android:text="Recuperados"
+            android:onClick="emRecuperacaoClick"
+            android:text="Em recuperação"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtTabelaEmRecuperacao"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="emRecuperacaoClick"
-            android:text="Em recuperação"
+            android:gravity="right|center_vertical"
+            android:text="Situação"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="bold" />

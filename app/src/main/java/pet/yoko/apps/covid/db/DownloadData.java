@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import pet.yoko.apps.covid.CidadeItem;
+import pet.yoko.apps.covid.Ferramenta;
 
 public class DownloadData extends AsyncTask<Void, Void, Void> {
 
@@ -62,6 +63,24 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    private String coeficiente2situacao(double coeficiente) {
+        if ((coeficiente>=0) && (coeficiente<0.58)) {
+            return ("GRAVE");
+        }
+        if ((coeficiente>=0.58) && (coeficiente<5)) {
+            return ("ALERTA");
+        }
+        if ((coeficiente>=5) && (coeficiente<20)) {
+            return ("ATENÇÃO");
+        }
+        if ((coeficiente>=20) && (coeficiente<56.8)) {
+            return ("CONTROLADA");
+        }
+        else {
+            return ("NORMALIDADE");
+        }
+    }
+
     private void baixarDadosCidades(String url) {
         try {
             String myResponse = run(url);
@@ -78,7 +97,9 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 int emRecuperacao = confirmados-obitos-recuperados;
                 int populacao = linha.getInt("populacao");
                 int primeiro = linha.getInt("primeiro");
-                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao,primeiro);
+                double coeficiente = Ferramenta.TEMPO/((double)(obitos-primeiro));
+                String situacao = coeficiente2situacao(coeficiente);
+                CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao,situacao);
                 db.cidadesNumerosDao().insert(cidadeNumero);
             }
         }

@@ -27,18 +27,16 @@ public class CidadeItem implements Serializable {
     int emRecuperacao;
     @ColumnInfo(name = "populacao")
     int populacao;
+    @ColumnInfo(name = "situacao")
+    String situacao; //Quantidade de obitos de 60 dias atrás
 
-    @ColumnInfo(name = "primeiro")
-    int primeiro; //Quantidade de obitos de 60 dias atrás
-
-    public int getPrimeiro() {
-        return primeiro;
+    public String getSituacao() {
+        return situacao;
     }
 
-    public void setPrimeiro(int primeiro) {
-        this.primeiro = primeiro;
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
-
 
     public int getPopulacao() {
         return populacao;
@@ -112,7 +110,7 @@ public class CidadeItem implements Serializable {
         this.id = id;
     }
     
-    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia,int recuperados,int emRecuperacao,int populacao, int primeiro) {
+    public CidadeItem(String cidade, int confirmados, int suspeitos, int obitos,double incidencia,int recuperados,int emRecuperacao,int populacao, String situacao) {
         this.cidade = cidade;
         this.confirmados = confirmados;
         this.suspeitos = suspeitos;
@@ -121,6 +119,6 @@ public class CidadeItem implements Serializable {
         this.recuperados=recuperados;
         this.emRecuperacao=emRecuperacao;
         this.populacao=populacao;
-        this.primeiro=primeiro;
+        this.situacao=situacao;
     }
 }
