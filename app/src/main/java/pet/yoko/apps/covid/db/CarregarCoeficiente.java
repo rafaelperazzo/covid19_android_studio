@@ -20,6 +20,45 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
         this.tipo = tipo;
     }
 
+    private double calcularMediaCoeficientes(List<EvolucaoTotalItem> items) {
+        EvolucaoTotalItem primeiro;
+        EvolucaoTotalItem ultimo;
+        double media = 0;
+        int i = 0;
+        double indice1 = 0;
+        double indice2 = 0;
+        double coeficiente;
+        while (i<items.size()) {
+            try {
+                primeiro = items.get(i);
+                ultimo = items.get(i+6);
+                if (this.cidade.equals("TODAS AS CIDADES")) {
+                    indice1 = (primeiro.getObitos()*100000)/(double)Ferramenta.populacao;
+                    indice2 = (ultimo.getObitos()*100000)/(double)Ferramenta.populacao;
+                }
+                else {
+                    int populacao = db.cidadesNumerosDao().getPopulacao(this.cidade);
+                    indice1 = (primeiro.getObitos()*100000)/(double)populacao;
+                    indice2 = (ultimo.getObitos()*100000)/(double)populacao;
+
+                }
+            }
+            catch (IndexOutOfBoundsException e) {
+                break;
+            }
+            if (indice1-indice2==0) {
+                coeficiente = 0; //TODO: DESCOBRIR!!
+            }
+            else {
+                coeficiente = Ferramenta.TEMPO_PARCIAL/(indice1-indice2);
+            }
+
+            media = media + coeficiente;
+            i = i + Ferramenta.TEMPO_PARCIAL+1;
+        }
+        return(media/9.0);
+    }
+
     @Override
     protected Double doInBackground(Void... voids) {
         double coeficiente = 0;
@@ -59,7 +98,8 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
                 }
 
             }
-            coeficiente = Ferramenta.TEMPO/(indice1-indice2);
+            //coeficiente = Ferramenta.TEMPO/(indice1-indice2);
+            coeficiente = calcularMediaCoeficientes(items);
         }
         catch (IndexOutOfBoundsException e) {
             coeficiente = 0;

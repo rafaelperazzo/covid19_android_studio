@@ -301,8 +301,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             if (coeficiente>100) {
                 velocidade = 0;
             }
-            else if (coeficiente<0.01) {
+            else if ((coeficiente<0.01)) {
                 velocidade = 200;
+                if (coeficiente==0) {
+                    velocidade = 0;
+                }
             }
             else {
                 velocidade = coeficiente2Velocidade(coeficiente);
@@ -310,7 +313,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             velocimetro.speedTo((float)velocidade,3000);
             DecimalFormat df = new DecimalFormat("#0.00");
             texto_descricao_grafico = df.format(coeficiente);
-            if ((coeficiente>=0) && (coeficiente<0.58)) {
+            if (coeficiente==0) {
+                this.txtSituacao.setText("NORMALIDADE");
+                this.txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
+                this.txtSituacao.setTextColor(Color.WHITE);
+            }
+            else if ((coeficiente>0) && (coeficiente<0.58)) {
                 this.txtSituacao.setText("GRAVE");
                 this.txtSituacao.setBackgroundColor(Color.RED);
                 this.txtSituacao.setTextColor(Color.WHITE);
