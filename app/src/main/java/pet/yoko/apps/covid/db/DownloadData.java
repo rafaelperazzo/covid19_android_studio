@@ -97,7 +97,13 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 int emRecuperacao = confirmados-obitos-recuperados;
                 int populacao = linha.getInt("populacao");
                 int primeiro = linha.getInt("primeiro");
-                double coeficiente = Ferramenta.TEMPO/((double)(obitos-primeiro));
+                double indice1 = ((obitos)*100000)/((double)populacao);
+                double indice2 = ((primeiro)*100000)/((double)populacao);
+                double coeficiente = 1000;
+                if (indice1-indice2!=0) {
+                    coeficiente = Ferramenta.TEMPO/((double)(indice1-indice2));
+                }
+
                 String situacao = coeficiente2situacao(coeficiente);
                 CidadeItem cidadeNumero = new CidadeItem(cidade,confirmados,suspeitos,obitos,incidencia,recuperados,emRecuperacao,populacao,situacao);
                 db.cidadesNumerosDao().insert(cidadeNumero);

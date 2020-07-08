@@ -144,6 +144,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     }
 
+    public void integrasusClick(View v) {
+        String url = "https://indicadores.integrasus.saude.ce.gov.br/indicadores/indicadores-coronavirus/coronavirus-ceara";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
+    public void computacaoClick(View v) {
+        String url = "https://computacao.ufca.edu.br";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
     public void situacaoClick(View v) {
         if (imgClassificacao.getVisibility()==View.GONE) {
             imgClassificacao.setVisibility(View.VISIBLE);

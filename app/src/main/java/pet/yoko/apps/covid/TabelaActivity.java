@@ -107,16 +107,6 @@ public class TabelaActivity extends AppCompatActivity {
         //Collections.sort(items,Comparator.comparing(CidadeItem::getConfirmados));
     }
 
-    public void suspeitosClick(View v) {
-        Collections.sort(items, new Comparator<CidadeItem>() {
-            @Override
-            public int compare(CidadeItem o1, CidadeItem o2) {
-                return(o1.suspeitos-o2.suspeitos);
-            }
-        });
-        adapter.notifyDataSetChanged();
-    }
-
     public void obitosClick(View v) {
         Collections.sort(items, new Comparator<CidadeItem>() {
             @Override
@@ -127,15 +117,6 @@ public class TabelaActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void recuperadosClick(View v) {
-        Collections.sort(items, new Comparator<CidadeItem>() {
-            @Override
-            public int compare(CidadeItem o1, CidadeItem o2) {
-                return(o1.recuperados-o2.recuperados);
-            }
-        });
-        adapter.notifyDataSetChanged();
-    }
 
     public void emRecuperacaoClick(View v) {
         Collections.sort(items, new Comparator<CidadeItem>() {
@@ -152,6 +133,16 @@ public class TabelaActivity extends AppCompatActivity {
             @Override
             public int compare(CidadeItem o1, CidadeItem o2) {
                 return (Double.compare(o1.incidencia,o2.incidencia));
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void situacaoClick(View v) {
+        Collections.sort(items, new Comparator<CidadeItem>() {
+            @Override
+            public int compare(CidadeItem o1, CidadeItem o2) {
+                return (o1.situacao.compareTo(o2.situacao));
             }
         });
         adapter.notifyDataSetChanged();

@@ -75,10 +75,8 @@ public class ExampleInstrumentedTest {
         Thread.sleep(2000);
         onView(withId(R.id.txtTabelaCidade)).perform(click());
         onView(withId(R.id.txtTabelaConfirmados)).perform(click());
-        onView(withId(R.id.txtTabelaAnalise)).perform(click());
         onView(withId(R.id.txtTabelaObitos)).perform(click());
         onView(withId(R.id.txtTabelaIncidencia)).perform(click());
-        onView(withId(R.id.txtTabelaRecuperados)).perform(click());
         onView(withId(R.id.txtTabelaEmRecuperacao)).perform(click());
         pressBack();
     }
