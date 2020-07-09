@@ -26,7 +26,7 @@ public class Ferramenta {
     private Context c;
     private ProgressBar progressoMain;
     public static final int populacao = 1026210;
-    public static final int TEMPO = 105;
+    public static final int TEMPO = 60;
     public static final int TEMPO_PARCIAL = 7;
     public static DecimalFormat df = new DecimalFormat("#0.00");
     public Ferramenta(Context c) {

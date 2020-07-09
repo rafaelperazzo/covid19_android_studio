@@ -12,13 +12,13 @@ public interface EvolucaoItemDao {
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data")
     List<EvolucaoTotalItem> getAll();
 
-    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data DESC LIMIT 105")
+    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data DESC LIMIT 60")
     List<EvolucaoTotalItem> getAll7();
 
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data")
     List<EvolucaoTotalItem> getAgrupadosCidade(String cidade);
 
-    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 105")
+    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 60")
     List<EvolucaoTotalItem> getAgrupadosCidade7(String cidade);
 
     @Query("DELETE FROM EvolucaoTotalItem")

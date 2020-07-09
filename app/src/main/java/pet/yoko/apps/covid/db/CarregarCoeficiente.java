@@ -2,7 +2,6 @@ package pet.yoko.apps.covid.db;
 
 import android.os.AsyncTask;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import pet.yoko.apps.covid.Ferramenta;
@@ -28,10 +27,23 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
         double indice1 = 0;
         double indice2 = 0;
         double coeficiente;
+        int proximo = 0;
+        int periodos = 0;
         while (i<items.size()) {
             try {
+                proximo = i+6;
                 primeiro = items.get(i);
-                ultimo = items.get(i+6);
+                ultimo = items.get(proximo);
+                while (ultimo.getObitos()==primeiro.getObitos()) {
+                    proximo = proximo + 1;
+                    if (proximo<items.size()) {
+                        ultimo = items.get(proximo);
+                    }
+                    else {
+                        break;
+                    }
+                }
+
                 if (this.cidade.equals("TODAS AS CIDADES")) {
                     indice1 = (primeiro.getObitos()*100000)/(double)Ferramenta.populacao;
                     indice2 = (ultimo.getObitos()*100000)/(double)Ferramenta.populacao;
@@ -50,13 +62,15 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
                 coeficiente = 0; //TODO: DESCOBRIR!!
             }
             else {
-                coeficiente = Ferramenta.TEMPO_PARCIAL/(indice1-indice2);
+                coeficiente = (proximo-i+1)/(indice1-indice2);
             }
-
-            media = media + coeficiente;
-            i = i + Ferramenta.TEMPO_PARCIAL+1;
+            if (coeficiente!=0) {
+                media = media + coeficiente;
+                periodos = periodos+1;
+            }
+            i = proximo;
         }
-        return(media/9.0);
+        return(media/periodos);
     }
 
     @Override
@@ -98,8 +112,8 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
                 }
 
             }
-            //coeficiente = Ferramenta.TEMPO/(indice1-indice2);
-            coeficiente = calcularMediaCoeficientes(items);
+            coeficiente = Ferramenta.TEMPO/(indice1-indice2);
+            //coeficiente = calcularMediaCoeficientes(items);
         }
         catch (IndexOutOfBoundsException e) {
             coeficiente = 0;
