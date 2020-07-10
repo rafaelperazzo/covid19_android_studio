@@ -603,6 +603,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         if (VERSAO<versaoNova) {
             versao.setText("UMA NOVA VERSÃO ESTÁ DISPONÍVEL!");
             versao.setTextColor(Color.RED);
+            setAtualizacao("00/00/0000 00:00");
             atualizar.setVisibility(View.VISIBLE);
             try {
                 popupAtualizar();
