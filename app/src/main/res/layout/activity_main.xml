@@ -97,7 +97,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ajudaSituacao"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"

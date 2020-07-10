@@ -26,6 +26,7 @@ import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.Speedometer;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
+import com.github.anastr.speedviewlib.components.indicators.Indicator;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -253,6 +254,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.addSections(new Section(.32f,.55f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.addSections(new Section(.55f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.setWithTremble(false);
+        //velocimetro.setTickNumber(5);
+        ArrayList<Float> ticks = new ArrayList<>();
+        ticks.add(12f);
+        ticks.add(34f);
+        ticks.add(65f);
+        ticks.add(111f);
+        ticks.add(200f);
+        velocimetro.setTicks(ticks);
+        velocimetro.setIndicator(Indicator.Indicators.NeedleIndicator);
         //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
         velocimetro.setCenterCircleRadius(30);
     }
@@ -270,7 +280,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.addSections(new Section(.53f,.76f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.addSections(new Section(.76f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.setWithTremble(false);
-        //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
+        //velocimetro.setTickNumber(5);
+        ArrayList<Float> ticks = new ArrayList<>();
+        ticks.add(52f);
+        ticks.add(76f);
+        ticks.add(106f);
+        ticks.add(152f);
+        ticks.add(200f);
+        velocimetro.setTicks(ticks);
+        velocimetro.setIndicator(Indicator.Indicators.NeedleIndicator);
         velocimetro.setCenterCircleRadius(30);
     }
 
@@ -287,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.addSections(new Section(.95f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.setWithTremble(false);
         velocimetro.setUnitUnderSpeedText(true);
+        velocimetro.setTickNumber(5);
+        velocimetro.setIndicator(Indicator.Indicators.NeedleIndicator);
         //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
     }
 
@@ -350,9 +370,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         resto = (resto*24)-horas;
         int minutos = (int)(resto*60);
         List<Integer> tempo = new ArrayList<Integer>();
-        tempo.add(dias);
-        tempo.add(horas);
-        tempo.add(minutos);
+        if (coeficiente<1000) {
+            tempo.add(dias);
+            tempo.add(horas);
+            tempo.add(minutos);
+        }
+        else {
+            tempo.add(0);
+            tempo.add(0);
+            tempo.add(0);
+        }
         return(tempo);
     }
 
