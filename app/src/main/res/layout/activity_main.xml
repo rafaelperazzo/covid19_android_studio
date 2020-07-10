@@ -88,9 +88,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#000000"
-                android:onClick="situacaoClick"
+                android:onClick="ajudaClick"
                 app:srcCompat="@drawable/interrogacao32" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textSituacaoAjuda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ajudaSituacao"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     double coeficiente = 0;
     double coeficienteConfirmados = 0;
     TextView textTempo;
+    TextView textSituacaoAjuda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro3.setVisibility(View.GONE);
         textVelocidade = (TextView)findViewById(R.id.textVelocidade);
         textTempo = (TextView)findViewById(R.id.textTempo);
+        textSituacaoAjuda = (TextView)findViewById(R.id.textSituacaoAjuda);
+        textSituacaoAjuda.setVisibility(View.GONE);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         txtSituacao = (TextView)findViewById(R.id.txtSituacao);
         this.onSelectCity();
@@ -194,12 +197,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         startActivity(i);
     }
 
-    public void situacaoClick(View v) {
+    public void ajudaClick(View v) {
         if (imgClassificacao.getVisibility()==View.GONE) {
             imgClassificacao.setVisibility(View.VISIBLE);
         }
         else {
             imgClassificacao.setVisibility(View.GONE);
+        }
+    }
+
+    public void situacaoClick(View v) {
+        if (textSituacaoAjuda.getVisibility()==View.GONE) {
+            textSituacaoAjuda.setVisibility(View.VISIBLE);
+        }
+        else {
+            textSituacaoAjuda.setVisibility(View.GONE);
         }
     }
 
