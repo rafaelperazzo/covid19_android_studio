@@ -61,6 +61,15 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/imgSwap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#000000"
+                android:onClick="imgSwapClick"
+                app:srcCompat="@drawable/swap" />
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="362dp"
@@ -107,7 +116,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textVelocidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -152,6 +161,12 @@
             android:layout_height="wrap_content"
             android:onClick="situacaoClick" />
 
+        <com.github.anastr.speedviewlib.SpeedView
+            android:id="@+id/velocimetro3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="situacaoClick"
+            tools:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView9"
@@ -189,7 +204,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/textTempo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFC107"

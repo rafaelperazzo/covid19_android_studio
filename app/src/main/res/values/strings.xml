@@ -4,7 +4,10 @@
     <string name="title_activity_mapa">Map</string>
     <string name="internet_indisponivel">Internet indisponível! Verifique sua conexão!</string>
     <string name="atualizacao">Uma nova versão do aplicativo está disponível, com correções e novos recursos</string>
-    <string name="integrasus">Velocímetros inspirados no projeto Covidometro (https://www.covidometro.com.br)</string>
+    <string name="integrasus">Velocímetros e escalas de gravidade inspirados no projeto Covidometro (https://www.covidometro.com.br)</string>
+    <string name="ajudaTabela"><b>Situação:</b> Baseada na taxa de crescimento dos óbitos (por 100.000 habitantes), nos últimos 60 dias.
+    \n\n<b>Incidência</b>: Taxa de pessoas "em recuperação" por 100.000 habitantes.\n\n
+    </string>
     <string-array name="cariri_array">
         <item>TODAS AS CIDADES</item>
         <item>ABAIARA</item>

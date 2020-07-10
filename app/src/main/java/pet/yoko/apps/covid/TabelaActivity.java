@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,6 +26,7 @@ public class TabelaActivity extends AppCompatActivity {
     SearchView pesquisar;
     ImageView share;
     Ferramenta tools;
+    TextView textAjuda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,8 @@ public class TabelaActivity extends AppCompatActivity {
         items = new ArrayList<CidadeItem>();
         adapter = new CidadeAdapter(items);
         tools.prepararRecycleView(recyclerView,items,adapter);
-
+        textAjuda = (TextView)findViewById(R.id.textAjuda);
+        textAjuda.setVisibility(View.GONE);
         iniciar();
 
         pesquisar = (SearchView)findViewById(R.id.search);
@@ -84,6 +88,15 @@ public class TabelaActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void ajudaClick(View v) {
+        if (textAjuda.getVisibility()==View.GONE) {
+            textAjuda.setVisibility(View.VISIBLE);
+        }
+        else {
+            textAjuda.setVisibility(View.GONE);
+        }
     }
 
     public void cidadesClick(View v) {

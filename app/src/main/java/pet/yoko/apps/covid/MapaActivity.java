@@ -43,7 +43,7 @@ import pet.yoko.apps.covid.db.DatabaseClient;
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    String URL = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=";
+    String URL = "https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=";
     String TIPO_MAPA;
     FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;

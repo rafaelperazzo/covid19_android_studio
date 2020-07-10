@@ -69,7 +69,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void testaBotaoMapaBairros() throws InterruptedException {
+    public void testaBotaoTabela() throws InterruptedException {
         Thread.sleep(2000);
         onView(withId(R.id.btnBairro)).perform(click());
         Thread.sleep(2000);
@@ -78,6 +78,8 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.txtTabelaObitos)).perform(click());
         onView(withId(R.id.txtTabelaIncidencia)).perform(click());
         onView(withId(R.id.txtTabelaEmRecuperacao)).perform(click());
+        onView(withId(R.id.imgTabelaAjuda)).perform(click());
+        onView(withId(R.id.imgTabelaAjuda)).perform(click());
         pressBack();
     }
 
@@ -172,6 +174,12 @@ public class ExampleInstrumentedTest {
         Thread.sleep(2000);
         onView(withText("Compartilhar este App")).perform(click());
         aparelho.pressBack();
+    }
+
+    @Test
+    public void testaAjuda() throws InterruptedException {
+        onView(withId(R.id.imgAjuda)).perform(click());
+        onView(withId(R.id.imgAjuda)).perform(click());
     }
 
 }

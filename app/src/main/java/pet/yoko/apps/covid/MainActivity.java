@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public static final String TIPO_MAPA = "cidades";
     public static final String CIDADE = "TODAS AS CIDADES";
     public String texto_descricao_grafico = "";
-    public String url = "https://apps.yoko.pet/webapi/covidapi.php?resumo=";
-    public String url_cidades = "https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades";
+    public String url = "https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?resumo=";
+    public String url_cidades = "https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades";
     TextView confirmados;
     TextView suspeitos;
     TextView obitos;
@@ -74,9 +74,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     SharedPreferences sharedPref;
     SpeedView velocimetro;
     TubeSpeedometer velocimetro2;
+    SpeedView velocimetro3;
     Spinner cidade;
     TextView txtSituacao;
     ImageView imgClassificacao;
+    TextView textVelocidade;
+    double coeficiente = 0;
+    double coeficienteConfirmados = 0;
+    TextView textTempo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +105,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         atualizar.setVisibility(View.GONE);
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
         velocimetro2 = (TubeSpeedometer) findViewById(R.id.velocimetro2);
+        velocimetro3 = (SpeedView) findViewById(R.id.velocimetro3);
+        velocimetro3.setVisibility(View.GONE);
+        textVelocidade = (TextView)findViewById(R.id.textVelocidade);
+        textTempo = (TextView)findViewById(R.id.textTempo);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         txtSituacao = (TextView)findViewById(R.id.txtSituacao);
         this.onSelectCity();
         ajustarVelocimetro(velocimetro);
         ajustarVelocimetroTube(velocimetro2);
+        ajustarVelocimetroConfirmados(velocimetro3);
         String versionName;
         int versionCode;
         versao.setText("Versão: " + String.valueOf(getVersionCode()));
@@ -117,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             this.carregarDadosIniciais();
         }
         try {
-            run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=ultimaAtualizacao",0);
+            run("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=ultimaAtualizacao",0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         //RECEBENDO OS AVISOS
         try {
-            this.run("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=avisos",5);
+            this.run("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=avisos",5);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -142,6 +152,32 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onResume();
 
 
+    }
+
+    public void imgSwapClick(View v) {
+        List<Integer> tempo;
+        if (velocimetro.getVisibility()==View.VISIBLE) {
+            velocimetro.setVisibility(View.GONE);
+            velocimetro3.setVisibility(View.VISIBLE);
+            textVelocidade.setText("VELOCIDADE DAS CONFIRMAÇÕES");
+            textTempo.setText("Um novo caso (por 100.000 hab) a cada");
+            tempo = coeficiente2Tempo(this.coeficienteConfirmados);
+        }
+        else {
+            velocimetro.setVisibility(View.VISIBLE);
+            velocimetro3.setVisibility(View.GONE);
+            textVelocidade.setText("VELOCIDADE DOS ÓBITOS");
+            textTempo.setText("Um novo óbito (por 100.000 hab) a cada");
+            tempo = coeficiente2Tempo(this.coeficiente);
+        }
+        try {
+            this.txtDias.setText(String.valueOf(tempo.get(0)));
+            this.txtHoras.setText(String.valueOf(tempo.get(1)));
+            this.txtMinutos.setText(String.valueOf(tempo.get(2)));
+        }
+        catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 
     public void integrasusClick(View v) {
@@ -181,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 else {
                     carregarDadosIniciaisCidade(cidade.getSelectedItem().toString(),"cidadeUnica");
                     //carregarDadosCoeficiente(velocimetro2,1);
-                    carregarDadosCoeficiente(velocimetro,0);
+                    carregarDadosCoeficiente();
                 }
             }
 
@@ -204,6 +240,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.addSections(new Section(.17f,.32f,Color.parseColor("#FF8000"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.addSections(new Section(.32f,.55f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.addSections(new Section(.55f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.setWithTremble(false);
+        //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
+        velocimetro.setCenterCircleRadius(30);
+    }
+
+    public void ajustarVelocimetroConfirmados(SpeedView velocimetro) {
+        velocimetro.setSpeedometerMode(Speedometer.Mode.NORMAL);
+        velocimetro.setUnit("");
+        velocimetro.setWithIndicatorLight(true);
+        velocimetro.setSpeedTextSize(32);
+        velocimetro.setMaxSpeed(200);
+        velocimetro.clearSections();
+        velocimetro.addSections(new Section(.0f,.26f,Color.GREEN,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.26f,.38f,Color.YELLOW,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.38f,.53f,Color.parseColor("#FF8000"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.53f,.76f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.76f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.setWithTremble(false);
         //velocimetro.addNote(new TextNote(getApplicationContext(),"dd"), Note.INFINITE);
         velocimetro.setCenterCircleRadius(30);
@@ -275,14 +328,32 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             e.printStackTrace();
         }
         //carregarDadosCoeficiente(velocimetro2,1);
-        carregarDadosCoeficiente(velocimetro,0);
+        carregarDadosCoeficiente();
     }
 
-    private void carregarDadosCoeficiente(SpeedView velocimetro, int tipo) {
-        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),tipo);
+    private List<Integer> coeficiente2Tempo(double coeficiente) {
+        int dias = (int) coeficiente;
+        double resto = coeficiente - dias;
+        int horas = (int)(resto*24);
+        resto = (resto*24)-horas;
+        int minutos = (int)(resto*60);
+        List<Integer> tempo = new ArrayList<Integer>();
+        tempo.add(dias);
+        tempo.add(horas);
+        tempo.add(minutos);
+        return(tempo);
+    }
+
+    private void carregarDadosCoeficiente() {
+        CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),0);
+        CarregarCoeficiente ccConfirmados = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),1);
         try {
             double coeficiente = cc.execute().get();
+            double coeficienteConfirmados = ccConfirmados.execute().get();
+            this.coeficiente = coeficiente;
+            this.coeficienteConfirmados = coeficienteConfirmados;
             double velocidade;
+            double velocidadeConfirmados;
             int dias = (int) coeficiente;
             double resto = coeficiente - dias;
             int horas = (int)(resto*24);
@@ -310,7 +381,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             else {
                 velocidade = coeficiente2Velocidade(coeficiente);
             }
+            if (coeficienteConfirmados>100) {
+                velocidadeConfirmados = 0;
+            }
+            else if ((coeficienteConfirmados<0.01)) {
+                velocidadeConfirmados = 200;
+                if (coeficienteConfirmados==0) {
+                    velocidadeConfirmados = 0;
+                }
+            }
+            else {
+                velocidadeConfirmados = coeficiente2Velocidade(coeficienteConfirmados);
+            }
             velocimetro.speedTo((float)velocidade,3000);
+            velocimetro3.speedTo((float)velocidadeConfirmados,3000);
             DecimalFormat df = new DecimalFormat("#0.00");
             texto_descricao_grafico = df.format(coeficiente);
             if (coeficiente==0) {
@@ -327,17 +411,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             else if ((coeficiente>=0.58) && (coeficiente<5)) {
                 this.txtSituacao.setText("ALERTA");
                 this.txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
-
+                this.txtSituacao.setTextColor(Color.BLACK);
             }
             else if ((coeficiente>=5) && (coeficiente<20)) {
                 this.txtSituacao.setText("ATENÇÃO");
                 this.txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
-
+                this.txtSituacao.setTextColor(Color.BLACK);
             }
             else if ((coeficiente>=20) && (coeficiente<56.8)) {
                 this.txtSituacao.setText("CONTROLADA");
                 this.txtSituacao.setBackgroundColor(Color.YELLOW);
-
+                this.txtSituacao.setTextColor(Color.BLACK);
             }
             else {
                 this.txtSituacao.setText("NORMALIDADE");

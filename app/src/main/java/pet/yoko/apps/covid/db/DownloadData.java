@@ -193,18 +193,18 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
 
         db.graficoItemDao().delete_all();
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosPorSexo","obitosPorSexo");
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=obitosPorIdade","obitosPorIdade");
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=sexo","sexo");
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=idade","idade");
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
-        processarJson("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
-        baixarDadosCidades("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=hoje");
-        baixarDadosIniciais("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
-        baixarDadosCidadesMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=cidades");
-        baixarDadosBairrosMapa("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=bairros");
-        baixarDadosEvolucaoTotal("https://apps.yoko.pet/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorSexo","obitosPorSexo");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorIdade","obitosPorIdade");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=sexo","sexo");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=idade","idade");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
+        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
+        baixarDadosCidades("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=hoje");
+        baixarDadosIniciais("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
+        baixarDadosCidadesMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades");
+        baixarDadosBairrosMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=bairros");
+        baixarDadosEvolucaoTotal("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
         return null;
     }
 
