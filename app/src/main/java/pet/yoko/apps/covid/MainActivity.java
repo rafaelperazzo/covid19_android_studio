@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtDias;
     TextView txtHoras;
     TextView txtMinutos;
+    TextView txtDiasConfirmados;
+    TextView txtHorasConfirmados;
+    TextView txtMinutosConfirmados;
     public int VERSAO;
     TextView atualizar;
     TextView txtAvisos;
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     double coeficienteConfirmados = 0;
     TextView textTempo;
     TextView textSituacaoAjuda;
+    TextView textOcupacaoUTI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         txtDias = (TextView)findViewById(R.id.txtDias);
         txtHoras = (TextView)findViewById(R.id.txtHoras);
         txtMinutos = (TextView)findViewById(R.id.txtMinutos);
+        txtDiasConfirmados = (TextView)findViewById(R.id.txtDiasConfirmados);
+        txtHorasConfirmados = (TextView)findViewById(R.id.txtHorasConfirmados);
+        txtMinutosConfirmados = (TextView)findViewById(R.id.txtMinutosConfirmados);
         txtAvisos = (TextView)findViewById(R.id.txtAvisos);
         progresso = (ProgressBar)findViewById(R.id.progresso);
         versao = (TextView)findViewById(R.id.txtVersao);
@@ -108,11 +115,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
         velocimetro2 = (TubeSpeedometer) findViewById(R.id.velocimetro2);
         velocimetro3 = (SpeedView) findViewById(R.id.velocimetro3);
-        velocimetro3.setVisibility(View.GONE);
+        velocimetro2.setVisibility(View.GONE);
         textVelocidade = (TextView)findViewById(R.id.textVelocidade);
         textTempo = (TextView)findViewById(R.id.textTempo);
         textSituacaoAjuda = (TextView)findViewById(R.id.textSituacaoAjuda);
         textSituacaoAjuda.setVisibility(View.GONE);
+        textOcupacaoUTI = (TextView)findViewById(R.id.textUTI);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         txtSituacao = (TextView)findViewById(R.id.txtSituacao);
         this.onSelectCity();
@@ -159,28 +167,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void imgSwapClick(View v) {
-        List<Integer> tempo;
-        if (velocimetro.getVisibility()==View.VISIBLE) {
-            velocimetro.setVisibility(View.GONE);
+
+        if (velocimetro2.getVisibility()==View.VISIBLE) {
+            velocimetro2.setVisibility(View.GONE);
             velocimetro3.setVisibility(View.VISIBLE);
-            textVelocidade.setText("VELOCIDADE DAS CONFIRMAÇÕES");
-            textTempo.setText("Um novo caso (por 100.000 hab) a cada");
-            tempo = coeficiente2Tempo(this.coeficienteConfirmados);
+            textOcupacaoUTI.setText("NOVOS CASOS");
         }
         else {
-            velocimetro.setVisibility(View.VISIBLE);
+            velocimetro2.setVisibility(View.VISIBLE);
             velocimetro3.setVisibility(View.GONE);
-            textVelocidade.setText("VELOCIDADE DOS ÓBITOS");
-            textTempo.setText("Um novo óbito (por 100.000 hab) a cada");
-            tempo = coeficiente2Tempo(this.coeficiente);
-        }
-        try {
-            this.txtDias.setText(String.valueOf(tempo.get(0)));
-            this.txtHoras.setText(String.valueOf(tempo.get(1)));
-            this.txtMinutos.setText(String.valueOf(tempo.get(2)));
-        }
-        catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            textOcupacaoUTI.setText("OCUPAÇÃO DE UTI");
         }
     }
 
@@ -201,6 +197,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void ajudaClick(View v) {
         if (imgClassificacao.getVisibility()==View.GONE) {
             imgClassificacao.setVisibility(View.VISIBLE);
+            imgClassificacao.setImageResource(R.drawable.classificacao);
+        }
+        else {
+            imgClassificacao.setVisibility(View.GONE);
+        }
+    }
+
+    public void ajuda2Click(View v) {
+        if (imgClassificacao.getVisibility()==View.GONE) {
+            imgClassificacao.setVisibility(View.VISIBLE);
+            imgClassificacao.setImageResource(R.drawable.classificacaoconf);
         }
         else {
             imgClassificacao.setVisibility(View.GONE);
@@ -407,6 +414,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 txtDias.setText(String.valueOf(0));
                 txtHoras.setText(String.valueOf(0));
                 txtMinutos.setText(String.valueOf(0));
+            }
+            List<Integer> tempo2; //CONFIRMADOS
+            tempo2 = coeficiente2Tempo(this.coeficienteConfirmados);
+            try {
+                this.txtDiasConfirmados.setText(String.valueOf(tempo2.get(0)));
+                this.txtHorasConfirmados.setText(String.valueOf(tempo2.get(1)));
+                this.txtMinutosConfirmados.setText(String.valueOf(tempo2.get(2)));
+            }
+            catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
             if (coeficiente>100) {
                 velocidade = 0;

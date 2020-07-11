@@ -30,10 +30,10 @@
 
             <ImageView
                 android:id="@+id/imgShare"
-                android:layout_width="265dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/share32" />
+                app:srcCompat="@drawable/share64" />
 
             <ImageView
                 android:id="@+id/imgTabelaAjuda"
