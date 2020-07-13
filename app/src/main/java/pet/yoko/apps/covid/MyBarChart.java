@@ -22,6 +22,7 @@ public class MyBarChart {
     private ArrayList<BarEntry> dados;
     private ArrayList<String> xLabels;
     private boolean labelsX;
+    private String label = "INDEFINIDO";
 
     public void setDados(ArrayList<BarEntry> dados) {
         this.dados = dados;
@@ -40,6 +41,12 @@ public class MyBarChart {
         this.dados = dados;
         this.xLabels = xLabels;
         this.labelsX = labelsX;
+    }
+
+    public MyBarChart(BarChart grafico, ArrayList<BarEntry> dados, String label) {
+        this.grafico = grafico;
+        this.dados = dados;
+        this.label = label;
     }
 
     public void refresh() {
@@ -123,6 +130,60 @@ public class MyBarChart {
         if (dados.size()>1) {
             grafico.groupBars(0f,0f,0.06f);
         }
+        grafico.invalidate();
+        grafico.setSaveEnabled(true);
+
+    }
+
+    public void makeChartEvolucao() {
+        BarData barData = new BarData();
+        BarDataSet barDataSet = new BarDataSet(dados,label);
+        barDataSet.setColors(Color.BLUE);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(20f);
+        barDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                DecimalFormat format = new DecimalFormat("#.####");
+                return(format.format(value));
+            }
+        });
+        barData.addDataSet(barDataSet);
+
+        barData.setBarWidth(1);
+        grafico.setFitBars(true);
+        grafico.setData(barData);
+
+        XAxis xAxis = grafico.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawLabels(false);
+        xAxis.setGranularity(1.0f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setLabelRotationAngle(-90);
+        xAxis.setDrawGridLines(false);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setAxisMinimum(0);
+        xAxis.setEnabled(false);
+        YAxis yAxis = grafico.getAxisLeft();
+        yAxis.setDrawGridLines(false);
+        yAxis.setAxisMinimum(0);
+        yAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                DecimalFormat format = new DecimalFormat("#.####");
+                return(format.format(value));
+            }
+        });
+        yAxis.setGranularity(1.0f);
+        yAxis.setGranularityEnabled(true);
+        yAxis.setEnabled(true);
+        yAxis.setDrawLabels(true);
+        grafico.getAxisRight().setDrawGridLines(false);
+        grafico.getAxisRight().setEnabled(false);
+        grafico.animateY(2000);
+        grafico.setDrawBarShadow(false);
+        grafico.getDescription().setEnabled(false);
         grafico.invalidate();
         grafico.setSaveEnabled(true);
 

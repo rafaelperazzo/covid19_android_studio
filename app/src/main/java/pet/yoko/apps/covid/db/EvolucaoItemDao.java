@@ -21,6 +21,9 @@ public interface EvolucaoItemDao {
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 60")
     List<EvolucaoTotalItem> getAgrupadosCidade7(String cidade);
 
+    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 15")
+    List<EvolucaoTotalItem> getAgrupadosCidade15(String cidade);
+
     @Query("DELETE FROM EvolucaoTotalItem")
     void delete_all();
 

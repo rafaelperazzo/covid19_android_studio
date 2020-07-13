@@ -50,6 +50,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     public static final String TIPO = "confirmados";
+    public static final String CATEGORIA = "Confirmações";
     public static final String TITULO = "Confirmações por ";
     public static final String TIPO_GRAFICO = "bar";
     public static final String DESCRICAO_GRAFICO = "DESCRIÇÃO";
@@ -599,13 +600,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         switch (item.getItemId()) {
 
             case R.id.menu_evolucao_temporal:
-                intent =  new Intent(this,ChartActivity.class);
-                intent.putExtra(TIPO,"evolucao");
-                intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
-                intent.putExtra(TITULO,"Evolução ao longo do tempo");
-                intent.putExtra(TIPO_GRAFICO,"line");
-                intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
-                startActivity(intent);
+                mostrarEvolucao();
                 return true;
             case R.id.menu_resumo:
                 intent =  new Intent(this,ChartActivity.class);
@@ -672,11 +667,19 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void confirmadosClick(View view) {
+        mostrarEvolucao();
+    }
+
+    public void obitosClick(View v) {
+        mostrarEvolucao();
+    }
+
+    public void mostrarEvolucao() {
         Intent intent;
         intent =  new Intent(this,ChartActivity.class);
         intent.putExtra(TIPO,"evolucao");
         intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
-        intent.putExtra(TITULO,"Evolução ao longo do tempo");
+        intent.putExtra(TITULO,"Evolução temporal - Curva");
         intent.putExtra(TIPO_GRAFICO,"line");
         intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
         startActivity(intent);

@@ -472,6 +472,7 @@
             android:layout_weight="1"
             android:background="#990000"
             android:gravity="center_horizontal"
+            android:onClick="obitosClick"
             android:text="0"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#FFFFFF" />

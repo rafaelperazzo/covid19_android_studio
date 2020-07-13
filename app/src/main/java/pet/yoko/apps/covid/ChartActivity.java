@@ -4,25 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
+import pet.yoko.apps.covid.db.AppDatabase;
 import pet.yoko.apps.covid.db.CarregarEvolucaoTotal;
 import pet.yoko.apps.covid.db.CarregarGraficoItem;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.EvolucaoTotalItem;
+import pet.yoko.apps.covid.db.GetPopulacao;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -32,6 +42,8 @@ public class ChartActivity extends AppCompatActivity {
     ImageView imagemGrafico;
     String TIPO_GRAFICO;
     String DESCRICAO_GRAFICO;
+    TextView textSituacao;
+    TextView textObitos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +53,8 @@ public class ChartActivity extends AppCompatActivity {
         imagemGrafico = (ImageView)findViewById(R.id.imgCompartilharGrafico);
         grafico = (BarChart)findViewById(R.id.chart);
         lineChart = (LineChart)findViewById(R.id.lineChart);
+        textSituacao = (TextView)findViewById(R.id.textChartSituacao);
+        textObitos = (TextView)findViewById(R.id.textChartObitos);
         Intent intent = getIntent();
         String TITULO = intent.getStringExtra(MainActivity.TITULO);
         TIPO_GRAFICO = intent.getStringExtra(MainActivity.TIPO_GRAFICO);
@@ -78,21 +92,132 @@ public class ChartActivity extends AppCompatActivity {
             cgi.execute();
         }
     }
+    /*
+    private void items2grafico(ArrayList<EvolucaoTotalItem> items) {
+        ArrayList<BarEntry> valores_line = new ArrayList<>();
+        ArrayList<BarEntry> valores_line2 = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+        Intent intent = getIntent();
+        String CIDADE = intent.getStringExtra(MainActivity.CIDADE);
+        int populacao;
+        AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
+        String CATEGORIA = intent.getStringExtra(MainActivity.CATEGORIA);
+        for (int i=items.size()-1; i>0;i--) {
+            labels.add(items.get(i).getData());
+            try {
+                GetPopulacao gp = new GetPopulacao(db,CIDADE);
+                populacao = gp.execute().get();
+                float confirmados = ((items.get(i).getConfirmados()-items.get(i-1).getConfirmados())*100000)/(float)populacao;
+                float obitos = ((items.get(i).getObitos()-items.get(i-1).getObitos())*100000)/(float)populacao;
+                valores_line.add(new BarEntry(i,confirmados));
+                valores_line2.add(new BarEntry(i,obitos));
+            }
+            catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        grafico.setVisibility(View.VISIBLE);
+        lineChart.setVisibility(View.GONE);
+        progresso.setVisibility(View.GONE);
+        MyBarChart chart;
+        if (CATEGORIA.equals("Confirmações")) {
+            chart = new MyBarChart(grafico,valores_line,CATEGORIA);
+        }
+        else {
+            chart = new MyBarChart(grafico,valores_line2,CATEGORIA);
+        }
+        chart.makeChartEvolucao();
+    }*/
+
+    private double mediaMovel(int posicao,ArrayList<EvolucaoTotalItem> items,int tipo) {
+        double media = 0;
+        int dias = 1;
+        if (posicao-6>=0) {
+            for (int i=posicao;i>=posicao-6;i--) {
+                if (tipo==0) {
+                    media = media + items.get(i).getConfirmados();
+                }
+                else {
+                    media = media + items.get(i).getObitos();
+                }
+                dias++;
+            }
+        }
+        media = media/(double)dias;
+        return (media);
+    }
 
     private void items2grafico(ArrayList<EvolucaoTotalItem> items) {
         ArrayList<Entry> valores_line = new ArrayList<>();
         ArrayList<Entry> valores_line2 = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<>();
-        for (int i=0; i<items.size();i++) {
-            labels.add(items.get(i).getData());
-            valores_line.add(new Entry(i,items.get(i).getConfirmados()));
-            valores_line2.add(new Entry(i,items.get(i).getObitos()));
+        double media_movel_confirmados = 0;
+        double media_movel_obitos = 0;
+        int dia = 1;
+        for (int i=items.size()-1; i>0;i--) {
+            media_movel_confirmados = 0;
+            media_movel_obitos = 0;
+            try {
+                media_movel_confirmados = media_movel_confirmados + mediaMovel(i,items,0);
+                media_movel_obitos = media_movel_obitos + mediaMovel(i,items,1);
+                valores_line.add(new Entry(dia,(float)media_movel_confirmados));
+                valores_line2.add(new Entry(dia,(float)media_movel_obitos));
+                labels.add(String.valueOf(dia));
+                dia++;
+            }
+            catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+
         }
+        Collections.reverse(labels);
+        ArrayList<Entry> confirmados = ordenarLista(valores_line);
+        ArrayList<Entry> obitos = ordenarLista(valores_line2);
+        double hoje = confirmados.get(confirmados.size()-1).getY();
+        double ontem = confirmados.get(confirmados.size()-1-14).getY();
+        setSituacao(hoje,ontem,textSituacao);
+        hoje = obitos.get(obitos.size()-1).getY();
+        ontem = obitos.get(obitos.size()-1-14).getY();
+        setSituacao(hoje,ontem,textObitos);
         grafico.setVisibility(View.GONE);
         lineChart.setVisibility(View.VISIBLE);
         progresso.setVisibility(View.GONE);
-        MyLineChart chart = new MyLineChart(lineChart,valores_line,valores_line2,labels,true,DESCRICAO_GRAFICO);
+        MyLineChart chart = new MyLineChart(lineChart,confirmados,obitos,labels,true,DESCRICAO_GRAFICO);
         chart.makeChart();
+    }
+
+    private void setSituacao(double hoje, double ontem, TextView textSituacao) {
+        double diferenca = hoje-ontem;
+        if ((diferenca/ontem)>0.15) {
+            //CRESCIMENTO
+            textSituacao.setText("CRESCIMENTO");
+            textSituacao.setBackgroundColor(Color.RED);
+        }
+        else if ((diferenca/ontem)<-0.15) {
+            textSituacao.setText("QUEDA       ");
+            textSituacao.setBackgroundColor(Color.GREEN);
+        }
+        else {
+            //ESTABILIDADE
+            textSituacao.setText("ESTABILIDADE");
+            textSituacao.setBackgroundColor(Color.YELLOW);
+        }
+    }
+
+    public ArrayList<Entry> ordenarLista(ArrayList<Entry> lista) {
+        ArrayList<Entry> retorno = new ArrayList<>();
+        int dia = 1;
+        for (int i=lista.size()-1;i>=0;i--) {
+            retorno.add(new Entry(dia,lista.get(i).getY()));
+            dia++;
+        }
+        return(retorno);
     }
 
     public void shareClick(View view) {
