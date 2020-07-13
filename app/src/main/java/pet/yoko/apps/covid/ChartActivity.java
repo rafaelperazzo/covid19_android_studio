@@ -137,19 +137,20 @@ public class ChartActivity extends AppCompatActivity {
 
     private double mediaMovel(int posicao,ArrayList<EvolucaoTotalItem> items,int tipo) {
         double media = 0;
-        int dias = 1;
-        if (posicao-6>=0) {
+        int dias = 0;
+        if (posicao-6>0) {
             for (int i=posicao;i>=posicao-6;i--) {
                 if (tipo==0) {
-                    media = media + items.get(i).getConfirmados();
+                    media = media + items.get(i).getConfirmados()-items.get(i-1).getConfirmados();
                 }
                 else {
-                    media = media + items.get(i).getObitos();
+                    media = media + items.get(i).getObitos()-items.get(i-1).getObitos();
                 }
                 dias++;
             }
+            media = media/((double)dias);
         }
-        media = media/(double)dias;
+        
         return (media);
     }
 
