@@ -189,13 +189,26 @@
             android:onClick="situacaoClick" />
 
 
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgUFCA"
-            android:layout_width="191dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ufca" />
+            <ImageView
+                android:id="@+id/imgUFCA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ufca" />
+
+            <ImageView
+                android:id="@+id/imgEstatisticas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="confirmadosClick"
+                app:srcCompat="@drawable/statistics" />
+        </LinearLayout>
 
 
         <com.github.anastr.speedviewlib.TubeSpeedometer

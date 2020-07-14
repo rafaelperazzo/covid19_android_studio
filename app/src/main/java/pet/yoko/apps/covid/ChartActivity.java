@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -44,6 +45,12 @@ public class ChartActivity extends AppCompatActivity {
     String DESCRICAO_GRAFICO;
     TextView textSituacao;
     TextView textObitos;
+    ImageView imgChartConfirmacoes;
+    ImageView imgChartObitos;
+    ImageView imgChartCurva;
+    ImageView imgChartAjuda;
+    LinearLayout lConfirmacoes;
+    LinearLayout lObitos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +62,24 @@ public class ChartActivity extends AppCompatActivity {
         lineChart = (LineChart)findViewById(R.id.lineChart);
         textSituacao = (TextView)findViewById(R.id.textChartSituacao);
         textObitos = (TextView)findViewById(R.id.textChartObitos);
+        imgChartConfirmacoes = (ImageView) findViewById(R.id.imgChartConfirmacoes);
+        imgChartObitos = (ImageView)findViewById(R.id.imgChartObitos);
+        imgChartCurva = (ImageView)findViewById(R.id.imgChartCurva);
+        imgChartCurva.setVisibility(View.GONE);
+        imgChartAjuda = (ImageView)findViewById(R.id.imgChartAjuda);
+        lConfirmacoes = (LinearLayout)findViewById(R.id.layoutChartConfirmacoes);
+        lObitos = (LinearLayout)findViewById(R.id.layoutChartObitos);
         Intent intent = getIntent();
         String TITULO = intent.getStringExtra(MainActivity.TITULO);
         TIPO_GRAFICO = intent.getStringExtra(MainActivity.TIPO_GRAFICO);
         if (TIPO_GRAFICO.equals("line")) {
             DESCRICAO_GRAFICO = intent.getStringExtra(MainActivity.DESCRICAO_GRAFICO);
+        }
+        else {
+            lConfirmacoes.setVisibility(View.GONE);
+            lObitos.setVisibility(View.GONE);
+            imgChartAjuda.setVisibility(View.GONE);
+            imagemGrafico.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
         }
         setTitle(TITULO);
 
@@ -71,6 +91,7 @@ public class ChartActivity extends AppCompatActivity {
         String TIPO = intent.getStringExtra(MainActivity.TIPO);
         if (TIPO.equals("evolucao")) {
             String CIDADE = intent.getStringExtra(MainActivity.CIDADE);
+            setTitle(CIDADE);
             CarregarEvolucaoTotal cet;
             if (CIDADE.equals("TODAS AS CIDADES")) {
                 cet = new CarregarEvolucaoTotal(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"GERAL","TODAS");
@@ -150,7 +171,7 @@ public class ChartActivity extends AppCompatActivity {
             }
             media = media/((double)dias);
         }
-        
+
         return (media);
     }
 
@@ -182,10 +203,10 @@ public class ChartActivity extends AppCompatActivity {
         ArrayList<Entry> obitos = ordenarLista(valores_line2);
         double hoje = confirmados.get(confirmados.size()-1).getY();
         double ontem = confirmados.get(confirmados.size()-1-14).getY();
-        setSituacao(hoje,ontem,textSituacao);
+        setSituacao(hoje,ontem,textSituacao,0);
         hoje = obitos.get(obitos.size()-1).getY();
         ontem = obitos.get(obitos.size()-1-14).getY();
-        setSituacao(hoje,ontem,textObitos);
+        setSituacao(hoje,ontem,textObitos,1);
         grafico.setVisibility(View.GONE);
         lineChart.setVisibility(View.VISIBLE);
         progresso.setVisibility(View.GONE);
@@ -193,22 +214,55 @@ public class ChartActivity extends AppCompatActivity {
         chart.makeChart();
     }
 
-    private void setSituacao(double hoje, double ontem, TextView textSituacao) {
+    private void setSituacao(double hoje, double ontem, TextView textSituacao, int tipo) {
         double diferenca = hoje-ontem;
         if ((diferenca/ontem)>0.15) {
             //CRESCIMENTO
             textSituacao.setText("CRESCIMENTO");
             textSituacao.setBackgroundColor(Color.RED);
+            if (tipo==1) {
+                imgChartObitos.setImageResource(R.drawable.increase);
+            }
+            else {
+                imgChartConfirmacoes.setImageResource(R.drawable.increase);
+            }
+
         }
         else if ((diferenca/ontem)<-0.15) {
             textSituacao.setText("QUEDA       ");
             textSituacao.setBackgroundColor(Color.GREEN);
+            if (tipo==1) {
+                imgChartObitos.setImageResource(R.drawable.decrease);
+            }
+            else {
+                imgChartConfirmacoes.setImageResource(R.drawable.decrease);
+            }
         }
         else {
             //ESTABILIDADE
             textSituacao.setText("ESTABILIDADE");
             textSituacao.setBackgroundColor(Color.YELLOW);
+            if (tipo==1) {
+                imgChartObitos.setImageResource(R.drawable.estabilidade);
+            }
+            else {
+                imgChartConfirmacoes.setImageResource(R.drawable.estabilidade);
+            }
         }
+    }
+
+    public void ajudaClick(View v) {
+        if (TIPO_GRAFICO.equals("line")) {
+            if (imgChartCurva.getVisibility()==View.GONE) {
+                imgChartCurva.setVisibility(View.VISIBLE);
+                lineChart.setVisibility(View.GONE);
+            }
+            else {
+                imgChartCurva.setVisibility(View.GONE);
+                lineChart.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
     public ArrayList<Entry> ordenarLista(ArrayList<Entry> lista) {
