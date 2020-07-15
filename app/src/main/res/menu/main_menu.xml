@@ -11,4 +11,6 @@
         android:title="Compartilhar este App" />
     <item android:id="@+id/menu_pagina_app"
         android:title="Sobre este app" />
+    <item android:id="@+id/menu_covidometro"
+        android:title="Covidometro" />
 </menu>

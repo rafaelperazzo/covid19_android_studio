@@ -159,8 +159,8 @@
 
     <LinearLayout
         android:id="@+id/mainLayout"
-        android:layout_width="match_parent"
-        android:layout_height="146dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <!--
@@ -173,37 +173,33 @@
         -->
         <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/velocimetro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
             android:onClick="ajudaClick" />
 
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
             android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imgUFCA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ufca" />
 
         </LinearLayout>
 
 
         <com.github.anastr.speedviewlib.TubeSpeedometer
             android:id="@+id/velocimetro2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.4"
             tools:visibility="gone" />
 
         <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/velocimetro3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
             android:onClick="ajuda2Click"
             tools:visibility="visible" />
 
@@ -563,15 +559,22 @@
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_weight=".4"
                 android:onClick="integrasusClick"
                 app:srcCompat="@drawable/integrasus" />
+
+            <ImageView
+                android:id="@+id/imgUFCA"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                app:srcCompat="@drawable/ufca" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_weight=".4"
                 android:onClick="computacaoClick"
                 app:srcCompat="@drawable/computacao" />
         </LinearLayout>
@@ -583,16 +586,6 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:gravity="center_horizontal"
-            android:text="@string/integrasus"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="@string/integrasus" />
 
         <TextView
             android:id="@+id/txtVersao"

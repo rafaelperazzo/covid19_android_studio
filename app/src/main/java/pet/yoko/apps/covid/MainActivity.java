@@ -609,6 +609,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 intent.putExtra(TIPO_GRAFICO,"bar");
                 startActivity(intent);
                 return true;
+            case R.id.menu_covidometro:
+                intent =  new Intent(this,CovidometroActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.menu_compartilhar_app:
                 String conteudo = "https://play.google.com/store/apps/details?id=pet.yoko.apps.covid";
                 Intent sendIntent = new Intent();
