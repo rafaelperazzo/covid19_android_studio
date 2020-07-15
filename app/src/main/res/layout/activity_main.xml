@@ -44,6 +44,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutCabecalho"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -62,43 +63,25 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imgSwap"
+                android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#000000"
                 android:onClick="imgSwapClick"
-                app:srcCompat="@drawable/swap" />
-
-            <ImageView
-                android:id="@+id/imgAjuda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#000000"
-                android:onClick="ajudaClick"
-                app:srcCompat="@drawable/interrogacao32" />
+                app:srcCompat="@drawable/hospital32"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="318dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="#000000"
                 android:gravity="center_horizontal|center_vertical"
-                android:onClick="situacaoClick"
                 android:text="SITUAÇÃO"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="#FFFFFF" />
-
-            <ImageView
-                android:id="@+id/imgAjuda2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#000000"
-                android:onClick="ajuda2Click"
-                app:srcCompat="@drawable/interrogacao32" />
 
             <ImageView
                 android:id="@+id/imgOcupacaoUTI"
@@ -129,12 +112,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="situacaoClick"
                 android:text="CALCULANDO..."
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progresso"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -186,12 +175,13 @@
             android:id="@+id/velocimetro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="situacaoClick" />
+            android:onClick="ajudaClick" />
 
 
         <LinearLayout
-            android:layout_width="120dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight=".5"
             android:orientation="vertical">
 
             <ImageView
@@ -201,13 +191,6 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ufca" />
 
-            <ImageView
-                android:id="@+id/imgEstatisticas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="confirmadosClick"
-                app:srcCompat="@drawable/statistics" />
         </LinearLayout>
 
 
@@ -221,9 +204,41 @@
             android:id="@+id/velocimetro3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="situacaoClick"
+            android:onClick="ajuda2Click"
             tools:visibility="visible" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgAjuda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:onClick="ajudaClick"
+            app:srcCompat="@drawable/problem32" />
+
+        <ImageView
+            android:id="@+id/imgEstatisticas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="confirmadosClick"
+            app:srcCompat="@drawable/statistics32" />
+
+        <ImageView
+            android:id="@+id/imgAjuda2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:onClick="ajuda2Click"
+            app:srcCompat="@drawable/problem32" />
     </LinearLayout>
 
     <ImageView
@@ -233,13 +248,6 @@
         android:onClick="classificacaoClick"
         app:srcCompat="@drawable/classificacao"
         tools:visibility="gone" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -553,16 +561,17 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight=".5"
                 android:onClick="integrasusClick"
                 app:srcCompat="@drawable/integrasus" />
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".5"
                 android:onClick="computacaoClick"
                 app:srcCompat="@drawable/computacao" />
         </LinearLayout>
@@ -616,11 +625,7 @@
             android:textColor="#3F51B5"
             android:textStyle="bold" />
 
-        <ProgressBar
-            android:id="@+id/progresso"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 

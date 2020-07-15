@@ -9,11 +9,13 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.UiDevice;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.anything;
 
 //https://developer.android.com/training/testing/ui-testing/espresso-testing#java
 /**
@@ -180,6 +182,18 @@ public class ExampleInstrumentedTest {
     public void testaAjuda() throws InterruptedException {
         onView(withId(R.id.imgAjuda)).perform(click());
         onView(withId(R.id.imgAjuda)).perform(click());
+    }
+
+    @Test
+    public void testaMudaCidade() throws InterruptedException {
+        for (int i=0; i<29; i++) {
+            onView(withId(R.id.cmbCidades)).perform(click());
+            onData(anything()).atPosition(i).perform(click());
+            Thread.sleep(1000);
+            onView(withId(R.id.confirmados)).perform(click());
+            Thread.sleep(2000);
+            aparelho.pressBack();
+        }
     }
 
 }
