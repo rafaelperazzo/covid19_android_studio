@@ -113,59 +113,22 @@ public class ChartActivity extends AppCompatActivity {
             cgi.execute();
         }
     }
-    /*
-    private void items2grafico(ArrayList<EvolucaoTotalItem> items) {
-        ArrayList<BarEntry> valores_line = new ArrayList<>();
-        ArrayList<BarEntry> valores_line2 = new ArrayList<>();
-        ArrayList<String> labels = new ArrayList<>();
-        Intent intent = getIntent();
-        String CIDADE = intent.getStringExtra(MainActivity.CIDADE);
-        int populacao;
-        AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
-        String CATEGORIA = intent.getStringExtra(MainActivity.CATEGORIA);
-        for (int i=items.size()-1; i>0;i--) {
-            labels.add(items.get(i).getData());
-            try {
-                GetPopulacao gp = new GetPopulacao(db,CIDADE);
-                populacao = gp.execute().get();
-                float confirmados = ((items.get(i).getConfirmados()-items.get(i-1).getConfirmados())*100000)/(float)populacao;
-                float obitos = ((items.get(i).getObitos()-items.get(i-1).getObitos())*100000)/(float)populacao;
-                valores_line.add(new BarEntry(i,confirmados));
-                valores_line2.add(new BarEntry(i,obitos));
-            }
-            catch (IndexOutOfBoundsException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        grafico.setVisibility(View.VISIBLE);
-        lineChart.setVisibility(View.GONE);
-        progresso.setVisibility(View.GONE);
-        MyBarChart chart;
-        if (CATEGORIA.equals("Confirmações")) {
-            chart = new MyBarChart(grafico,valores_line,CATEGORIA);
-        }
-        else {
-            chart = new MyBarChart(grafico,valores_line2,CATEGORIA);
-        }
-        chart.makeChartEvolucao();
-    }*/
 
     private double mediaMovel(int posicao,ArrayList<EvolucaoTotalItem> items,int tipo) {
         double media = 0;
         int dias = 0;
         if (posicao-6>0) {
             for (int i=posicao;i>=posicao-6;i--) {
-                if (tipo==0) {
-                    media = media + items.get(i).getConfirmados()-items.get(i-1).getConfirmados();
+                try {
+                    if (tipo==0) {
+                        media = media + items.get(i).getConfirmados()-items.get(i-1).getConfirmados();
+                    }
+                    else {
+                        media = media + items.get(i).getObitos()-items.get(i-1).getObitos();
+                    }
                 }
-                else {
-                    media = media + items.get(i).getObitos()-items.get(i-1).getObitos();
+                catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
                 dias++;
             }
@@ -201,12 +164,20 @@ public class ChartActivity extends AppCompatActivity {
         Collections.reverse(labels);
         ArrayList<Entry> confirmados = ordenarLista(valores_line);
         ArrayList<Entry> obitos = ordenarLista(valores_line2);
-        double hoje = confirmados.get(confirmados.size()-1).getY();
-        double ontem = confirmados.get(confirmados.size()-1-14).getY();
-        setSituacao(hoje,ontem,textSituacao,0);
-        hoje = obitos.get(obitos.size()-1).getY();
-        ontem = obitos.get(obitos.size()-1-14).getY();
-        setSituacao(hoje,ontem,textObitos,1);
+        double hoje = 0;
+        double ontem = 0;
+        try {
+            hoje = confirmados.get(confirmados.size()-1).getY();
+            ontem = confirmados.get(confirmados.size()-1-14).getY();
+            setSituacao(hoje,ontem,textSituacao,0);
+            hoje = obitos.get(obitos.size()-1).getY();
+            ontem = obitos.get(obitos.size()-1-14).getY();
+            setSituacao(hoje,ontem,textObitos,1);
+        }
+        catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
         grafico.setVisibility(View.GONE);
         lineChart.setVisibility(View.VISIBLE);
         progresso.setVisibility(View.GONE);

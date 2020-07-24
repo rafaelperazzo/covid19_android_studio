@@ -1,7 +1,6 @@
 package pet.yoko.apps.covid;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView suspeitos;
     TextView obitos;
     TextView atualizacao;
-    //TextView txtUti;
-    //TextView txtEnfermaria;
     ProgressBar progresso;
     TextView versao;
     TextView txtDias;
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView textTempo;
     TextView textSituacaoAjuda;
     TextView textOcupacaoUTI;
-
+    TextView atualizandoDados;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,8 +98,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         confirmados = (TextView)findViewById(R.id.confirmados);
         suspeitos = (TextView)findViewById(R.id.suspeitos);
         obitos = (TextView)findViewById(R.id.obitos);
-        //txtUti = (TextView)findViewById(R.id.txtUTI);
-        //txtEnfermaria = (TextView)findViewById(R.id.txtEnfermaria);
         txtDias = (TextView)findViewById(R.id.txtDias);
         txtHoras = (TextView)findViewById(R.id.txtHoras);
         txtMinutos = (TextView)findViewById(R.id.txtMinutos);
@@ -124,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         textOcupacaoUTI = (TextView)findViewById(R.id.textUTI);
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         txtSituacao = (TextView)findViewById(R.id.txtSituacao);
+        atualizandoDados = (TextView)findViewById(R.id.txtAtualizandoDados);
+        atualizandoDados.setVisibility(View.GONE);
         this.onSelectCity();
         ajustarVelocimetro(velocimetro);
         ajustarVelocimetroTube(velocimetro2);
@@ -774,9 +772,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             else {
                 setAtualizacao(data_agora);
                 DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
+                progresso.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+                atualizandoDados.setVisibility(View.VISIBLE);
                 Void retorno = dd.execute().get();
                 this.carregarDadosIniciais();
                 progresso.setVisibility(View.GONE);
+                progresso.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                atualizandoDados.setVisibility(View.GONE);
             }
 
         } catch (JSONException e) {

@@ -19,6 +19,22 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#FFFFFF" />
 
+    <TextView
+        android:id="@+id/txtAtualizandoDados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ATUALIZANDO DADOS...\n Por favor aguarde..."
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#F44336"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/progresso"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -119,11 +135,6 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progresso"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
