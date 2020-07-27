@@ -20,8 +20,8 @@ android {
         applicationId "pet.yoko.apps.covid"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 41
-        versionName '41'
+        versionCode 42
+        versionName '42'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
