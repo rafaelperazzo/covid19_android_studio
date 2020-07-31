@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         return(tempo);
     }
 
-    private void carregarDadosCoeficiente() {
+    private void carregarDadosCoeficiente3() {
         CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),0);
         CarregarCoeficiente ccConfirmados = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),1);
         try {
@@ -417,9 +417,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             List<Integer> tempo2; //CONFIRMADOS
             tempo2 = coeficiente2Tempo(this.coeficienteConfirmados);
             try {
-                this.txtDiasConfirmados.setText(String.valueOf(tempo2.get(0)));
-                this.txtHorasConfirmados.setText(String.valueOf(tempo2.get(1)));
-                this.txtMinutosConfirmados.setText(String.valueOf(tempo2.get(2)));
+                txtDiasConfirmados.setText(String.valueOf(tempo2.get(0)));
+                txtHorasConfirmados.setText(String.valueOf(tempo2.get(1)));
+                txtMinutosConfirmados.setText(String.valueOf(tempo2.get(2)));
             }
             catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
@@ -453,35 +453,35 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             DecimalFormat df = new DecimalFormat("#0.00");
             texto_descricao_grafico = df.format(coeficiente);
             if (coeficiente==0) {
-                this.txtSituacao.setText("NORMALIDADE");
-                this.txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
-                this.txtSituacao.setTextColor(Color.WHITE);
+                txtSituacao.setText("NORMALIDADE");
+                txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
+                txtSituacao.setTextColor(Color.WHITE);
             }
             else if ((coeficiente>0) && (coeficiente<0.58)) {
-                this.txtSituacao.setText("GRAVE");
-                this.txtSituacao.setBackgroundColor(Color.RED);
-                this.txtSituacao.setTextColor(Color.WHITE);
+                txtSituacao.setText("GRAVE");
+                txtSituacao.setBackgroundColor(Color.RED);
+                txtSituacao.setTextColor(Color.WHITE);
 
             }
             else if ((coeficiente>=0.58) && (coeficiente<5)) {
-                this.txtSituacao.setText("ALERTA");
-                this.txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
-                this.txtSituacao.setTextColor(Color.BLACK);
+                txtSituacao.setText("ALERTA");
+                txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
+                txtSituacao.setTextColor(Color.BLACK);
             }
             else if ((coeficiente>=5) && (coeficiente<20)) {
-                this.txtSituacao.setText("ATENÇÃO");
-                this.txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
-                this.txtSituacao.setTextColor(Color.BLACK);
+                txtSituacao.setText("ATENÇÃO");
+                txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
+                txtSituacao.setTextColor(Color.BLACK);
             }
             else if ((coeficiente>=20) && (coeficiente<56.8)) {
-                this.txtSituacao.setText("CONTROLADA");
-                this.txtSituacao.setBackgroundColor(Color.YELLOW);
-                this.txtSituacao.setTextColor(Color.BLACK);
+                txtSituacao.setText("CONTROLADA");
+                txtSituacao.setBackgroundColor(Color.YELLOW);
+                txtSituacao.setTextColor(Color.BLACK);
             }
             else {
-                this.txtSituacao.setText("NORMALIDADE");
-                this.txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
-                this.txtSituacao.setTextColor(Color.WHITE);
+                txtSituacao.setText("NORMALIDADE");
+                txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
+                txtSituacao.setTextColor(Color.WHITE);
 
             }
             velocimetro.removeAllNotes();
@@ -490,6 +490,113 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void carregarDadosCoeficiente() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CarregarCoeficiente cc = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),0);
+                CarregarCoeficiente ccConfirmados = new CarregarCoeficiente(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),cidade.getSelectedItem().toString(),1);
+                try {
+                    coeficiente = cc.execute().get();
+                    coeficienteConfirmados = ccConfirmados.execute().get();
+                    double velocidade;
+                    double velocidadeConfirmados;
+                    int dias = (int) coeficiente;
+                    double resto = coeficiente - dias;
+                    int horas = (int)(resto*24);
+                    resto = (resto*24)-horas;
+                    int minutos = (int)(resto*60);
+                    if (coeficiente<1000) {
+                        txtDias.setText(String.valueOf(dias));
+                        txtHoras.setText(String.valueOf(horas));
+                        txtMinutos.setText(String.valueOf(minutos));
+                    }
+                    else {
+                        txtDias.setText(String.valueOf(0));
+                        txtHoras.setText(String.valueOf(0));
+                        txtMinutos.setText(String.valueOf(0));
+                    }
+                    List<Integer> tempo2; //CONFIRMADOS
+                    tempo2 = coeficiente2Tempo(coeficienteConfirmados);
+                    try {
+                        txtDiasConfirmados.setText(String.valueOf(tempo2.get(0)));
+                        txtHorasConfirmados.setText(String.valueOf(tempo2.get(1)));
+                        txtMinutosConfirmados.setText(String.valueOf(tempo2.get(2)));
+                    }
+                    catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+                    if (coeficiente>100) {
+                        velocidade = 0;
+                    }
+                    else if ((coeficiente<0.01)) {
+                        velocidade = 200;
+                        if (coeficiente==0) {
+                            velocidade = 0;
+                        }
+                    }
+                    else {
+                        velocidade = coeficiente2Velocidade(coeficiente);
+                    }
+                    if (coeficienteConfirmados>100) {
+                        velocidadeConfirmados = 0;
+                    }
+                    else if ((coeficienteConfirmados<0.01)) {
+                        velocidadeConfirmados = 200;
+                        if (coeficienteConfirmados==0) {
+                            velocidadeConfirmados = 0;
+                        }
+                    }
+                    else {
+                        velocidadeConfirmados = coeficiente2Velocidade(coeficienteConfirmados);
+                    }
+                    velocimetro.speedTo((float)velocidade,3000);
+                    velocimetro3.speedTo((float)velocidadeConfirmados,3000);
+                    DecimalFormat df = new DecimalFormat("#0.00");
+                    texto_descricao_grafico = df.format(coeficiente);
+                    if (coeficiente==0) {
+                        txtSituacao.setText("NORMALIDADE");
+                        txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
+                        txtSituacao.setTextColor(Color.WHITE);
+                    }
+                    else if ((coeficiente>0) && (coeficiente<0.58)) {
+                        txtSituacao.setText("GRAVE");
+                        txtSituacao.setBackgroundColor(Color.RED);
+                        txtSituacao.setTextColor(Color.WHITE);
+
+                    }
+                    else if ((coeficiente>=0.58) && (coeficiente<5)) {
+                        txtSituacao.setText("ALERTA");
+                        txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
+                        txtSituacao.setTextColor(Color.BLACK);
+                    }
+                    else if ((coeficiente>=5) && (coeficiente<20)) {
+                        txtSituacao.setText("ATENÇÃO");
+                        txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
+                        txtSituacao.setTextColor(Color.BLACK);
+                    }
+                    else if ((coeficiente>=20) && (coeficiente<56.8)) {
+                        txtSituacao.setText("CONTROLADA");
+                        txtSituacao.setBackgroundColor(Color.YELLOW);
+                        txtSituacao.setTextColor(Color.BLACK);
+                    }
+                    else {
+                        txtSituacao.setText("NORMALIDADE");
+                        txtSituacao.setBackgroundColor(Color.parseColor("#336600"));
+                        txtSituacao.setTextColor(Color.WHITE);
+
+                    }
+                    velocimetro.removeAllNotes();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void atualizarClick(View v) {
