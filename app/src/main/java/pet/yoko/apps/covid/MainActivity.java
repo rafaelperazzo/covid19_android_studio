@@ -334,39 +334,51 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         return (retorno);
     }
 
-    public void carregarDadosIniciaisCidade(String cidade, String tipo) {
-        CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),tipo,cidade);
-        try {
-            ArrayList<CidadeItem> dados = (ArrayList<CidadeItem>)cc.execute().get();
-            CidadeItem cidadeAtual = dados.get(0);
-            this.confirmados.setText(String.valueOf(cidadeAtual.getConfirmados()));
-            this.suspeitos.setText(String.valueOf(cidadeAtual.getEmRecuperacao()));
-            this.obitos.setText(String.valueOf(cidadeAtual.getObitos()));
+    public void carregarDadosIniciaisCidade(final String cidade, final String tipo) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CarregarCidades cc = new CarregarCidades(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),tipo,cidade);
+                try {
+                    ArrayList<CidadeItem> dados = (ArrayList<CidadeItem>)cc.execute().get();
+                    CidadeItem cidadeAtual = dados.get(0);
+                    confirmados.setText(String.valueOf(cidadeAtual.getConfirmados()));
+                    suspeitos.setText(String.valueOf(cidadeAtual.getEmRecuperacao()));
+                    obitos.setText(String.valueOf(cidadeAtual.getObitos()));
 
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void carregarDadosIniciais() {
-        CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,atualizacao);
-        List<DadosIniciais> items;
-        try {
-            items = cdi.execute().get();
-            velocimetro2.speedTo(items.get(0).getUti());
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-        //carregarDadosCoeficiente(velocimetro2,1);
-        carregarDadosCoeficiente();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CarregarDadosIniciais cdi = new CarregarDadosIniciais(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),confirmados,suspeitos,obitos,atualizacao);
+                List<DadosIniciais> items;
+                try {
+                    items = cdi.execute().get();
+                    velocimetro2.speedTo(items.get(0).getUti());
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+                //carregarDadosCoeficiente(velocimetro2,1);
+                carregarDadosCoeficiente();
+            }
+        });
+
     }
 
     private List<Integer> coeficiente2Tempo(double coeficiente) {
@@ -867,34 +879,40 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-    public void ajustarDadosIniciais(String response) {
-        try {
-            JSONObject obj = new JSONObject(response);
-            String data_agora = obj.getString("atualizacao");
-            String data_armazenada = getAtualizacao();
-            if (data_agora.equals(data_armazenada)) {
-                this.carregarDadosIniciais();
-                progresso.setVisibility(View.GONE);
-            }
-            else {
-                setAtualizacao(data_agora);
-                DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
-                progresso.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
-                atualizandoDados.setVisibility(View.VISIBLE);
-                Void retorno = dd.execute().get();
-                this.carregarDadosIniciais();
-                progresso.setVisibility(View.GONE);
-                progresso.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                atualizandoDados.setVisibility(View.GONE);
-            }
+    public void ajustarDadosIniciais(final String response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    String data_agora = obj.getString("atualizacao");
+                    String data_armazenada = getAtualizacao();
+                    if (data_agora.equals(data_armazenada)) {
+                        carregarDadosIniciais();
+                        progresso.setVisibility(View.GONE);
+                    }
+                    else {
+                        setAtualizacao(data_agora);
+                        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
+                        progresso.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+                        atualizandoDados.setVisibility(View.VISIBLE);
+                        Void retorno = dd.execute().get();
+                        carregarDadosIniciais();
+                        progresso.setVisibility(View.GONE);
+                        progresso.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        atualizandoDados.setVisibility(View.GONE);
+                    }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void popupAtualizar() {
