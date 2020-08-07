@@ -94,7 +94,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 int obitos = linha.getInt("obitos");
                 double incidencia = linha.getDouble("taxa");
                 int recuperados = linha.getInt("recuperados");
-                int emRecuperacao = confirmados-obitos-recuperados;
+                int emRecuperacao = confirmados-recuperados;
                 int populacao = linha.getInt("populacao");
                 int primeiro = linha.getInt("primeiro");
                 double indice1 = ((obitos)*100000)/((double)populacao);
@@ -119,7 +119,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
             db.dadosIniciaisDao().delete_all();
             String myResponse = run(url);
             JSONObject obj = new JSONObject(myResponse);
-            int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados") - obj.getInt("obitos");
+            int emRecuperacao = obj.getInt("confirmados") - obj.getInt("recuperados");
             DadosIniciais di = new DadosIniciais(obj.getInt("confirmados"),obj.getInt("obitos"),obj.getInt("recuperados"),emRecuperacao,obj.getString("atualizacao"),obj.getDouble("taxa"),obj.getInt("confirmacoes"),obj.getString("comorbidades"),obj.getDouble("porDia"),obj.getDouble("mediana_idade"),obj.getInt("uti"),obj.getInt("enfermaria"));
             db.dadosIniciaisDao().insert(di);
         }
