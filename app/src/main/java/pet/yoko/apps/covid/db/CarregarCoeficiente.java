@@ -45,13 +45,13 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
                 }
 
                 if (this.cidade.equals("TODAS AS CIDADES")) {
-                    indice1 = (primeiro.getObitos()*100000)/(double)Ferramenta.populacao;
-                    indice2 = (ultimo.getObitos()*100000)/(double)Ferramenta.populacao;
+                    indice1 = (primeiro.getObitos()*Ferramenta.cem)/(double)Ferramenta.populacao;
+                    indice2 = (ultimo.getObitos()*Ferramenta.cem)/(double)Ferramenta.populacao;
                 }
                 else {
                     int populacao = db.cidadesNumerosDao().getPopulacao(this.cidade);
-                    indice1 = (primeiro.getObitos()*100000)/(double)populacao;
-                    indice2 = (ultimo.getObitos()*100000)/(double)populacao;
+                    indice1 = (primeiro.getObitos()*Ferramenta.cem)/(double)populacao;
+                    indice2 = (ultimo.getObitos()*Ferramenta.cem)/(double)populacao;
 
                 }
             }
@@ -91,24 +91,24 @@ public class CarregarCoeficiente extends AsyncTask<Void, Void, Double> {
             double indice2;
             if (this.cidade.equals("TODAS AS CIDADES")) {
                 if (tipo==0) {
-                    indice1 = (primeiro.getObitos()*100000)/(double)Ferramenta.populacao;
-                    indice2 = (ultimo.getObitos()*100000)/(double)Ferramenta.populacao;
+                    indice1 = (primeiro.getObitos()*Ferramenta.cem)/(double)Ferramenta.populacao;
+                    indice2 = (ultimo.getObitos()*Ferramenta.cem)/(double)Ferramenta.populacao;
                 }
                 else {
-                    indice1 = (primeiro.getConfirmados()*100000)/(double)Ferramenta.populacao;
-                    indice2 = (ultimo.getConfirmados()*100000)/(double)Ferramenta.populacao;
+                    indice1 = (primeiro.getConfirmados()*Ferramenta.cem)/(double)Ferramenta.populacao;
+                    indice2 = (ultimo.getConfirmados()*Ferramenta.cem)/(double)Ferramenta.populacao;
                 }
 
             }
             else {
                 int populacao = db.cidadesNumerosDao().getPopulacao(this.cidade);
                 if (tipo==0) {
-                    indice1 = (primeiro.getObitos()*100000)/(double)populacao;
-                    indice2 = (ultimo.getObitos()*100000)/(double)populacao;
+                    indice1 = (primeiro.getObitos()*Ferramenta.cem)/(double)populacao;
+                    indice2 = (ultimo.getObitos()*Ferramenta.cem)/(double)populacao;
                 }
                 else {
-                    indice1 = (primeiro.getConfirmados()*100000)/(double)populacao;
-                    indice2 = (ultimo.getConfirmados()*100000)/(double)populacao;
+                    indice1 = (primeiro.getConfirmados()*Ferramenta.cem)/(double)populacao;
+                    indice2 = (ultimo.getConfirmados()*Ferramenta.cem)/(double)populacao;
                 }
 
             }
