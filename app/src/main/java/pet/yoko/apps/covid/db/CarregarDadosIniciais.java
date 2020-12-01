@@ -25,11 +25,12 @@ public class CarregarDadosIniciais extends AsyncTask<Void, Void, List<DadosInici
         this.confirmados = confirmados;
         this.emRecuperacao = emRecuperacao;
         this.obitos = obitos;
+        /*
         //this.comorbidades = comorbidades;
         //this.mediaObitosPorDia = mediaObitosPorDia;
         //this.medianaIdade = medianaIdade;
         //this.uti = uti;
-        //this.enfermaria = enfermaria;
+        //this.enfermaria = enfermaria;*/
         this.atualizacao = atualizacao;
     }
 
