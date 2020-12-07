@@ -15,25 +15,19 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 
-import pet.yoko.apps.covid.db.AppDatabase;
 import pet.yoko.apps.covid.db.CarregarEvolucaoTotal;
 import pet.yoko.apps.covid.db.CarregarGraficoItem;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.EvolucaoTotalItem;
-import pet.yoko.apps.covid.db.GetPopulacao;
 
 public class ChartActivity extends AppCompatActivity {
 
@@ -59,7 +53,7 @@ public class ChartActivity extends AppCompatActivity {
         progresso.setVisibility(View.VISIBLE);
         imagemGrafico = (ImageView)findViewById(R.id.imgCompartilharGrafico);
         grafico = (BarChart)findViewById(R.id.chart);
-        lineChart = (LineChart)findViewById(R.id.lineChart);
+        lineChart = (LineChart)findViewById(R.id.graficoMedia);
         textSituacao = (TextView)findViewById(R.id.textChartSituacao);
         textObitos = (TextView)findViewById(R.id.textChartObitos);
         imgChartConfirmacoes = (ImageView) findViewById(R.id.imgChartConfirmacoes);

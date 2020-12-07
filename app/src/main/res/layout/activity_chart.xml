@@ -112,7 +112,7 @@
     </com.github.mikephil.charting.charts.BarChart>
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
+        android:id="@+id/graficoMedia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:visibility="visible">

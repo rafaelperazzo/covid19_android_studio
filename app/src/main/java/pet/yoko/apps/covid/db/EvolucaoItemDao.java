@@ -12,6 +12,9 @@ public interface EvolucaoItemDao {
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data")
     List<EvolucaoTotalItem> getAll();
 
+    @Query("select id,\"TODAS\",data,sum(confirmados) as confirmados,sum(obitos) as obitos from EvolucaoTotalItem group by data ORDER BY data DESC LIMIT 30")
+    List<EvolucaoTotalItem> getEvolucaoGeralObitos();
+
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data DESC LIMIT 60")
     List<EvolucaoTotalItem> getAll7();
 

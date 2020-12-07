@@ -21,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <activity android:name=".ActivityEvolucao"></activity>
         <activity android:name=".CovidometroActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -32,8 +33,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" />
-        <!-- android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" DEBUG -->
+            android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" /> <!-- android:value="AIzaSyD5oTKIhZvWEfWo7KvVHVRaWU5S8gUetb8" DEBUG -->
         <!-- android:value="AIzaSyDl13QkpMlGTHnQpLaCvz3_o3gt1dUn2q0" RELEASE -->
         <activity
             android:name=".MapaActivity"

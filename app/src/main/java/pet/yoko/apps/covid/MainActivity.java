@@ -45,6 +45,10 @@ import pet.yoko.apps.covid.db.CarregarDadosIniciais;
 import pet.yoko.apps.covid.db.DadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.DownloadData;
+import pet.yoko.apps.covid.db.EvolucaoTotalItem;
+import pet.yoko.apps.covid.db.TaskGetEvolucao;
+import pet.yoko.apps.covid.db.TaskGetEvolucaoResponse;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -156,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             e.printStackTrace();
         }
         setTitle("COVID19 APP - Totais");
+
     }
 
     @Override
@@ -163,6 +168,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onResume();
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     public void imgSwapClick(View v) {
@@ -719,6 +730,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.menu_evolucao_temporal:
                 mostrarEvolucao();
                 return true;
+            case R.id.menu_evolucao_media:
+                intent = new Intent(this,ActivityEvolucao.class);
+                startActivity(intent);
+                return true;
             case R.id.menu_resumo:
                 intent =  new Intent(this,ChartActivity.class);
                 intent.putExtra(TIPO,"resumo");
@@ -925,4 +940,5 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
 
     }
+
 }
