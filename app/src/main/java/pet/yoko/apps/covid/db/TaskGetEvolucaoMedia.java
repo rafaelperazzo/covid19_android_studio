@@ -37,16 +37,16 @@ public class TaskGetEvolucaoMedia extends AsyncTask<Void,Void, ArrayList<Entry>>
         ArrayList<Entry> eixoY = new ArrayList<>();
         for (int i = 0; i< items.size(); i++) {
             if (this.tipo==1) {
-                eixoY.add(new Entry(i,items.get(i).getConfirmados()));
+                eixoY.add(new Entry(i+1,items.get(i).getConfirmados()));
             }
             else if (this.tipo==2) {
-                eixoY.add(new Entry(i,items.get(i).getObitos()));
+                eixoY.add(new Entry(i+1,items.get(i).getObitos()));
             }
-            if (this.tipo==3) {
-                eixoY.add(new Entry(i,items.get(i).getSituacao_confirmados()));
+            else if (this.tipo==3) {
+                eixoY.add(new Entry(i+1,items.get(i).getSituacao_confirmados()));
             }
             else {
-                eixoY.add(new Entry(i,items.get(i).getSituacao_obitos()));
+                eixoY.add(new Entry(i+1,items.get(i).getSituacao_obitos()));
             }
 
         }

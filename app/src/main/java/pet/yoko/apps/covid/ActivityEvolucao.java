@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -47,6 +48,29 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         rbSituacao = (RadioButton)findViewById(R.id.rbSituacaoMedia);
         cmbCidade = (Spinner)findViewById(R.id.cmbCidadesGrafico);
         cmbPeriodo = (Spinner)findViewById(R.id.cmbPeriodoGrafico);
+        cmbPeriodo.setSelection(1);
+        cmbPeriodo.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                        ajustarDados();
+
+                    }
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
+        cmbCidade.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                        ajustarDados();
+
+                    }
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
         this.tipo = 1;
         TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
         tem.execute();
@@ -89,7 +113,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         grafico.setSaveEnabled(true);
     }
 
-    public void onRadioButtonClick(View v) {
+    private void ajustarDados() {
         TaskGetEvolucaoMedia tem;
         String cidade = cmbCidade.getSelectedItem().toString();
         int periodo = Integer.parseInt(cmbPeriodo.getSelectedItem().toString());
@@ -110,6 +134,10 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             this.tipo = 4;
         }
         tem.execute();
+    }
+
+    public void onRadioButtonClick(View v) {
+        this.ajustarDados();
     }
 
     @Override
