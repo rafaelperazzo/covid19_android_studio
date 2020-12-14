@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase;
 
 import pet.yoko.apps.covid.CidadeItem;
 
-@Database(entities = {CidadeItem.class,DadosIniciais.class,GraficoItem.class, CidadeMapaItem.class,BairroMapaItem.class,EvolucaoTotalItem.class}, version = 5)
+@Database(entities = {CidadeItem.class,DadosIniciais.class,GraficoItem.class, CidadeMapaItem.class,BairroMapaItem.class,EvolucaoTotalItem.class,EvolucaoMediaItem.class}, version = 6)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CidadesNumerosDao cidadesNumerosDao();
     public abstract DadosIniciaisDao dadosIniciaisDao();
@@ -13,5 +13,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CidadeMapaItemDao cidadeMapaItemDao();
     public abstract BairroMapaItemDao bairroMapaItemDao();
     public abstract EvolucaoItemDao evolucaoItemDao();
-
+    public abstract EvolucaoMediaDao evolucaoMediaDao();
 }

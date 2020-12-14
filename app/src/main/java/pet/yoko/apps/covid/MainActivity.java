@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-    public void situacaoClick(View v) {
+    public void situacaoClnullick(View v) {
         if (textSituacaoAjuda.getVisibility()==View.GONE) {
             textSituacaoAjuda.setVisibility(View.VISIBLE);
         }

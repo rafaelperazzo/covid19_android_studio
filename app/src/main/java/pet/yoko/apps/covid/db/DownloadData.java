@@ -176,6 +176,22 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    private void baixarDadosEvolucaoMedia(String url) {
+        try {
+            String myResponse = run(url);
+            JSONArray arr = new JSONArray(myResponse);
+            db.evolucaoMediaDao().delete_all();
+            for (int i=0; i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                EvolucaoMediaItem evolucaoMedia = new EvolucaoMediaItem(obj.getString("cidade"),obj.getString("data"),(float)obj.getDouble("media_confirmacoes"),(float)obj.getDouble("media"),obj.getInt("situacao_confirmacoes"),obj.getInt("situacao"));
+                db.evolucaoMediaDao().insert(evolucaoMedia);
+            }
+        }
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -205,6 +221,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         baixarDadosCidadesMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades");
         baixarDadosBairrosMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=bairros");
         baixarDadosEvolucaoTotal("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
+        baixarDadosEvolucaoMedia("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=media");
         return null;
     }
 

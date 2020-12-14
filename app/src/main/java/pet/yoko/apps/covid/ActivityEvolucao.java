@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,13 +22,20 @@ import java.util.List;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.EvolucaoTotalItem;
 import pet.yoko.apps.covid.db.TaskGetEvolucao;
+import pet.yoko.apps.covid.db.TaskGetEvolucaoMedia;
+import pet.yoko.apps.covid.db.TaskGetEvolucaoMediaResponse;
 import pet.yoko.apps.covid.db.TaskGetEvolucaoResponse;
 
-public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvolucaoResponse {
+public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvolucaoMediaResponse {
     LineChart grafico;
     RadioButton rbConfirmacoes;
     RadioButton rbObitos;
-    List<EvolucaoTotalItem> dadosEvolucao;
+    RadioButton rbMediaMovel;
+    RadioButton rbSituacao;
+    Spinner cmbCidade;
+    Spinner cmbPeriodo;
+
+    int tipo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,38 +43,18 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         grafico = (LineChart)findViewById(R.id.graficoMedia);
         rbConfirmacoes = (RadioButton)findViewById(R.id.rbConfirmacoes);
         rbObitos = (RadioButton)findViewById(R.id.rbObitos);
-        TaskGetEvolucao tge = new TaskGetEvolucao(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this);
-        tge.execute();
+        rbMediaMovel = (RadioButton)findViewById(R.id.rbMediaMovel);
+        rbSituacao = (RadioButton)findViewById(R.id.rbSituacaoMedia);
+        cmbCidade = (Spinner)findViewById(R.id.cmbCidadesGrafico);
+        cmbPeriodo = (Spinner)findViewById(R.id.cmbPeriodoGrafico);
+        this.tipo = 1;
+        TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
+        tem.execute();
     }
 
-    private void ajustarGrafico(int tipo) {
-        ArrayList<Entry> dados = new ArrayList<>();
-        for (int i=0; i<dadosEvolucao.size();i++) {
-            if (tipo==2) {
-                dados.add(new Entry(i,dadosEvolucao.get(i).getObitos()));
-            }
-            else {
-                dados.add(new Entry(i,dadosEvolucao.get(i).getConfirmados()));
-            }
-
-        }
-        if (tipo==1) {
-            makeChart(dados,"Confirmações","Média Móvel",1);
-        }
-        else {
-            makeChart(dados,"Óbitos","Média Móvel",2);
-        }
-
-    }
-
-    @Override
-    public void getEvolucaoFinish(List<EvolucaoTotalItem> response) {
-        dadosEvolucao = response;
-        ajustarGrafico(1);
-    }
 
     public void makeChart(ArrayList<Entry> dados, String dadosLabel,String descricao,int tipo) {
-        //grafico.invalidate();
+        grafico.invalidate();
         LineDataSet lineDataSet = new LineDataSet(dados,dadosLabel);
         if (tipo==1) {
             lineDataSet.setValueTextColor(Color.GREEN);
@@ -102,12 +90,43 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     }
 
     public void onRadioButtonClick(View v) {
-        if (v.getId()==R.id.rbConfirmacoes) {
-            this.ajustarGrafico(1);
+        TaskGetEvolucaoMedia tem;
+        String cidade = cmbCidade.getSelectedItem().toString();
+        int periodo = Integer.parseInt(cmbPeriodo.getSelectedItem().toString());
+        if ((rbMediaMovel.isChecked())&&(rbConfirmacoes.isChecked())) {
+            tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,periodo,cidade,1);
+            this.tipo = 1;
+        }
+        else if ((rbMediaMovel.isChecked())&&(rbObitos.isChecked())) {
+            tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,periodo,cidade,2);
+            this.tipo = 2;
+        }
+        else if ((rbSituacao.isChecked())&&(rbConfirmacoes.isChecked())) {
+            tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,periodo,cidade,3);
+            this.tipo = 3;
         }
         else {
-            this.ajustarGrafico(2);
+            tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,periodo,cidade,4);
+            this.tipo = 4;
         }
+        tem.execute();
     }
 
+    @Override
+    public void getEvolucaoFinish(ArrayList<Entry> response) {
+        String dadosLabel;
+        if (this.tipo==1) {
+            dadosLabel = "Média Móvel - confirmações";
+        }
+        else if (this.tipo==2) {
+            dadosLabel = "Média Móvel - óbitos";
+        }
+        else if (this.tipo==3) {
+            dadosLabel = "Situação - confirmações";
+        }
+        else {
+            dadosLabel = "Situacao - óbitos";
+        }
+        this.makeChart(response,dadosLabel,dadosLabel,this.tipo);
+    }
 }
