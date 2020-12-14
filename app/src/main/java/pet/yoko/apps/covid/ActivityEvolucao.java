@@ -88,10 +88,16 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             lineDataSet.setValueTextColor(Color.RED);
             lineDataSet.setColor(Color.RED);
         }
+        if (tipo>=2) {
+            lineDataSet.setColors(this.ajustarCores(dados));
+            lineDataSet.setCircleColors(this.ajustarCores(dados));
+        }
         lineDataSet.setValueTextSize(20f);
         lineDataSet.setDrawValues(false);
         lineDataSet.setLineWidth(2);
-        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setCircleRadius(5);
+        lineDataSet.setDrawCircleHole(false);
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
         grafico.setData(lineData);
@@ -138,6 +144,21 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
 
     public void onRadioButtonClick(View v) {
         this.ajustarDados();
+    }
+
+    public List<Integer> ajustarCores(ArrayList<Entry> dados) {
+        List<Integer> cores = new ArrayList<>();
+
+        for (int i=0; i<dados.size();i++) {
+            if (dados.get(i).getY()<=0) {
+                cores.add(Color.GREEN);
+            }
+            else {
+                cores.add(Color.RED);
+            }
+        }
+
+        return (cores);
     }
 
     @Override
