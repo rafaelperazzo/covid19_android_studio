@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskGetEvolucaoMediaResponse {
 
-    void getEvolucaoFinish(ArrayList<Entry> response);
+    void getEvolucaoFinish(ArrayList<Entry> response, ArrayList<String> labels);
 
 }
 

@@ -94,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:background="#000000"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="SITUAÇÃO"
+                android:text="RISCO"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="#FFFFFF" />
@@ -253,7 +253,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:onClick="classificacaoClick"
-        app:srcCompat="@drawable/classificacao"
+        app:srcCompat="@drawable/classificacaop"
         tools:visibility="gone" />
 
     <LinearLayout

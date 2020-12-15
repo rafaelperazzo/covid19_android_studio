@@ -72,6 +72,7 @@
                 android:id="@+id/rbSituacaoMedia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:onClick="onRadioButtonClick"
                 android:text="Situação da Média Móvel" />
         </RadioGroup>
@@ -101,7 +102,7 @@
                 android:id="@+id/rbObitos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="true"
                 android:onClick="onRadioButtonClick"
                 android:text="Óbitos" />
         </RadioGroup>

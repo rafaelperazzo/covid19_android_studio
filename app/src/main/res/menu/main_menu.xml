@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_evolucao_temporal"
-        android:title="Evolução temporal dos casos" />
+
     <item android:id="@+id/menu_evolucao_media"
         android:title="Evolução média móvel" />
-    <item android:id="@+id/menu_resumo"
-        android:title="Gráfico resumo da situação atual" />
+
     <item android:id="@+id/menu_percentuais"
         android:title="Alternar Percentuais/Totais" />
     <item android:id="@+id/menu_compartilhar_app"

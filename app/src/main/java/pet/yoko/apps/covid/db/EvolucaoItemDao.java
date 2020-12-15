@@ -15,13 +15,13 @@ public interface EvolucaoItemDao {
     @Query("select id,\"TODAS\",data,sum(confirmados) as confirmados,sum(obitos) as obitos from EvolucaoTotalItem group by data ORDER BY data DESC LIMIT 30")
     List<EvolucaoTotalItem> getEvolucaoGeralObitos();
 
-    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data DESC LIMIT 60")
+    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem GROUP by data ORDER BY data DESC LIMIT 21")
     List<EvolucaoTotalItem> getAll7();
 
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data")
     List<EvolucaoTotalItem> getAgrupadosCidade(String cidade);
 
-    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 60")
+    @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 21")
     List<EvolucaoTotalItem> getAgrupadosCidade7(String cidade);
 
     @Query("select id,cidade,data,sum(confirmados) as confirmados,sum(obitos) as obitos FROM EvolucaoTotalItem WHERE cidade=:cidade GROUP by data ORDER BY data DESC LIMIT 15")

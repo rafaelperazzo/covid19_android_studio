@@ -481,23 +481,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 txtSituacao.setTextColor(Color.WHITE);
             }
             else if ((coeficiente>0) && (coeficiente<0.58)) {
-                txtSituacao.setText("GRAVE");
+                txtSituacao.setText("MUITO ALTO");
                 txtSituacao.setBackgroundColor(Color.RED);
                 txtSituacao.setTextColor(Color.WHITE);
 
             }
             else if ((coeficiente>=0.58) && (coeficiente<5)) {
-                txtSituacao.setText("ALERTA");
+                txtSituacao.setText("ALTO");
                 txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
                 txtSituacao.setTextColor(Color.BLACK);
             }
             else if ((coeficiente>=5) && (coeficiente<20)) {
-                txtSituacao.setText("ATENÇÃO");
+                txtSituacao.setText("MODERADO");
                 txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
                 txtSituacao.setTextColor(Color.BLACK);
             }
             else if ((coeficiente>=20) && (coeficiente<56.8)) {
-                txtSituacao.setText("CONTROLADA");
+                txtSituacao.setText("BAIXO");
                 txtSituacao.setBackgroundColor(Color.YELLOW);
                 txtSituacao.setTextColor(Color.BLACK);
             }
@@ -585,23 +585,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         txtSituacao.setTextColor(Color.WHITE);
                     }
                     else if ((coeficiente>0) && (coeficiente<0.58)) {
-                        txtSituacao.setText("GRAVE");
+                        txtSituacao.setText("MUITO ALTO");
                         txtSituacao.setBackgroundColor(Color.RED);
                         txtSituacao.setTextColor(Color.WHITE);
 
                     }
                     else if ((coeficiente>=0.58) && (coeficiente<5)) {
-                        txtSituacao.setText("ALERTA");
+                        txtSituacao.setText("ALTO");
                         txtSituacao.setBackgroundColor(Color.parseColor("#FF3333"));
                         txtSituacao.setTextColor(Color.BLACK);
                     }
                     else if ((coeficiente>=5) && (coeficiente<20)) {
-                        txtSituacao.setText("ATENÇÃO");
+                        txtSituacao.setText("MODERADO");
                         txtSituacao.setBackgroundColor(Color.parseColor("#FF8000"));
                         txtSituacao.setTextColor(Color.BLACK);
                     }
                     else if ((coeficiente>=20) && (coeficiente<56.8)) {
-                        txtSituacao.setText("CONTROLADA");
+                        txtSituacao.setText("BAIXO");
                         txtSituacao.setBackgroundColor(Color.YELLOW);
                         txtSituacao.setTextColor(Color.BLACK);
                     }
@@ -675,11 +675,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 intent.putExtra(TIPO_MAPA,"cidades");
                 startActivity(intent);
                 return true;
-            case R.id.mapas_bairros:
-                intent = new Intent(this, MapaActivity.class);
-                intent.putExtra(TIPO_MAPA,"bairros");
-                startActivity(intent);
-                return true;
+            //case R.id.mapas_bairros:
+            //    intent = new Intent(this, MapaActivity.class);
+            //    intent.putExtra(TIPO_MAPA,"bairros");
+            //   startActivity(intent);
+            //    return true;
             case R.id.idade_confirmados:
                 intent = new Intent(this, ChartActivity.class);
                 intent.putExtra(TIPO,"idade");
@@ -727,20 +727,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Intent intent;
         switch (item.getItemId()) {
 
-            case R.id.menu_evolucao_temporal:
-                mostrarEvolucao();
-                return true;
+
             case R.id.menu_evolucao_media:
                 intent = new Intent(this,ActivityEvolucao.class);
                 startActivity(intent);
                 return true;
-            case R.id.menu_resumo:
-                intent =  new Intent(this,ChartActivity.class);
-                intent.putExtra(TIPO,"resumo");
-                intent.putExtra(TITULO,"Dentre os confirmados:");
-                intent.putExtra(TIPO_GRAFICO,"bar");
-                startActivity(intent);
-                return true;
+
             case R.id.menu_covidometro:
                 intent =  new Intent(this,CovidometroActivity.class);
                 startActivity(intent);
@@ -812,12 +804,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     public void mostrarEvolucao() {
         Intent intent;
-        intent =  new Intent(this,ChartActivity.class);
-        intent.putExtra(TIPO,"evolucao");
+        intent =  new Intent(this,ActivityEvolucao.class);
+        /*intent.putExtra(TIPO,"evolucao");
         intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
         intent.putExtra(TITULO,"Evolução temporal - Curva");
         intent.putExtra(TIPO_GRAFICO,"line");
-        intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);
+        intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);*/
         startActivity(intent);
     }
 

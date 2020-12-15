@@ -82,7 +82,7 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             else {
                 obitos.setTextColor(Color.BLACK);
             }
-            if (item.situacao.equals("GRAVE")) {
+            if (item.situacao.equals("ALTO")) {
                 situacao.setBackgroundColor(Color.RED);;
             }
             else if (item.situacao.equals("ALERTA")) {

@@ -4,7 +4,10 @@ import android.os.AsyncTask;
 
 import com.github.mikephil.charting.data.Entry;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TaskGetEvolucaoMedia extends AsyncTask<Void,Void, ArrayList<Entry>> {
@@ -15,6 +18,7 @@ public class TaskGetEvolucaoMedia extends AsyncTask<Void,Void, ArrayList<Entry>>
     int periodo;
     String cidade;
     int tipo;
+    ArrayList<String> labels;
     /*
     Tipo: 1 - Confirmações
     Tipo: 2 - Óbitos
@@ -29,6 +33,7 @@ public class TaskGetEvolucaoMedia extends AsyncTask<Void,Void, ArrayList<Entry>>
         this.periodo = periodo;
         this.cidade = cidade;
         this.tipo = tipo;
+        labels = new ArrayList<>();
     }
 
     @Override
@@ -37,18 +42,18 @@ public class TaskGetEvolucaoMedia extends AsyncTask<Void,Void, ArrayList<Entry>>
         ArrayList<Entry> eixoY = new ArrayList<>();
         for (int i = 0; i< items.size(); i++) {
             if (this.tipo==1) {
-                eixoY.add(new Entry(i+1,items.get(i).getConfirmados()));
+                eixoY.add(new Entry(i,items.get(i).getConfirmados()));
             }
             else if (this.tipo==2) {
-                eixoY.add(new Entry(i+1,items.get(i).getObitos()));
+                eixoY.add(new Entry(i,items.get(i).getObitos()));
             }
             else if (this.tipo==3) {
-                eixoY.add(new Entry(i+1,items.get(i).getSituacao_confirmados()));
+                eixoY.add(new Entry(i,items.get(i).getSituacao_confirmados()));
             }
             else {
-                eixoY.add(new Entry(i+1,items.get(i).getSituacao_obitos()));
+                eixoY.add(new Entry(i,items.get(i).getSituacao_obitos()));
             }
-
+            labels.add(items.get(i).getData());
         }
         return eixoY;
     }
@@ -56,6 +61,6 @@ public class TaskGetEvolucaoMedia extends AsyncTask<Void,Void, ArrayList<Entry>>
     @Override
     protected void onPostExecute(ArrayList<Entry> evolucaoMediaItems) {
         super.onPostExecute(evolucaoMediaItems);
-        delegate.getEvolucaoFinish(evolucaoMediaItems);
+        delegate.getEvolucaoFinish(evolucaoMediaItems,labels);
     }
 }

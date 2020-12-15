@@ -18,7 +18,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pet.yoko.apps.covid.db.DatabaseClient;
@@ -37,6 +40,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     Spinner cmbCidade;
     Spinner cmbPeriodo;
     TextView txtSituacao;
+    ArrayList<String> labels;
     int tipo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +78,15 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
                 });
 
         this.tipo = 1;
-        TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
-        tem.execute();
+        //TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
+        //tem.execute();
         this.setTitle("MÉDIA MÓVEL");
     }
 
 
-    public void makeChart(ArrayList<Entry> dados, String dadosLabel,String descricao,int tipo) {
+    public void makeChart(ArrayList<Entry> dados, String dadosLabel, String descricao, int tipo) {
         //https://stackoverflow.com/questions/28960597/mpandroid-chart-how-to-make-smooth-line-chart
-        grafico.invalidate();
+
         LineDataSet lineDataSet = new LineDataSet(dados,dadosLabel);
         lineDataSet.setValueTextSize(12f);
         lineDataSet.setValueTextColor(Color.BLACK);
@@ -124,10 +128,12 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         grafico.getAxisLeft().setGranularity(1f);
         grafico.getAxisLeft().setGranularityEnabled(true);
         grafico.getXAxis().setDrawGridLines(false);
-        grafico.getAxisLeft().setDrawAxisLine(true);
+        grafico.getAxisLeft().setDrawAxisLine(false);
         grafico.getXAxis().setGranularity(1f);
+        grafico.getXAxis().setGranularityEnabled(true);
+        grafico.getXAxis().setLabelCount(labels.size(),true);
         grafico.getXAxis().setLabelRotationAngle(-90);
-        grafico.getAxisLeft().setDrawLabels(true);
+        grafico.getAxisLeft().setDrawLabels(false);
         grafico.getAxisRight().setEnabled(false);
         grafico.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         grafico.getAxisLeft().setValueFormatter(new ValueFormatter() {
@@ -137,6 +143,25 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
                 return(format.format(value));
             }
         });
+        //https://stackoverflow.com/questions/47637653/how-to-set-x-axis-labels-in-mp-android-chart-bar-graph
+        grafico.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Date d1;
+                String valor = "";
+                try {
+                    d1 = df.parse(labels.get((int)value));
+                    df.applyPattern("dd-MM-yyyy");
+                    valor = df.format(d1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    valor = "";
+                }
+                return (valor);
+            }
+        });
+
         grafico.getDescription().setText(descricao);
         grafico.getDescription().setTextSize(10);
         grafico.getDescription().setEnabled(true);
@@ -198,24 +223,24 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             }
         }
         if (ultimo==-1) {
-            this.txtSituacao.setText("QUEDA/ESTABILIDADE NO PERÍODO DE " + periodo + " dias");
+            this.txtSituacao.setText("QUEDA/ESTABILIDADE NOS ÚLTIMOS " + periodo + " dias");
             this.txtSituacao.setBackgroundColor(Color.GREEN);
             this.txtSituacao.setTextColor(Color.BLACK);
         }
         else if (ultimo==0) {
-            this.txtSituacao.setText("ESTABILIDADE NO PERÍODO DE " + periodo + " dias");
+            this.txtSituacao.setText("ESTABILIDADE NO PERÍODO NOS ÚLTIMOS " + periodo + " dias");
             this.txtSituacao.setBackgroundColor(Color.YELLOW);
             this.txtSituacao.setTextColor(Color.BLACK);
         }
         else {
-            this.txtSituacao.setText("CRESCIMENTO/ESTABILIDADE NO PERÍODO DE " + periodo + " dias");
+            this.txtSituacao.setText("CRESCIMENTO/ESTABILIDADE NOS ÚLTIMOS " + periodo + " dias");
             this.txtSituacao.setBackgroundColor(Color.RED);
             this.txtSituacao.setTextColor(Color.WHITE);
         }
     }
 
     @Override
-    public void getEvolucaoFinish(ArrayList<Entry> response) {
+    public void getEvolucaoFinish(ArrayList<Entry> response, ArrayList<String> labels) {
         String dadosLabel;
         if (this.tipo==1) {
             dadosLabel = "Média Móvel - confirmações";
@@ -231,6 +256,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             dadosLabel = "Situacao - óbitos";
             this.analisarDados(response);
         }
+        this.labels = labels;
         this.makeChart(response,dadosLabel,dadosLabel,this.tipo);
 
     }
