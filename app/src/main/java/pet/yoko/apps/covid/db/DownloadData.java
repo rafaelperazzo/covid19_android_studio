@@ -65,16 +65,16 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
 
     private String coeficiente2situacao(double coeficiente) {
         if ((coeficiente>=0) && (coeficiente<0.58)) {
-            return ("GRAVE");
+            return ("MUITO ALTO");
         }
         if ((coeficiente>=0.58) && (coeficiente<5)) {
-            return ("ALERTA");
+            return ("ALTO");
         }
         if ((coeficiente>=5) && (coeficiente<20)) {
-            return ("ATENÇÃO");
+            return ("MODERADO");
         }
         if ((coeficiente>=20) && (coeficiente<56.8)) {
-            return ("CONTROLADA");
+            return ("BAIXO");
         }
         else {
             return ("NORMALIDADE");

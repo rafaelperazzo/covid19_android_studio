@@ -85,13 +85,13 @@ public class CidadeAdapter extends RecyclerView.Adapter <CidadeAdapter.ViewHolde
             if (item.situacao.equals("ALTO")) {
                 situacao.setBackgroundColor(Color.RED);;
             }
-            else if (item.situacao.equals("ALERTA")) {
-                situacao.setBackgroundColor(Color.parseColor("#FF3333"));
+            else if (item.situacao.equals("MUITO ALTO")) {
+                situacao.setBackgroundColor(Color.parseColor("#4C0099"));
             }
-            else if (item.situacao.equals("ATENÇÃO")) {
+            else if (item.situacao.equals("MODERADO")) {
                 situacao.setBackgroundColor(Color.parseColor("#FF8000"));
             }
-            else if (item.situacao.equals("CONTROLADA")) {
+            else if (item.situacao.equals("BAIXO")) {
                 situacao.setBackgroundColor(Color.YELLOW);
             }
             else {
