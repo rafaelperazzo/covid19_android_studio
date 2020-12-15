@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -35,7 +36,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     RadioButton rbSituacao;
     Spinner cmbCidade;
     Spinner cmbPeriodo;
-
+    TextView txtSituacao;
     int tipo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         rbSituacao = (RadioButton)findViewById(R.id.rbSituacaoMedia);
         cmbCidade = (Spinner)findViewById(R.id.cmbCidadesGrafico);
         cmbPeriodo = (Spinner)findViewById(R.id.cmbPeriodoGrafico);
+        txtSituacao = (TextView)findViewById(R.id.textSituacaoMediaMovel);
         cmbPeriodo.setSelection(1);
         cmbPeriodo.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -74,26 +76,38 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         this.tipo = 1;
         TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
         tem.execute();
+        this.setTitle("MÉDIA MÓVEL");
     }
 
 
     public void makeChart(ArrayList<Entry> dados, String dadosLabel,String descricao,int tipo) {
+        //https://stackoverflow.com/questions/28960597/mpandroid-chart-how-to-make-smooth-line-chart
         grafico.invalidate();
         LineDataSet lineDataSet = new LineDataSet(dados,dadosLabel);
+        lineDataSet.setValueTextSize(12f);
+        lineDataSet.setValueTextColor(Color.BLACK);
+        lineDataSet.setDrawValues(true);
+        lineDataSet.setCubicIntensity(1);
+        lineDataSet.resetColors();
         if (tipo==1) {
-            lineDataSet.setValueTextColor(Color.GREEN);
-            lineDataSet.setColor(Color.GREEN);
+            lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            lineDataSet.setColor(Color.BLUE);
+            lineDataSet.setCircleColor(Color.BLUE);
         }
-        else {
-            lineDataSet.setValueTextColor(Color.RED);
+        else if (tipo==2) {
+            lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
             lineDataSet.setColor(Color.RED);
+            lineDataSet.setCircleColor(Color.RED);
         }
-        if (tipo>=2) {
+        if (tipo>2) {
+            //lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            lineDataSet.resetColors();
             lineDataSet.setColors(this.ajustarCores(dados));
             lineDataSet.setCircleColors(this.ajustarCores(dados));
+            lineDataSet.setDrawValues(false);
         }
-        lineDataSet.setValueTextSize(20f);
-        lineDataSet.setDrawValues(false);
+
+        lineDataSet.setHighlightEnabled(true);
         lineDataSet.setLineWidth(2);
         lineDataSet.setDrawCircles(true);
         lineDataSet.setCircleRadius(5);
@@ -103,6 +117,17 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         grafico.setData(lineData);
         grafico.animateY(2000);
         grafico.getXAxis().setEnabled(true);
+        grafico.getAxisLeft().setDrawZeroLine(true);
+        grafico.getAxisLeft().setZeroLineWidth(3);
+        grafico.getAxisLeft().setZeroLineColor(Color.YELLOW);
+        grafico.getAxisLeft().setDrawGridLines(false);
+        grafico.getAxisLeft().setGranularity(1f);
+        grafico.getAxisLeft().setGranularityEnabled(true);
+        grafico.getXAxis().setDrawGridLines(false);
+        grafico.getAxisLeft().setDrawAxisLine(true);
+        grafico.getXAxis().setGranularity(1f);
+        grafico.getXAxis().setLabelRotationAngle(-90);
+        grafico.getAxisLeft().setDrawLabels(true);
         grafico.getAxisRight().setEnabled(false);
         grafico.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         grafico.getAxisLeft().setValueFormatter(new ValueFormatter() {
@@ -161,6 +186,34 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         return (cores);
     }
 
+    private void analisarDados(ArrayList<Entry> dados) {
+        int ultimo = (int)dados.get(dados.size()-1).getY();
+        int periodo = 1;
+        for (int i=dados.size()-2;i>=0;i--) {
+            if ((ultimo==(int)dados.get(i).getY())||((int)dados.get(i).getY()==0)) {
+                periodo++;
+            }
+            else {
+                break;
+            }
+        }
+        if (ultimo==-1) {
+            this.txtSituacao.setText("QUEDA/ESTABILIDADE NO PERÍODO DE " + periodo + " dias");
+            this.txtSituacao.setBackgroundColor(Color.GREEN);
+            this.txtSituacao.setTextColor(Color.BLACK);
+        }
+        else if (ultimo==0) {
+            this.txtSituacao.setText("ESTABILIDADE NO PERÍODO DE " + periodo + " dias");
+            this.txtSituacao.setBackgroundColor(Color.YELLOW);
+            this.txtSituacao.setTextColor(Color.BLACK);
+        }
+        else {
+            this.txtSituacao.setText("CRESCIMENTO/ESTABILIDADE NO PERÍODO DE " + periodo + " dias");
+            this.txtSituacao.setBackgroundColor(Color.RED);
+            this.txtSituacao.setTextColor(Color.WHITE);
+        }
+    }
+
     @Override
     public void getEvolucaoFinish(ArrayList<Entry> response) {
         String dadosLabel;
@@ -172,10 +225,13 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         }
         else if (this.tipo==3) {
             dadosLabel = "Situação - confirmações";
+            this.analisarDados(response);
         }
         else {
             dadosLabel = "Situacao - óbitos";
+            this.analisarDados(response);
         }
         this.makeChart(response,dadosLabel,dadosLabel,this.tipo);
+
     }
 }

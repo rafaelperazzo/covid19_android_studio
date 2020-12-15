@@ -73,6 +73,7 @@ public class MyLineChart {
         lineDataSet.setDrawValues(false);
         lineDataSet.setLineWidth(2);
         lineDataSet.setDrawCircles(false);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
         if (dados2!=null) {
@@ -83,6 +84,7 @@ public class MyLineChart {
             lineDataSet2.setDrawValues(false);
             lineDataSet2.setLineWidth(2);
             lineDataSet2.setDrawCircles(false);
+            lineDataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             lineData.addDataSet(lineDataSet2);
         }
         grafico.setData(lineData);
