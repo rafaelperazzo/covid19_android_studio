@@ -101,7 +101,7 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
                 double indice2 = ((primeiro)*100000)/((double)populacao);
                 double coeficiente = 1000;
                 if (indice1-indice2!=0) {
-                    coeficiente = Ferramenta.TEMPO/((double)(indice1-indice2));
+                    coeficiente = Ferramenta.TEMPO/((indice1-indice2));
                 }
 
                 String situacao = coeficiente2situacao(coeficiente);
@@ -207,21 +207,33 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-
         db.graficoItemDao().delete_all();
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorSexo","obitosPorSexo");
+
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorIdade","obitosPorIdade");
+
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=sexo","sexo");
+
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=idade","idade");
+
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
-        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
-        processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
+
+        //processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
+
+        //processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
+
         baixarDadosCidades("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=hoje");
+
         baixarDadosIniciais("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
+
         baixarDadosCidadesMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades");
+
         baixarDadosBairrosMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=bairros");
+
         baixarDadosEvolucaoTotal("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
+
         baixarDadosEvolucaoMedia("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=media");
+
         return null;
     }
 

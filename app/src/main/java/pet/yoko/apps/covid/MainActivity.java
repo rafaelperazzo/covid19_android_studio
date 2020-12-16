@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView obitos;
     TextView atualizacao;
     ProgressBar progresso;
+    ProgressBar progressoPasso;
     TextView versao;
     TextView txtDias;
     TextView txtHoras;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView txtAvisos;
     SharedPreferences sharedPref;
     SpeedView velocimetro;
-    TubeSpeedometer velocimetro2;
+    SpeedView velocimetro2;
     SpeedView velocimetro3;
     Spinner cidade;
     TextView txtSituacao;
@@ -110,18 +111,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         txtMinutosConfirmados = (TextView)findViewById(R.id.txtMinutosConfirmados);
         txtAvisos = (TextView)findViewById(R.id.txtAvisos);
         progresso = (ProgressBar)findViewById(R.id.progresso);
+        progressoPasso = (ProgressBar)findViewById(R.id.progressoPasso);
+        progressoPasso.setVisibility(View.GONE);
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
         atualizar.setVisibility(View.GONE);
         velocimetro = (SpeedView)findViewById(R.id.velocimetro);
-        velocimetro2 = (TubeSpeedometer) findViewById(R.id.velocimetro2);
+        velocimetro2 = (SpeedView) findViewById(R.id.velocimetro2);
         velocimetro3 = (SpeedView) findViewById(R.id.velocimetro3);
-        velocimetro2.setVisibility(View.GONE);
+        velocimetro2.setVisibility(View.VISIBLE);
+        velocimetro3.setVisibility(View.GONE);
         textVelocidade = (TextView)findViewById(R.id.textVelocidade);
         textTempo = (TextView)findViewById(R.id.textTempo);
         textSituacaoAjuda = (TextView)findViewById(R.id.textSituacaoAjuda);
         textSituacaoAjuda.setVisibility(View.GONE);
         textOcupacaoUTI = (TextView)findViewById(R.id.textUTI);
+        textOcupacaoUTI.setText("OCUPAÇÃO DE UTI");
         cidade = (Spinner)findViewById(R.id.cmbCidades);
         txtSituacao = (TextView)findViewById(R.id.txtSituacao);
         atualizandoDados = (TextView)findViewById(R.id.txtAtualizandoDados);
@@ -224,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-    public void situacaoClnullick(View v) {
+    public void situacaoClick(View v) {
         if (textSituacaoAjuda.getVisibility()==View.GONE) {
             textSituacaoAjuda.setVisibility(View.VISIBLE);
         }
@@ -309,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.setCenterCircleRadius(30);
     }
 
-    public void ajustarVelocimetroTube(TubeSpeedometer velocimetro) {
+    public void ajustarVelocimetroTube(SpeedView velocimetro) {
         velocimetro.setSpeedometerMode(Speedometer.Mode.NORMAL);
         velocimetro.setUnit("%");
         velocimetro.setWithIndicatorLight(true);
@@ -317,9 +322,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         velocimetro.setMaxSpeed(100);
         velocimetro.clearSections();
         velocimetro.addSections(new Section(.0f,.7f,Color.GREEN,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
-        velocimetro.addSections(new Section(.7f,.85f,Color.YELLOW,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
-        velocimetro.addSections(new Section(.85f,.95f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
-        velocimetro.addSections(new Section(.95f,1f,Color.parseColor("#660066"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.7f,.8f,Color.YELLOW,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.8f,.95f,Color.parseColor("#FF8000"),velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
+        velocimetro.addSections(new Section(.95f,1f,Color.RED,velocimetro.getSpeedometerWidth(),Section.Style.SQUARE));
         velocimetro.setWithTremble(false);
         velocimetro.setUnitUnderSpeedText(true);
         velocimetro.setTickNumber(5);

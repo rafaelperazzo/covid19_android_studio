@@ -35,6 +35,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ProgressBar
+        android:id="@+id/progressoPasso"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -95,7 +103,7 @@
                 android:background="#000000"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="RISCO"
-                android:textAlignment="textEnd"
+
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="#FFFFFF" />
 
@@ -199,12 +207,12 @@
         </LinearLayout>
 
 
-        <com.github.anastr.speedviewlib.TubeSpeedometer
+        <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/velocimetro2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <com.github.anastr.speedviewlib.SpeedView
             android:id="@+id/velocimetro3"
@@ -212,7 +220,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.4"
             android:onClick="ajuda2Click"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
     </LinearLayout>
 
@@ -296,7 +304,7 @@
             android:background="#FF5722"
             android:gravity="center_vertical"
             android:text="DIAS"
-            android:textAlignment="textStart"
+
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000000" />
 
@@ -320,7 +328,7 @@
             android:background="#FF5722"
             android:gravity="center_vertical"
             android:text="HORAS"
-            android:textAlignment="textStart"
+
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000000" />
 
@@ -344,7 +352,7 @@
             android:background="#FF5722"
             android:gravity="center_vertical"
             android:text="MINUTOS"
-            android:textAlignment="textStart"
+
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="#000000" />
     </LinearLayout>

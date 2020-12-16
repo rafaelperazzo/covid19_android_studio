@@ -113,7 +113,7 @@
             android:layout_weight="1"
             android:gravity="right|center_vertical"
             android:onClick="situacaoClick"
-            android:text="Situação"
+            android:text="Risco"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="bold" />
