@@ -92,7 +92,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#000000"
-                android:onClick="imgSwapClick"
                 app:srcCompat="@drawable/hospital32"
                 tools:visibility="visible" />
 

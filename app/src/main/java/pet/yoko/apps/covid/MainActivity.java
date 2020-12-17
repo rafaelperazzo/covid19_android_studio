@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public static final String DESCRICAO_GRAFICO = "DESCRIÇÃO";
     public static final String TIPO_MAPA = "cidades";
     public static final String CIDADE = "TODAS AS CIDADES";
+    public static final String UTI = "-";
+    private String OCUPACAO_UTI ="-";
     public String texto_descricao_grafico = "";
     public String url = "https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?resumo=";
     public String url_cidades = "https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades";
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void ajuda2Click(View v) {
         if (imgClassificacao.getVisibility()==View.GONE) {
             imgClassificacao.setVisibility(View.VISIBLE);
-            imgClassificacao.setImageResource(R.drawable.classificacaoconf);
+            imgClassificacao.setImageResource(R.drawable.ocupacaouti);
         }
         else {
             imgClassificacao.setVisibility(View.GONE);
@@ -383,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 try {
                     items = cdi.execute().get();
                     velocimetro2.speedTo(items.get(0).getUti());
+                    OCUPACAO_UTI = String.valueOf(items.get(0).getUti());
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -810,8 +813,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void mostrarEvolucao() {
         Intent intent;
         intent =  new Intent(this,ActivityEvolucao.class);
-        /*intent.putExtra(TIPO,"evolucao");
-        intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
+        intent.putExtra("UTI",this.OCUPACAO_UTI);
+        /*intent.putExtra(CIDADE,cidade.getSelectedItem().toString());
         intent.putExtra(TITULO,"Evolução temporal - Curva");
         intent.putExtra(TIPO_GRAFICO,"line");
         intent.putExtra(DESCRICAO_GRAFICO,texto_descricao_grafico);*/

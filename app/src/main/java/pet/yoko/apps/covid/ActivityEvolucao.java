@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -40,6 +42,10 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     Spinner cmbCidade;
     Spinner cmbPeriodo;
     TextView txtSituacao;
+    TextView ocupacaoUTI;
+    TextView tendencia;
+    TextView declive;
+    LinearLayout layOutTendencia;
     ArrayList<String> labels;
     int tipo;
     @Override
@@ -54,6 +60,11 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         cmbCidade = (Spinner)findViewById(R.id.cmbCidadesGrafico);
         cmbPeriodo = (Spinner)findViewById(R.id.cmbPeriodoGrafico);
         txtSituacao = (TextView)findViewById(R.id.textSituacaoMediaMovel);
+        ocupacaoUTI = (TextView)findViewById(R.id.textOcupacaoUTIHoje);
+        tendencia = (TextView)findViewById(R.id.textTendencia);
+        layOutTendencia = (LinearLayout)findViewById(R.id.layoutTendencia);
+        declive = (TextView)findViewById(R.id.textDeclive);
+        this.setOcupacaoUTI(getIntent().getStringExtra("UTI"));
         cmbPeriodo.setSelection(1);
         cmbPeriodo.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -80,9 +91,31 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         this.tipo = 1;
         //TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
         //tem.execute();
-        this.setTitle("MÉDIA MÓVEL");
+        this.setTitle("INDICADORES");
+
     }
 
+    private void setOcupacaoUTI(String valor) {
+        try {
+            int numero = Integer.parseInt(valor);
+            if (numero<70) {
+                ocupacaoUTI.setBackgroundColor(Color.GREEN);
+            }
+            else if ((numero>=70)&&(numero<80)) {
+                ocupacaoUTI.setBackgroundColor(Color.YELLOW);
+            }
+            else if ((numero>=80)&&(numero<95)) {
+                ocupacaoUTI.setBackgroundColor(Color.parseColor("#FF8000"));
+            }
+            else {
+                ocupacaoUTI.setBackgroundColor(Color.RED);
+            }
+            ocupacaoUTI.setText(valor + "%");
+        }
+        catch (NumberFormatException e) {
+            ocupacaoUTI.setText("ERRO");
+        }
+    }
 
     public void makeChart(ArrayList<Entry> dados, String dadosLabel, String descricao, int tipo) {
         //https://stackoverflow.com/questions/28960597/mpandroid-chart-how-to-make-smooth-line-chart
@@ -91,6 +124,13 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         lineDataSet.setValueTextSize(12f);
         lineDataSet.setValueTextColor(Color.BLACK);
         lineDataSet.setDrawValues(true);
+        lineDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return(String.format("%.1f",value));
+                //return super.getFormattedValue(value);
+            }
+        });
         lineDataSet.setCubicIntensity(1);
         lineDataSet.resetColors();
         if (tipo==1) {
@@ -200,8 +240,11 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         List<Integer> cores = new ArrayList<>();
 
         for (int i=0; i<dados.size();i++) {
-            if (dados.get(i).getY()<=0) {
+            if (dados.get(i).getY()<0) {
                 cores.add(Color.GREEN);
+            }
+            else if (dados.get(i).getY()==0) {
+                cores.add(Color.YELLOW);
             }
             else {
                 cores.add(Color.RED);
@@ -218,6 +261,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             if ((ultimo==(int)dados.get(i).getY())||((int)dados.get(i).getY()==0)) {
                 periodo++;
             }
+
             else {
                 break;
             }
@@ -239,25 +283,65 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         }
     }
 
+    private void setTendencia(ArrayList<Entry> dados) {
+        float somaX = 0;
+        float somaY = 0;
+        float somaXY = 0;
+        float somaXX = 0;
+
+        for (int i =0; i<dados.size(); i++) {
+            somaX = somaX + dados.get(i).getX();
+            somaY = somaY + dados.get(i).getY();
+            somaXY = somaXY + (dados.get(i).getX()*dados.get(i).getY());
+            somaXX = somaXX + (dados.get(i).getX()*dados.get(i).getX());
+        }
+        float a1 = ((dados.size())*somaXY-(somaX*somaY))/((dados.size()*somaXX)-(somaX*somaX));
+        declive.setText(String.format("%.2f",a1));
+        if (a1==0) {
+            this.tendencia.setBackgroundColor(Color.YELLOW);
+            this.layOutTendencia.setBackgroundColor(Color.YELLOW);
+            this.tendencia.setTextColor(Color.BLACK);
+            this.tendencia.setText("ESTABILIDADE");
+        }
+        else if (a1<0) {
+            this.tendencia.setBackgroundColor(Color.GREEN);
+            this.tendencia.setTextColor(Color.BLACK);
+            this.tendencia.setText("DECRESCENTE");
+            this.layOutTendencia.setBackgroundColor(Color.GREEN);
+        }
+        else {
+            this.tendencia.setBackgroundColor(Color.RED);
+            this.layOutTendencia.setBackgroundColor(Color.RED);
+            this.tendencia.setTextColor(Color.WHITE);
+            this.tendencia.setText("CRESCENTE");
+        }
+
+    }
+
     @Override
     public void getEvolucaoFinish(ArrayList<Entry> response, ArrayList<String> labels) {
         String dadosLabel;
         if (this.tipo==1) {
             dadosLabel = "Média Móvel - confirmações";
+            this.setTendencia(response);
+            this.layOutTendencia.setVisibility(View.VISIBLE);
         }
         else if (this.tipo==2) {
             dadosLabel = "Média Móvel - óbitos";
+            this.setTendencia(response);
+            this.layOutTendencia.setVisibility(View.VISIBLE);
         }
         else if (this.tipo==3) {
             dadosLabel = "Situação - confirmações";
             this.analisarDados(response);
+            this.layOutTendencia.setVisibility(View.GONE);
         }
         else {
             dadosLabel = "Situacao - óbitos";
             this.analisarDados(response);
+            this.layOutTendencia.setVisibility(View.GONE);
         }
         this.labels = labels;
         this.makeChart(response,dadosLabel,dadosLabel,this.tipo);
-
     }
 }
