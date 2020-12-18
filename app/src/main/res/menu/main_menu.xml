@@ -3,7 +3,7 @@
 
 
     <item android:id="@+id/menu_evolucao_media"
-        android:title="Evolução média móvel" />
+        android:title="Indicadores" />
 
     <item android:id="@+id/menu_percentuais"
         android:title="Alternar Percentuais/Totais" />
