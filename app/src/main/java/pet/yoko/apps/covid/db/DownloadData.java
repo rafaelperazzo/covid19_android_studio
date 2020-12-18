@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.skydoves.progressview.ProgressView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,12 +21,12 @@ import pet.yoko.apps.covid.Ferramenta;
 public class DownloadData extends AsyncTask<Void, Void, Void> {
 
     private AppDatabase db;
-    ProgressBar progresso;
+    ProgressView progresso;
     DownloadDataResponse delegate;
 
     private OkHttpClient client = new OkHttpClient();
 
-    public DownloadData(AppDatabase db, ProgressBar progresso, DownloadDataResponse delegate) {
+    public DownloadData(AppDatabase db, ProgressView progresso, DownloadDataResponse delegate) {
         this.db = db;
         this.progresso = progresso;
         this.delegate = delegate;
@@ -212,27 +214,38 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         db.graficoItemDao().delete_all();
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorSexo","obitosPorSexo");
-        progresso.setProgress(5,true);
+        progresso.setProgress(5);
+        progresso.setLabelText("5%");
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorIdade","obitosPorIdade");
-        progresso.setProgress(10,true);
+        progresso.setProgress(10);
+        progresso.setLabelText("10%");
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=sexo","sexo");
-        progresso.setProgress(15,true);
+        progresso.setProgress(15);
+        progresso.setLabelText("15%");
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=idade","idade");
-        progresso.setProgress(20,true);
+        progresso.setProgress(20);
+        progresso.setLabelText("20%");
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
-        progresso.setProgress(25,true);
+        progresso.setProgress(25);
+        progresso.setLabelText("25%");
         baixarDadosCidades("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=hoje");
-        progresso.setProgress(30,true);
+        progresso.setProgress(30);
+        progresso.setLabelText("30%");
         baixarDadosIniciais("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
-        progresso.setProgress(40,true);
+        progresso.setProgress(40);
+        progresso.setLabelText("40%");
         baixarDadosCidadesMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades");
-        progresso.setProgress(45,true);
+        progresso.setProgress(45);
+        progresso.setLabelText("45%");
         baixarDadosBairrosMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=bairros");
-        progresso.setProgress(60,true);
+        progresso.setProgress(60);
+        progresso.setLabelText("60%");
         baixarDadosEvolucaoTotal("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
-        progresso.setProgress(80,true);
+        progresso.setProgress(80);
+        progresso.setLabelText("80%");
         baixarDadosEvolucaoMedia("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=media");
-        progresso.setProgress(100,true);
+        progresso.setProgress(100);
+        progresso.setLabelText("100%");
         return null;
     }
 

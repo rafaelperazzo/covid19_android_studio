@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.github.anastr.speedviewlib.Speedometer;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
 import com.github.anastr.speedviewlib.components.indicators.Indicator;
+import com.skydoves.progressview.ProgressView;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView obitos;
     TextView atualizacao;
     ProgressBar progresso;
-    ProgressBar progressoPasso;
+    ProgressView progressoPasso;
     TextView versao;
     TextView txtDias;
     TextView txtHoras;
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView textOcupacaoUTI;
     TextView atualizandoDados;
     LinearLayout lProgresso;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +118,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         txtMinutosConfirmados = (TextView)findViewById(R.id.txtMinutosConfirmados);
         txtAvisos = (TextView)findViewById(R.id.txtAvisos);
         progresso = (ProgressBar)findViewById(R.id.progresso);
-        progressoPasso = (ProgressBar)findViewById(R.id.progressoPasso);
+        progressoPasso = (ProgressView)findViewById(R.id.progressoPasso);
         progressoPasso.setVisibility(View.GONE);
+        progressoPasso.setScaleY(3f);
+        progressoPasso.setAnimating(true);
+        progressoPasso.setLabelSize(11f);
+        progressoPasso.setColorBackground(Color.BLUE);
+        progressoPasso.setAutoAnimate(true);
+        progressoPasso.setProgressFromPrevious(true);
+        progressoPasso.setLabelColorInner(Color.BLACK);
+        progressoPasso.setLabelColorOuter(Color.GRAY);
+        progressoPasso.setLabelSpace(10f);
+        progressoPasso.setRadius(12f);
+        progressoPasso.setLabelTypefaceObject(Typeface.DEFAULT_BOLD);
+        progressoPasso.setBackgroundColor(Color.RED);
+        
         versao = (TextView)findViewById(R.id.txtVersao);
         atualizar = (TextView)findViewById(R.id.txtAtualizar);
         atualizar.setVisibility(View.GONE);
