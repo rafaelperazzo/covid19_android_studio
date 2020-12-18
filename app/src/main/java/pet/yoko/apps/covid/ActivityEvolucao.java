@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import pet.yoko.apps.covid.db.DatabaseClient;
+import pet.yoko.apps.covid.db.DownloadData;
 import pet.yoko.apps.covid.db.EvolucaoTotalItem;
 import pet.yoko.apps.covid.db.TaskGetEvolucao;
 import pet.yoko.apps.covid.db.TaskGetEvolucaoMedia;
@@ -91,6 +92,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         this.tipo = 1;
         //TaskGetEvolucaoMedia tem = new TaskGetEvolucaoMedia(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,14,"TODAS AS CIDADES",1);
         //tem.execute();
+
         this.setTitle("INDICADORES");
 
     }
@@ -255,9 +257,21 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     }
 
     private void analisarDados(ArrayList<Entry> dados) {
-        int ultimo = (int)dados.get(dados.size()-1).getY();
+        int j = dados.size()-1; //Ultima posição
+        int ultimo = (int)dados.get(j).getY();
         int periodo = 1;
-        for (int i=dados.size()-2;i>=0;i--) {
+
+        while (ultimo==0) {
+            j--;
+            if (j>=0) {
+                ultimo = (int)dados.get(j).getY();
+                periodo++;
+            }
+            else {
+                break;
+            }
+        }
+        for (int i=j-1;i>=0;i--) {
             if ((ultimo==(int)dados.get(i).getY())||((int)dados.get(i).getY()==0)) {
                 periodo++;
             }
@@ -272,7 +286,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             this.txtSituacao.setTextColor(Color.BLACK);
         }
         else if (ultimo==0) {
-            this.txtSituacao.setText("ESTABILIDADE NO PERÍODO NOS ÚLTIMOS " + periodo + " dias");
+            this.txtSituacao.setText("ESTABILIDADE NOS ÚLTIMOS " + periodo + " dias");
             this.txtSituacao.setBackgroundColor(Color.YELLOW);
             this.txtSituacao.setTextColor(Color.BLACK);
         }

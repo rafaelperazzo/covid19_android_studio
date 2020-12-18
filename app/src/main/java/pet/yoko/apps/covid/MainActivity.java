@@ -45,6 +45,7 @@ import pet.yoko.apps.covid.db.CarregarDadosIniciais;
 import pet.yoko.apps.covid.db.DadosIniciais;
 import pet.yoko.apps.covid.db.DatabaseClient;
 import pet.yoko.apps.covid.db.DownloadData;
+import pet.yoko.apps.covid.db.DownloadDataResponse;
 import pet.yoko.apps.covid.db.EvolucaoTotalItem;
 import pet.yoko.apps.covid.db.TaskGetEvolucao;
 import pet.yoko.apps.covid.db.TaskGetEvolucaoResponse;
@@ -52,7 +53,7 @@ import pet.yoko.apps.covid.db.TaskGetEvolucaoResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, DownloadDataResponse {
     public static final String TIPO = "confirmados";
     public static final String CATEGORIA = "Confirmações";
     public static final String TITULO = "Confirmações por ";
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     TextView textSituacaoAjuda;
     TextView textOcupacaoUTI;
     TextView atualizandoDados;
+    LinearLayout lProgresso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         txtSituacao = (TextView)findViewById(R.id.txtSituacao);
         atualizandoDados = (TextView)findViewById(R.id.txtAtualizandoDados);
         atualizandoDados.setVisibility(View.GONE);
+        lProgresso = (LinearLayout)findViewById(R.id.layoutProgresso);
         this.onSelectCity();
         ajustarVelocimetro(velocimetro);
         ajustarVelocimetroTube(velocimetro2);
@@ -893,7 +896,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         }
     }
-
+/*
     public void ajustarDadosIniciais(final String response) {
         runOnUiThread(new Runnable() {
             @Override
@@ -908,7 +911,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                     }
                     else {
                         setAtualizacao(data_agora);
-                        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso);
+                        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progresso,this);
                         progresso.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
                         atualizandoDados.setVisibility(View.VISIBLE);
                         Void retorno = dd.execute().get();
@@ -928,6 +931,31 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
+    }*/
+
+    public void ajustarDadosIniciais(final String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    String data_agora = obj.getString("atualizacao");
+                    String data_armazenada = getAtualizacao();
+                    if (data_agora.equals(data_armazenada)) {
+                        carregarDadosIniciais();
+                        progresso.setVisibility(View.GONE);
+                    }
+                    else {
+                        setAtualizacao(data_agora);
+                        DownloadData dd = new DownloadData(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progressoPasso,this);
+                        atualizandoDados.setVisibility(View.VISIBLE);
+                        lProgresso.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+                        dd.execute();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
     }
 
     public void popupAtualizar() {
@@ -941,4 +969,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     }
 
+    @Override
+    public void downloadDataFinish() {
+        carregarDadosIniciais();
+        atualizandoDados.setVisibility(View.GONE);
+        lProgresso.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        progresso.setVisibility(View.GONE);
+    }
 }

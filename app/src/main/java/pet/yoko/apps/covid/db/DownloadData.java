@@ -20,12 +20,14 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
 
     private AppDatabase db;
     ProgressBar progresso;
+    DownloadDataResponse delegate;
 
     private OkHttpClient client = new OkHttpClient();
 
-    public DownloadData(AppDatabase db, ProgressBar progresso) {
+    public DownloadData(AppDatabase db, ProgressBar progresso, DownloadDataResponse delegate) {
         this.db = db;
         this.progresso = progresso;
+        this.delegate = delegate;
     }
 
     private String run(String url) throws IOException {
@@ -203,37 +205,34 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         progresso.setVisibility(View.GONE);
+        this.delegate.downloadDataFinish();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         db.graficoItemDao().delete_all();
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorSexo","obitosPorSexo");
-
+        progresso.setProgress(5,true);
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=obitosPorIdade","obitosPorIdade");
-
+        progresso.setProgress(10,true);
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=sexo","sexo");
-
+        progresso.setProgress(15,true);
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=idade","idade");
-
+        progresso.setProgress(20,true);
         processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=resumo","resumo");
-
-        //processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=coeficiente","coeficiente");
-
-        //processarJson("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucao","evolucao");
-
+        progresso.setProgress(25,true);
         baixarDadosCidades("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=hoje");
-
+        progresso.setProgress(30,true);
         baixarDadosIniciais("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=dadosIniciais");
-
+        progresso.setProgress(40,true);
         baixarDadosCidadesMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=cidades");
-
+        progresso.setProgress(45,true);
         baixarDadosBairrosMapa("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=bairros");
-
+        progresso.setProgress(60,true);
         baixarDadosEvolucaoTotal("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
-
+        progresso.setProgress(80,true);
         baixarDadosEvolucaoMedia("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=media");
-
+        progresso.setProgress(100,true);
         return null;
     }
 
