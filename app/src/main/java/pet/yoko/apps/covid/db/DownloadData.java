@@ -196,6 +196,22 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    private void baixarDadosEvolucaoInternacoes(String url) {
+        try {
+            String myResponse = run(url);
+            JSONArray arr = new JSONArray(myResponse);
+            db.internacoesEvolucaoDao().delete_all();
+            for (int i=0; i<arr.length();i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                InternacoesEvolucaoItem internacoesEvolucaoItem = new InternacoesEvolucaoItem(obj.getString("data"),(float)obj.getDouble("uti"));
+                db.internacoesEvolucaoDao().insert(internacoesEvolucaoItem);
+            }
+        }
+        catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -241,6 +257,9 @@ public class DownloadData extends AsyncTask<Void, Void, Void> {
         progresso.setProgress(60);
         progresso.setLabelText("60%");
         baixarDadosEvolucaoTotal("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=evolucaoTotal");
+        progresso.setProgress(70);
+        progresso.setLabelText("70%");
+        baixarDadosEvolucaoInternacoes("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=dadosInternacoes");
         progresso.setProgress(80);
         progresso.setLabelText("80%");
         baixarDadosEvolucaoMedia("https://sci02-ter-jne.ufca.edu.br/webapi/covidapi.php?dados=1&tipo=media");

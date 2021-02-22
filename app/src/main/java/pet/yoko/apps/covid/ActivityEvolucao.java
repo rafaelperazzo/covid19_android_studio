@@ -33,8 +33,10 @@ import pet.yoko.apps.covid.db.TaskGetEvolucao;
 import pet.yoko.apps.covid.db.TaskGetEvolucaoMedia;
 import pet.yoko.apps.covid.db.TaskGetEvolucaoMediaResponse;
 import pet.yoko.apps.covid.db.TaskGetEvolucaoResponse;
+import pet.yoko.apps.covid.db.TaskGetInternacoesEvolucao;
+import pet.yoko.apps.covid.db.TaskGetInternacoesEvolucaoResponse;
 
-public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvolucaoMediaResponse {
+public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvolucaoMediaResponse, TaskGetInternacoesEvolucaoResponse {
     LineChart grafico;
     RadioButton rbConfirmacoes;
     RadioButton rbObitos;
@@ -49,6 +51,8 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     LinearLayout layOutTendencia;
     ArrayList<String> labels;
     int tipo;
+    ArrayList<Entry> evolucaoOcupacaoUti;
+    ArrayList<String> evolucaoOcupacaoUtiData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -357,5 +361,22 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         }
         this.labels = labels;
         this.makeChart(response,dadosLabel,dadosLabel,this.tipo);
+    }
+
+    public void mostrarEvolucaoUTI(View view) {
+        this.ajustarDadosUTI();
+    }
+
+    private void ajustarDadosUTI() {
+        int periodo = Integer.parseInt(cmbPeriodo.getSelectedItem().toString());
+        TaskGetInternacoesEvolucao tgie = new TaskGetInternacoesEvolucao(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),this,periodo);
+        tgie.execute();
+    }
+
+    @Override
+    public void getInternacoesFinish(ArrayList<Entry> response, ArrayList<String> labels) {
+        this.evolucaoOcupacaoUti = response;
+        this.evolucaoOcupacaoUtiData = labels;
+        this.makeChart(response,"Evolução UTI","Evolução UTI",1);
     }
 }
