@@ -314,6 +314,53 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         }
     }
 
+    private void analisarDadosUTI(ArrayList<Entry> dados) {
+        int j = dados.size()-1; //Ultima posição
+        float ultimo = (int)dados.get(j).getY();
+        int periodo = 1;
+        int i = j - 1;
+        float atual;
+        float anterior;
+        atual = ultimo;
+        anterior = dados.get(i).getY();
+        while (atual>=anterior) {
+            periodo++;
+            i--;
+            if (i<0) {
+                break;
+            }
+            else {
+                atual = anterior;
+                anterior = dados.get(i).getY();
+            }
+        }
+        i = j - 1;
+        atual = ultimo;
+        anterior = dados.get(i).getY();
+        while(atual<=anterior) {
+            periodo++;
+            i--;
+            if (i<0) {
+                break;
+            }
+            else {
+                atual = anterior;
+                anterior = dados.get(i).getY();
+            }
+        }
+
+        if (ultimo<=dados.get(j).getY()) {
+            this.txtSituacao.setText("QUEDA/ESTABILIDADE NOS ÚLTIMOS " + periodo + " dias");
+            this.txtSituacao.setBackgroundColor(Color.GREEN);
+            this.txtSituacao.setTextColor(Color.BLACK);
+        }
+        else {
+            this.txtSituacao.setText("CRESCIMENTO/ESTABILIDADE NOS ÚLTIMOS " + periodo + " dias");
+            this.txtSituacao.setBackgroundColor(Color.RED);
+            this.txtSituacao.setTextColor(Color.WHITE);
+        }
+    }
+
     private void setTendencia(ArrayList<Entry> dados) {
         float somaX = 0;
         float somaY = 0;
@@ -391,7 +438,7 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         this.evolucaoOcupacaoUti = response;
         this.evolucaoOcupacaoUtiData = labels;
         this.makeChart(response,"Evolução UTI","Evolução UTI",5);
-        this.analisarDados(response);
-        this.setTendencia(response);
+        this.layOutTendencia.setVisibility(View.GONE);
+        this.analisarDadosUTI(response);
     }
 }
