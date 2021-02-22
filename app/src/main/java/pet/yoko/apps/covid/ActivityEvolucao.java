@@ -149,12 +149,17 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
             lineDataSet.setColor(Color.RED);
             lineDataSet.setCircleColor(Color.RED);
         }
-        if (tipo>2) {
+        else if ((tipo==3)||(tipo==4)) {
             //lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
             lineDataSet.resetColors();
             lineDataSet.setColors(this.ajustarCores(dados));
             lineDataSet.setCircleColors(this.ajustarCores(dados));
             lineDataSet.setDrawValues(false);
+        }
+        else {
+            lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            lineDataSet.setColor(Color.BLUE);
+            lineDataSet.setCircleColor(Color.BLUE);
         }
 
         lineDataSet.setHighlightEnabled(true);
@@ -182,6 +187,14 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
         grafico.getAxisLeft().setDrawLabels(false);
         grafico.getAxisRight().setEnabled(false);
         grafico.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        if (tipo==5) {
+            grafico.getXAxis().setDrawGridLines(true);
+            grafico.getAxisLeft().setDrawGridLines(true);
+            grafico.getAxisLeft().setDrawLabels(true);
+            grafico.getAxisLeft().setEnabled(true);
+            grafico.getAxisLeft().setDrawAxisLine(true);
+            grafico.getAxisRight().setEnabled(true);
+        }
         grafico.getAxisLeft().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -377,6 +390,8 @@ public class ActivityEvolucao extends AppCompatActivity implements TaskGetEvoluc
     public void getInternacoesFinish(ArrayList<Entry> response, ArrayList<String> labels) {
         this.evolucaoOcupacaoUti = response;
         this.evolucaoOcupacaoUtiData = labels;
-        this.makeChart(response,"Evolução UTI","Evolução UTI",1);
+        this.makeChart(response,"Evolução UTI","Evolução UTI",5);
+        this.analisarDados(response);
+        this.setTendencia(response);
     }
 }
